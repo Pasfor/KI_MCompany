@@ -1,7 +1,7 @@
 public class Level {
     private int lvl;
     private int field[][];
-
+//test push
     public Level(int lvl) {
         this.lvl = lvl;
         this.initLVL();
