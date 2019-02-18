@@ -5,7 +5,8 @@ public class Main {
     public static void main(String[] args) {
 
         Level LVLone = new Level(1);
-        LVLone.printLVL();
-
+         LVLone.printLVL();
+         LVLone.rotateLVL();
+         LVLone.printLVL();
     }
 }
