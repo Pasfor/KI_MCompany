@@ -1,7 +1,7 @@
 public class Level {
     private int lvl;
     private int field[][];
-//test push
+
     public Level(int lvl) {
         this.lvl = lvl;
         this.initLVL();
@@ -37,7 +37,7 @@ public class Level {
 
     public void rotateLVL()
     {
-
+        System.out.println("brtuh");
     }
 
     //____Log functions___
