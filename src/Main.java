@@ -10,7 +10,7 @@ public class Main {
          LVLone.rotateLVL();
          LVLone.printLVL();
 
-         ArrayList<int[]> out = LVLone.returnValidMoves(new int[]{5, 4},4 );
+         ArrayList<int[]> out = LVLone.returnValidMoves(new int[]{8, 4},6 );
 
 
          for (int i=0; i<out.size();i++)
