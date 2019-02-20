@@ -66,25 +66,13 @@ public class Level {
         ArrayList<int[]> toReturn = new ArrayList<>();
         //right
         try {
-            int fieldValue = this.field[isPosition[0]][isPosition[1] + steps];
-            if (fieldValue == 0) {
-                toReturn.add(new int[]{isPosition[0], isPosition[1] + steps, 0});
-            }
-            if (fieldValue == 8) {
-                toReturn.add(new int[]{isPosition[0], isPosition[1] + steps, 8});
-            }
+            toReturn.add(new int[]{isPosition[0], isPosition[1] + steps, this.field[isPosition[0]][isPosition[1] + steps]});
         } catch (ArrayIndexOutOfBoundsException exception) {
             System.out.println("No right movement possible");
         }
        //left
         try {
-            int fieldValue = this.field[isPosition[0]][isPosition[1] - steps];
-            if (fieldValue == 0) {
-                toReturn.add(new int[]{isPosition[0], isPosition[1] - steps, 0});
-            }
-            if (fieldValue == 8) {
-                toReturn.add(new int[]{isPosition[0], isPosition[1] - steps, 8});
-            }
+            toReturn.add(new int[]{isPosition[0], isPosition[1] - steps, this.field[isPosition[0]][isPosition[1] - steps]});
         } catch (ArrayIndexOutOfBoundsException exception) {
             System.out.println("No left movement possible");
         }
@@ -93,13 +81,7 @@ public class Level {
         //if first half of field
         if(isPosition[0]+steps <=4) {
             try {
-            int fieldValue = this.field[isPosition[0] + steps][isPosition[1]];
-            if (fieldValue == 0) {
-                toReturn.add(new int[]{isPosition[0] + steps, isPosition[1], 0});
-            }
-            if (fieldValue == 8) {
-                toReturn.add(new int[]{isPosition[0] + steps, isPosition[1], 8});
-            }
+                toReturn.add(new int[]{isPosition[0] + steps, isPosition[1], this.field[isPosition[0] + steps][isPosition[1]]});
         } catch (ArrayIndexOutOfBoundsException exception) {
             System.out.println("No right-down movement possible");
         }
@@ -108,13 +90,7 @@ public class Level {
         if(isPosition[0]+steps >4)
         {
             try {
-                int fieldValue = this.field[isPosition[0] + steps][isPosition[1]+aboveHalfIndex];
-                if (fieldValue == 0) {
-                    toReturn.add(new int[]{isPosition[0] + steps, isPosition[1]+aboveHalfIndex,0});
-                }
-                if (fieldValue == 8) {
-                    toReturn.add(new int[]{isPosition[0] + steps, isPosition[1]+aboveHalfIndex,8});
-                }
+                toReturn.add(new int[]{isPosition[0] + steps, isPosition[1]+aboveHalfIndex,this.field[isPosition[0] + steps][isPosition[1]+aboveHalfIndex]});
             } catch (ArrayIndexOutOfBoundsException exception) {
                 System.out.println("No right-down movement possible");
             }
