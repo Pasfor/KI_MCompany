@@ -49,7 +49,20 @@ public class Level {
     }
 
     // returns all valid moves
-    public ArrayList<int[]> returnValidMoves(int[] isPosition, int[] toPosition, int steps) {
+    public ArrayList<int[]> returnValidMoves(int[] isPosition, int steps) {
+
+        int aboveHalfIndex=0;
+        if(isPosition[0]<4)
+        {
+            aboveHalfIndex = 4-isPosition[0];
+        }
+
+        int underHalfIndex=0;
+        if(isPosition[0]>4)
+        {
+            underHalfIndex = isPosition[0]-4;
+        }
+
         ArrayList<int[]> toReturn = new ArrayList<>();
         //right
         try {
@@ -76,6 +89,8 @@ public class Level {
             System.out.println("No left movement possible");
         }
         //right down
+
+        //if first half of field
         if(isPosition[0]+steps <=4) {
             try {
             int fieldValue = this.field[isPosition[0] + steps][isPosition[1]];
@@ -89,27 +104,52 @@ public class Level {
             System.out.println("No right-down movement possible");
         }
     }
-        if(isPosition[0]+steps >=4)
+        //if second half of field or cross the first half
+        if(isPosition[0]+steps >4)
         {
-            int aboveHalfindex=0;
-            if(isPosition[0]<4)
-            {
-                aboveHalfindex = 5-isPosition[0];
-            }
-
             try {
-                int fieldValue = this.field[isPosition[0] + steps][isPosition[1]+aboveHalfindex];
+                int fieldValue = this.field[isPosition[0] + steps][isPosition[1]+aboveHalfIndex];
                 if (fieldValue == 0) {
-                    toReturn.add(new int[]{isPosition[0] + steps, isPosition[1]+aboveHalfindex, 0});
+                    toReturn.add(new int[]{isPosition[0] + steps, isPosition[1]+aboveHalfIndex,0});
                 }
                 if (fieldValue == 8) {
-                    toReturn.add(new int[]{isPosition[0] + steps, isPosition[1]+aboveHalfindex, 8});
+                    toReturn.add(new int[]{isPosition[0] + steps, isPosition[1]+aboveHalfIndex,8});
                 }
             } catch (ArrayIndexOutOfBoundsException exception) {
                 System.out.println("No right-down movement possible");
             }
         }
         //right up
+        //current position in first half
+        if(isPosition[0] <= 4)
+        {
+            try {
+                int fieldValue = this.field[isPosition[0] - steps][isPosition[1]];
+                if (fieldValue == 0) {
+                    toReturn.add(new int[]{isPosition[0] - steps, isPosition[1],0});
+                }
+                if (fieldValue == 8) {
+                    toReturn.add(new int[]{isPosition[0] - steps, isPosition[1],8});
+                }
+            } catch (ArrayIndexOutOfBoundsException exception) {
+                System.out.println("No right-up movement possible");
+            }
+        }
+        //second half
+        if(isPosition[0] > 4 )
+        {
+            try {
+                int fieldValue = this.field[isPosition[0] - steps][isPosition[1]+underHalfIndex];
+                if (fieldValue == 0) {
+                    toReturn.add(new int[]{isPosition[0] - steps, isPosition[1]+underHalfIndex,0});
+                }
+                if (fieldValue == 8) {
+                    toReturn.add(new int[]{isPosition[0] - steps, isPosition[1]+underHalfIndex,8});
+                }
+            } catch (ArrayIndexOutOfBoundsException exception) {
+                System.out.println("No right-up movement possible");
+            }
+        }
         //left down
         //left up
 
