@@ -1,3 +1,5 @@
+package gamecomponents;
+
 import java.util.ArrayList;
 
 public class Level {
@@ -5,10 +7,9 @@ public class Level {
      * normal Fields = 0
      * Holes = 8
      * special Field = 9
-     *
+     * <p>
      * player one = 1
      * player two = 2
-     *
      */
     private int lvl;
     private int field[][];
@@ -17,7 +18,7 @@ public class Level {
 
     public Level(int lvl) {
         this.lvl = lvl;
-       this.field = new int[][]{
+        this.field = new int[][]{
                 {0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0},
@@ -260,9 +261,8 @@ public class Level {
         }
 
         //if special fields are on this lvl
-        if(!this.specialFieldCords.isEmpty())
-        {
-            int[][] specialFields = this.specialFieldCords.get(rand-1);
+        if (!this.specialFieldCords.isEmpty()) {
+            int[][] specialFields = this.specialFieldCords.get(rand - 1);
             for (int[] pos : specialFields) {
                 this.field[pos[0]][pos[1]] = 9;
             }
@@ -291,6 +291,13 @@ public class Level {
     }
 
     // returns all valid moves
+
+    /**
+     * @// TODO: 22.02.2019
+     * proof if collision with other Mole up and down
+     * validate and test methods : checkCollision(),validateMovesWithoutCollision()
+     *
+     */
     public ArrayList<int[]> returnValidMoves(int[] isPosition, int steps) {
 
         int aboveHalfIndex = 0;
@@ -303,90 +310,162 @@ public class Level {
             underHalfIndex = isPosition[0] - 4;
         }
 
-        ArrayList<int[]> toReturn = new ArrayList<>();
+        ArrayList<int[]> toCollisionProof = new ArrayList<>();
         //right
         try {
-            toReturn.add(new int[]{isPosition[0], isPosition[1] + steps, this.field[isPosition[0]][isPosition[1] + steps]});
+            toCollisionProof.add(new int[]{isPosition[0], isPosition[1] + steps, this.field[isPosition[0]][isPosition[1] + steps]});
         } catch (ArrayIndexOutOfBoundsException exception) {
-            System.out.println("No right movement possible");
+
         }
         //left
         try {
-            toReturn.add(new int[]{isPosition[0], isPosition[1] - steps, this.field[isPosition[0]][isPosition[1] - steps]});
+            toCollisionProof.add(new int[]{isPosition[0], isPosition[1] - steps, this.field[isPosition[0]][isPosition[1] - steps]});
         } catch (ArrayIndexOutOfBoundsException exception) {
-            System.out.println("No left movement possible");
+
         }
         //right down
 
         //if first half of field
         if (isPosition[0] + steps <= 4) {
             try {
-                toReturn.add(new int[]{isPosition[0] + steps, isPosition[1], this.field[isPosition[0] + steps][isPosition[1]]});
+                toCollisionProof.add(new int[]{isPosition[0] + steps, isPosition[1], this.field[isPosition[0] + steps][isPosition[1]]});
             } catch (ArrayIndexOutOfBoundsException exception) {
-                System.out.println("No right-down movement possible");
             }
         }
         //if second half of field or cross the first half
         if (isPosition[0] + steps > 4) {
             try {
-                toReturn.add(new int[]{isPosition[0] + steps, isPosition[1] + aboveHalfIndex, this.field[isPosition[0] + steps][isPosition[1] + aboveHalfIndex]});
+                toCollisionProof.add(new int[]{isPosition[0] + steps, isPosition[1] + aboveHalfIndex, this.field[isPosition[0] + steps][isPosition[1] + aboveHalfIndex]});
             } catch (ArrayIndexOutOfBoundsException exception) {
-                System.out.println("No right-down movement possible");
             }
         }
         //right up
         //current position in first half
         if (isPosition[0] <= 4) {
             try {
-                toReturn.add(new int[]{isPosition[0] - steps, isPosition[1], this.field[isPosition[0] - steps][isPosition[1]]});
+                toCollisionProof.add(new int[]{isPosition[0] - steps, isPosition[1], this.field[isPosition[0] - steps][isPosition[1]]});
             } catch (ArrayIndexOutOfBoundsException exception) {
-                System.out.println("No right-up movement possible");
+
             }
         }
         //second half
         if (isPosition[0] > 4) {
             try {
-                toReturn.add(new int[]{isPosition[0] - steps, isPosition[1] + underHalfIndex, this.field[isPosition[0] - steps][isPosition[1] + underHalfIndex]});
+                toCollisionProof.add(new int[]{isPosition[0] - steps, isPosition[1] + underHalfIndex, this.field[isPosition[0] - steps][isPosition[1] + underHalfIndex]});
             } catch (ArrayIndexOutOfBoundsException exception) {
-                System.out.println("No right-up movement possible");
+
             }
         }
         //left down
         //first  half
         if (isPosition[0] + steps <= 4) {
             try {
-                toReturn.add(new int[]{isPosition[0] + steps, isPosition[1], this.field[isPosition[0] + steps][isPosition[1]]});
+                toCollisionProof.add(new int[]{isPosition[0] + steps, isPosition[1], this.field[isPosition[0] + steps][isPosition[1]]});
             } catch (ArrayIndexOutOfBoundsException exception) {
-                System.out.println("No left-down movement possible");
+
             }
         }
         //second half
         if (isPosition[0] + steps > 4) {
             try {
-                toReturn.add(new int[]{isPosition[0] + steps, isPosition[1] - steps + aboveHalfIndex, this.field[isPosition[0] + steps][isPosition[1] - steps + aboveHalfIndex]});
+                toCollisionProof.add(new int[]{isPosition[0] + steps, isPosition[1] - steps + aboveHalfIndex, this.field[isPosition[0] + steps][isPosition[1] - steps + aboveHalfIndex]});
             } catch (ArrayIndexOutOfBoundsException exception) {
-                System.out.println("No left-down movement possible");
+
             }
         }
         //left up
         //first half
         if (isPosition[0] <= 4) {
             try {
-                toReturn.add(new int[]{isPosition[0] - steps, isPosition[1] - steps, this.field[isPosition[0] - steps][isPosition[1] - steps]});
+                toCollisionProof.add(new int[]{isPosition[0] - steps, isPosition[1] - steps, this.field[isPosition[0] - steps][isPosition[1] - steps]});
             } catch (ArrayIndexOutOfBoundsException exception) {
-                System.out.println("No left-up movement possible");
+
             }
         }
         //second half
         if (isPosition[0] > 4) {
             try {
-                toReturn.add(new int[]{isPosition[0] - steps, isPosition[1] - (steps - underHalfIndex), this.field[isPosition[0] - steps][isPosition[1] - (steps - underHalfIndex)]});
+                toCollisionProof.add(new int[]{isPosition[0] - steps, isPosition[1] - (steps - underHalfIndex), this.field[isPosition[0] - steps][isPosition[1] - (steps - underHalfIndex)]});
             } catch (ArrayIndexOutOfBoundsException exception) {
-                System.out.println("No left-up movement possible");
+
             }
         }
 
-        return toReturn;
+        return validateMovesWithoutCollision(toCollisionProof, isPosition);
+    }
+
+    /**
+     * validates that no collision with moles happen
+     */
+    private ArrayList<int[]> validateMovesWithoutCollision(ArrayList<int[]> toProof, int[] isPosition) {
+        ArrayList<int[]> validMoves = new ArrayList<>();
+        for (int[] moveToProof : toProof) {
+            if (!checkCollision(isPosition, moveToProof)) {
+                validMoves.add(moveToProof);
+            }
+        }
+        return validMoves;
+    }
+
+    /**
+     * checks for collision in one move
+     */
+    private boolean checkCollision(int[] pos, int[] move) {
+        //check if right or left(same row)
+        if (pos[0] == move[0]) {
+            //right
+            if (pos[1] - move[1] < 0) {
+                System.out.print("\nmoving right ");
+                for (int i = 0; i < Math.abs(pos[1] - move[1]); i++) {
+                    //test if Mole on this position
+                    int positionValue = this.field[move[0]][pos[1]+Math.abs(pos[1] - move[1]) -i];
+                    if (positionValue == 1 || positionValue == 2) {
+                        System.out.println("\n"+i+ " Mole collision right "+ positionValue);
+                        return false;
+                    }
+                    System.out.print(" "+positionValue);
+                }
+            }
+            //left
+            if (pos[1] - move[1] > 0) {
+                System.out.print("\n moving left ");
+                for (int i = 0; i < Math.abs(pos[1] - move[1]); i++) {
+                    //test if Mole on this position
+                    int positionValue = this.field[move[0]][pos[1]-Math.abs(pos[1] - move[1])+i];
+                    if (positionValue == 1 || positionValue == 2) {
+                        System.out.println(i+ "\n Mole collision left "+ positionValue);
+                        return false;
+                    }
+                    System.out.print(" "+positionValue);
+                }
+            }
+
+        }
+
+        //check if down
+        if (pos[0] - move[0] < 0 && pos[0] != move[0]) {
+
+        }
+        //check if up
+        if (pos[0] - move[0] > 0 && pos[0] != move[0]) {
+
+        }
+        return true;
+    }
+
+    /**setting mole on a valid position
+     * @param row
+     * @param col
+     * @param playerNumber
+     * @return
+     */
+    public boolean setMole(int row, int col, int playerNumber) {
+        if (this.field[row][col] == 0) {
+            this.field[row][col] = playerNumber;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     //____Log functions___
