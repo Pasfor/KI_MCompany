@@ -1,13 +1,35 @@
 import java.util.ArrayList;
 
 public class Level {
+    /**
+     * normal Fields = 0
+     * Holes = 8
+     * special Field = 9
+     *
+     * player one = 1
+     * player two = 2
+     *
+     */
     private int lvl;
     private int field[][];
     private ArrayList<int[][]> holeCords = new ArrayList<>();
+    private ArrayList<int[][]> specialFieldCords = new ArrayList<>();
 
     public Level(int lvl) {
         this.lvl = lvl;
+       this.field = new int[][]{
+                {0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0}
+        };
         this.initLVL();
+        this.rotateLVL();
     }
 
     private void initLVL() {
@@ -59,26 +81,170 @@ public class Level {
                         {8, 3},
 
                 });
-                this.field = new int[][]{
-                        {0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0}
-                };
-                rotateLVL();
                 break;
             case 2:
+                this.holeCords.add(new int[][]{
+                        {0, 4},
+                        {1, 1},
+                        {1, 3},
+                        {3, 6},
+                        {5, 1},
+                        {6, 5},
+                        {7, 2}
+                });
+                this.specialFieldCords.add(new int[][]{
+                        {0, 0},
+                        {4, 3},
+                        {4, 8},
+                        {7, 1},
+
+                });
+
+                this.holeCords.add(new int[][]{
+                        {1, 4},
+                        {2, 1},
+                        {3, 6},
+                        {4, 8},
+                        {5, 1},
+                        {6, 5},
+                        {7, 2},
+                        {8, 1}
+
+                });
+
+                this.specialFieldCords.add(new int[][]{
+                        {0, 4},
+                        {3, 3},
+                        {4, 1},
+                        {8, 4}
+
+
+                });
+
+                this.holeCords.add(new int[][]{
+                        {1, 3},
+                        {2, 1},
+                        {4, 0},
+                        {4, 7},
+                        {5, 1},
+                        {6, 5},
+                        {7, 2},
+                        {8, 4}
+
+                });
+
+                this.specialFieldCords.add(new int[][]{
+                        {1, 1},
+                        {3, 4},
+                        {4, 8},
+                        {8, 0}
+
+
+                });
 
                 break;
             case 3:
+                this.holeCords.add(new int[][]{
+                        {0, 2},
+                        {5, 0},
+                        {5, 7},
+                        {6, 3}
+
+
+                });
+
+                this.specialFieldCords.add(new int[][]{
+                        {2, 0},
+                        {3, 3},
+                        {3, 7},
+                        {8, 2}
+
+
+                });
+
+                this.holeCords.add(new int[][]{
+                        {1, 0},
+                        {2, 6},
+                        {5, 2},
+                        {8, 3}
+
+
+                });
+
+                this.specialFieldCords.add(new int[][]{
+                        {0, 2},
+                        {3, 4},
+                        {6, 0},
+                        {7, 5}
+
+
+                });
+
+                this.holeCords.add(new int[][]{
+                        {0, 3},
+                        {3, 2},
+                        {6, 6},
+                        {7, 0}
+
+
+                });
+
+                this.specialFieldCords.add(new int[][]{
+                        {2, 0},
+                        {2, 6},
+                        {4, 5},
+                        {8, 1}
+
+
+                });
 
                 break;
             case 4:
+
+                this.holeCords.add(new int[][]{
+                        {4, 4}
+
+
+                });
+
+                this.specialFieldCords.add(new int[][]{
+                        {0, 0},
+                        {3, 6},
+                        {5, 1},
+                        {8, 4},
+
+
+                });
+
+                this.holeCords.add(new int[][]{
+                        {4, 4}
+
+
+                });
+
+                this.specialFieldCords.add(new int[][]{
+                        {0, 4},
+                        {2, 1},
+                        {6, 5},
+                        {8, 0},
+
+
+                });
+
+                this.holeCords.add(new int[][]{
+                        {4, 4}
+
+
+                });
+
+                this.specialFieldCords.add(new int[][]{
+                        {1, 3},
+                        {4, 0},
+                        {4, 8},
+                        {7, 2},
+
+
+                });
 
                 break;
         }
@@ -93,23 +259,29 @@ public class Level {
             this.field[pos[0]][pos[1]] = 8;
         }
 
-        rand = (int) (Math.random() * ((2 - 1) + 1)) + 1;
-        System.out.println(rand+"\n \n ");
-        //turn 180 if rand is 2
-        this.printLVL();
-        if(rand == 2)
+        //if special fields are on this lvl
+        if(!this.specialFieldCords.isEmpty())
         {
+            int[][] specialFields = this.specialFieldCords.get(rand-1);
+            for (int[] pos : specialFields) {
+                this.field[pos[0]][pos[1]] = 9;
+            }
+        }
+
+        rand = (int) (Math.random() * ((2 - 1) + 1)) + 1;
+//        System.out.println("\n"+rand + " (2 is rotating 180) \n \n ");
+        //turn 180 if rand is 2
+//        this.printLVL();
+        if (rand == 2) {
             int[][] turnedField = this.field.clone();
 
-            for(int i=0; i<turnedField.length; i++)
-            {
-                
-                turnedField[i] = this.field[8-i];
-                for(int j=0; j<turnedField[i].length/2; j++)
-                { 
+            for (int i = 0; i < turnedField.length; i++) {
+
+                turnedField[i] = this.field[8 - i];
+                for (int j = 0; j < turnedField[i].length / 2; j++) {
                     int temp = turnedField[i][j];
-                    turnedField[i][j] = turnedField[i][turnedField[i].length -j -1];
-                    turnedField[i][turnedField[i].length -j -1] = temp;
+                    turnedField[i][j] = turnedField[i][turnedField[i].length - j - 1];
+                    turnedField[i][turnedField[i].length - j - 1] = temp;
                 }
 
 
