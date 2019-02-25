@@ -438,72 +438,200 @@ public class Level {
         //check if down
         if (pos[0] - move[0] < 0 && pos[0] != move[0]) {
 
-            System.out.println(" \ndown right not crossing mid");
-            if (pos[1] <= move[1] && move[0] <= 4) {
+
+            //above mid
+            if (pos[1] < move[1] && move[0] <= 4) {
+                System.out.println("down right not crossing mid");
                 for (int i = 0; i < Math.abs(pos[0] - move[0]); i++) {
                     int positionValue = this.field[move[0] - i][move[1] - i];
                     if (positionValue == 1 || positionValue == 2) {
-                        System.out.println("\n colision (" + (move[0] - i) + ", " + +(pos[1] - i) + ") " + positionValue);
+                        System.out.println("colision (" + (move[0] - i) + ", " + (move[1] - i) + ") " + positionValue);
                         return false;
                     }
                 }
             }
-            System.out.println("right down crossing mid");
-            if (pos[1] <= move[1] && move[0] > 4) {
-                ;
+            //under the half
+            if (pos[1] == move[1] && move[0] >= 4) {
+                System.out.println("down right not crossing mid");
+                for (int i = 0; i < Math.abs(pos[0] - move[0]); i++) {
+                    int positionValue = this.field[move[0] - i][move[1]];
+                    if (positionValue == 1 || positionValue == 2) {
+                        System.out.println("colision (" + (move[0] - i) + ", " + +(move[1]) + ") " + positionValue);
+                        return false;
+                    }
+                }
+            }
+
+            if (pos[0] < 4 && move[0] > 4 && pos[1] < move[1]) {
+                System.out.println("right down crossing mid");
                 int crossMidIndex = move[0] - 4;
                 int aboveMidIndex = 4 - pos[0];
 
                 for (int i = 1; i <= aboveMidIndex; i++) {
                     int positionValue = this.field[pos[0] + i][pos[1] + i];
                     if (positionValue == 1 || positionValue == 2) {
-                        System.out.println("\n colision (" + (pos[0] + i) + ", " + (pos[1] + i) + ") " + positionValue);
+                        System.out.println("colision (" + (pos[0] + i) + ", " + (pos[1] + i) + ") " + positionValue);
                         return false;
                     }
                 }
                 for (int i = 0; i < crossMidIndex; i++) {
                     int positionValue = this.field[move[0] - i][move[1]];
                     if (positionValue == 1 || positionValue == 2) {
-                        System.out.println("\n colision (" + (move[0] - i) + ", " + +move[1] + ") " + positionValue);
+                        System.out.println("colision (" + (move[0] - i) + ", " + +move[1] + ") " + positionValue);
                         return false;
                     }
                 }
             }
 
-            System.out.println("left down not crossing mid");
-            if (pos[1] >= move[1] && move[0] <= 4) {
-                for (int i = 0; i < Math.abs(pos[0] - move[0]); i++) {
-                    int positionValue = this.field[pos[0] + i][move[1]];
+
+            //above half
+            if (pos[1] == move[1] && move[0] <= 4) {
+                System.out.println("left down not crossing mid");
+                for (int i = 1; i <= Math.abs(pos[0] - move[0]); i++) {
+                    int positionValue = this.field[pos[0] + i][pos[1]];
                     if (positionValue == 1 || positionValue == 2) {
-                        System.out.println("\n colision (" + (move[0] - i) + ", " + +move[1] + ") " + positionValue);
+                        System.out.println("colision (" + (pos[0] + i) + ", " + pos[1] + ") " + positionValue);
                         return false;
                     }
                 }
             }
-            System.out.println("left down crossing mid");
-            if (pos[1] >= move[1] && move[0] > 4) {
+            //under Half
+            if (pos[1] > move[1] && move[0] > 4) {
+                System.out.println("left down not crossing mid");
+                for (int i = 1; i <= Math.abs(pos[0] - move[0]); i++) {
+                    int positionValue = this.field[pos[0] + i][pos[1] - i];
+                    if (positionValue == 1 || positionValue == 2) {
+                        System.out.println("colision (" + (pos[0] + i) + ", " + (pos[1] - i) + ") " + positionValue);
+                        return false;
+                    }
+                }
+            }
+
+            //crossing mid
+            if (pos[0] < 4 && move[0] > 4 && pos[1] > move[1]) {
+                System.out.println("left down crossing mid");
                 int crossMidIndex = move[0] - 4;
                 int aboveMidIndex = 4 - pos[0];
                 for (int i = 1; i < aboveMidIndex; i++) {
                     int positionValue = this.field[pos[0] + i][pos[1]];
                     if (positionValue == 1 || positionValue == 2) {
-                        System.out.println("\n colision (" + (pos[0] + i) + ", " + +pos[1] + ") " + positionValue);
+                        System.out.println("colision (" + (pos[0] + i) + ", " + +pos[1] + ") " + positionValue);
                         return false;
                     }
                 }
                 for (int i = 0; i <= crossMidIndex; i++) {
                     int positionValue = this.field[move[0] - i][move[1] + i];
                     if (positionValue == 1 || positionValue == 2) {
-                        System.out.println("\n colision (" + (move[0] - i) + ", " + +(move[1] + i) + ") " + positionValue);
+                        System.out.println("colision (" + (move[0] - i) + ", " + +(move[1] + i) + ") " + positionValue);
                         return false;
                     }
                 }
             }
         }
-        //check if up
-        if (pos[0] - move[0] > 0 && pos[0] != move[0]) {
 
+        //check if up
+        if (pos[0] - move[0] > 0 && pos[0] != move[0])
+    {
+        //up right
+
+        //not crossing mid
+
+        //above half
+        if (pos[0] <= 4 && move[0] < 4 && pos[1] == move[1]) {
+            System.out.println("right up not crossing mid");
+            for (int i = 1; i <= Math.abs(pos[0] - move[0]); i++) {
+                int positionValue = this.field[pos[0] - i][pos[1]];
+                if (positionValue == 1 || positionValue == 2) {
+                    System.out.println("colision (" + (pos[0] - i) + ", " + pos[1] + ") " + positionValue);
+                    return false;
+                }
+            }
         }
+        //under half
+        if (pos[0] > 4 && move[0] >= 4 && pos[1] < move[1]) {
+            System.out.println("right up not crossing mid");
+            for (int i = 1; i <= Math.abs(pos[0] - move[0]); i++) {
+                int positionValue = this.field[pos[0] - i][pos[1] + i];
+                if (positionValue == 1 || positionValue == 2) {
+                    System.out.println("colision (" + (pos[0] - i) + ", " + (pos[1] + i) + ") " + positionValue);
+                    return false;
+                }
+            }
+        }
+        //crossing mid
+        if (pos[0] > 4 && move[0] < 4 && pos[1] < move[1]) {
+            System.out.println("right up crossing mid");
+            int underMidIndex = pos[0]-4;
+            int aboveMidIndex = 4 - move[0];
+
+            for (int i = 0; i < aboveMidIndex; i++) {
+                int positionValue = this.field[move[0] + i][move[1]];
+                if (positionValue == 1 || positionValue == 2) {
+                    System.out.println("colision (" + (move[0] + i) + ", " + move[1] + ") " + positionValue);
+                    return false;
+                }
+            }
+            for (int i = 1; i <= underMidIndex; i++) {
+                int positionValue = this.field[pos[0] - i][pos[1] + i];
+                if (positionValue == 1 || positionValue == 2) {
+                    System.out.println("colision (" + (pos[0] - i) + ", " + (pos[1] + i) + ") " + positionValue);
+                    return false;
+                }
+            }
+        }
+
+        //up left
+
+        //not crossing mid
+
+        //above half
+        if(pos[0] <= 4 && move[0] < 4 && pos[1] > move[1])
+        {
+            System.out.println("left up not crossing mid");
+            for (int i = 1; i <= Math.abs(pos[0] - move[0]); i++) {
+                int positionValue = this.field[pos[0] - i][pos[1]-i];
+                if (positionValue == 1 || positionValue == 2) {
+                    System.out.println("colision (" + (pos[0] - i) + ", " + (pos[1]-i) + ") " + positionValue);
+                    return false;
+                }
+            }
+        }
+        //under half
+        if(pos[0]>4 && move[0]>=4 && pos[1] == move[1]){
+            System.out.println("left up not crossing mid");
+            for (int i = 1; i <= Math.abs(pos[0] - move[0]); i++) {
+                int positionValue = this.field[pos[0] - i][pos[1]];
+                if (positionValue == 1 || positionValue == 2) {
+                    System.out.println("colision (" + (pos[0] - i) + ", " + (pos[1]) + ") " + positionValue);
+                    return false;
+                }
+            }
+        }
+        //crossing mid
+        if (pos[0] > 4 && move[0] < 4 && pos[1] > move[1]) {
+            System.out.println("left up crossing mid");
+            int underMidIndex = pos[0]-4;
+            int aboveMidIndex = 4 - move[0];
+
+            for (int i = 0; i < aboveMidIndex; i++) {
+                int positionValue = this.field[move[0] + i][move[1]+i];
+                if (positionValue == 1 || positionValue == 2) {
+                    System.out.println("colision (" + (move[0] + i) + ", " + (move[1]+i) + ") " + positionValue);
+                    return false;
+                }
+            }
+            for (int i = 1; i <= underMidIndex; i++) {
+                int positionValue = this.field[pos[0] - i][pos[1]];
+                if (positionValue == 1 || positionValue == 2) {
+                    System.out.println("colision (" + (pos[0] - i) + ", " + (pos[1]) + ") " + positionValue);
+                    return false;
+                }
+            }
+        }
+
+
+
+    }
         return true;
     }
 
@@ -536,5 +664,6 @@ public class Level {
                 System.out.print(" " + field);
             }
         }
+        System.out.println();
     }
 }
