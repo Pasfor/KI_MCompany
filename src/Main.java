@@ -8,15 +8,12 @@ public class Main {
         one.printLVL();
 
         one.setMole(3,3,1);
-        one.setMole(3,1,1);
+        one.setMole(5,4,2);
+        one.setMole(6,1,2);
 
         one.printLVL();
 
-        one.returnValidMoves(new int[]{3,3},3);
-
-
-
-
+        one.returnValidMoves(new int[]{3,3},4);
 
 //        Level LVLtwo = new Level(2);
 //        LVLtwo.printLVL();
