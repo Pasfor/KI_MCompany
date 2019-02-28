@@ -1,4 +1,9 @@
+import GUI.Color;
+import GUI.UImain;
 import gamecomponents.Level;
+import javafx.application.Application;
+
+import java.util.ArrayList;
 
 public class Main {
 
@@ -19,7 +24,13 @@ public class Main {
 
         one.returnValidMoves(new int[]{5,4},2);
 
-//        Level LVLtwo = new Level(2);
+
+        ArrayList<Integer> j = new ArrayList<Integer>();
+        j.add(4);
+        j.add(5);
+
+        //System.out.println("\n"+j.size());
+        // Level LVLtwo = new Level(2);
 //        LVLtwo.printLVL();
 //
 //        Level LVLthree = new Level(3);
@@ -27,5 +38,15 @@ public class Main {
 //
 //        Level LVLfour = new Level(4);
 //        LVLfour.printLVL();
+
+
+
+        //test ui
+
+        //startUI
+
+//        Application.launch(UImain.class,args);
+//        UImain.changeFieldColor(0,0, Color.BLUE);
+
     }
 }

@@ -1,4 +1,7 @@
-package gamecomponents;
+package GameSession;
+
+import gamecomponents.Mole;
+import gamecomponents.MoveCard;
 
 import java.util.ArrayList;
 
@@ -24,4 +27,26 @@ public class Player {
         this.moveCards.add(new MoveCard(4));
     }
 
+    public boolean hasMolesToSet()
+    {
+        for(Mole mole:moles)
+        {
+            if(!mole.isSet())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void setMole(int row, int col, int field[][])
+    {
+         for(Mole mole: moles)
+         {
+             if(!mole.isSet())
+             {
+                 mole.setPosition(new int[]{row,col});
+             }
+         }
+    }
 }
