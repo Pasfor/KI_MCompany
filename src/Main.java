@@ -1,5 +1,8 @@
+import AIs.RndAI;
 import GUI.Color;
 import GUI.UImain;
+import GameSession.GameSession;
+import GameSession.GameState;
 import gamecomponents.Level;
 import javafx.application.Application;
 
@@ -9,27 +12,24 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Level one = new Level(1);
-        one.printLVL();
+        GameSession gameSession = new GameSession(new RndAI(1), new RndAI(2));
+        gameSession.run();
 
-        one.setMole(5,4,1);
+//        Level one = new Level(1);
+//        one.printLVL();
+//
+//        one.setMole(5,4,1);
+//
+//        one.setMole(6,1,2);
+//
+//        one.setMole(0,3,2);
+//        one.setMole(4,5,2);
+//        one.setMole(2,2,2);
+//
+//        one.printLVL();
+//
+//        one.returnValidMoves(new int[]{5,4},2);
 
-        one.setMole(6,1,2);
-
-        one.setMole(0,3,2);
-        one.setMole(4,5,2);
-        one.setMole(2,2,2);
-
-        one.printLVL();
-
-        one.returnValidMoves(new int[]{5,4},2);
-
-
-        ArrayList<Integer> j = new ArrayList<Integer>();
-        j.add(4);
-        j.add(5);
-
-        //System.out.println("\n"+j.size());
         // Level LVLtwo = new Level(2);
 //        LVLtwo.printLVL();
 //

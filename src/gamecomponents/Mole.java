@@ -1,21 +1,25 @@
 package gamecomponents;
 
-import GameSession.Player;
+import GameSession.RealPlayer;
 
 public class Mole {
 
     private int[] position;
-    private Player player;
+    private int positionValue;
+    private int playerNumber;
     private boolean set;
 
-    public Mole(Player p, int[] pos) {
-        this.player = p;
+    public Mole(int p, int[] pos, int positionValue) {
+        this.playerNumber = p;
         this.position = pos;
+        this.positionValue = positionValue;
+        this.set = true;
     }
 
-    public void setPosition(int[] newPos)
+    public void setPosition(int[] newPos, int newPositionValue)
     {
         this.position = newPos;
+        this.positionValue = newPositionValue;
         this.set = true;
     }
     public int[] getPosition()
@@ -26,5 +30,15 @@ public class Mole {
     public boolean isSet()
     {
         return this.set;
+    }
+
+    public int getPlayerNumber()
+    {
+        return this.playerNumber;
+    }
+
+    public int getPositionVlaue()
+    {
+        return this.positionValue;
     }
 }

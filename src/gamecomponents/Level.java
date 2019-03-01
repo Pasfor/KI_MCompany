@@ -652,6 +652,29 @@ public class Level {
         }
     }
 
+    public int[][] getField()
+    {
+        return this.field;
+    }
+    public boolean levelFinish()
+    {
+        for(int[] row: this.field)
+        {
+            for(int value: row)
+            {
+                if(value==8)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public void resetValue(int[] pos,int value)
+    {
+        this.field[pos[0]][pos[1]] = value;
+    }
     //____Log functions___
     public void printLVL() {
         System.out.println();

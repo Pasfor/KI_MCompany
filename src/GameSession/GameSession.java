@@ -1,5 +1,6 @@
 package GameSession;
 
+import gamecomponents.Player;
 import gamecomponents.Level;
 
 import java.util.ArrayList;
@@ -8,36 +9,53 @@ public class GameSession extends Thread {
 
     private ArrayList<Player> players;
     private ArrayList<Level> lvls;
+    private int currentPlayerInt;
 
-    int currentPlayerInt;
-
-    public GameSession(Player Pone, Player Ptwo, Level one, Level two, Level three, Level four) {
+    public GameSession(Player Pone, Player Ptwo) {
+        this.players = new ArrayList<>();
         this.players.add(Pone);
         this.players.add(Ptwo);
 
-        //lvls
+        //create lvls
         this.lvls = new ArrayList<>();
-        this.lvls.add(one);
-        this.lvls.add(two);
-        this.lvls.add(three);
-        this.lvls.add(four);
-
-        currentPlayerInt = ((int) (Math.random() * ((2 - 1) + 1)) + 1) - 1;
+        this.lvls.add(new Level(1));
+        this.lvls.add(new Level(2));
+        this.lvls.add(new Level(3));
+        this.lvls.add(new Level(4));
+        currentPlayerInt = ((int) (Math.random() * ((2 - 1) + 1)) + 1);
     }
 
 
     public void run() {
-        while (players.get(currentPlayerInt).hasMolesToSet()) {
+        //setting Moles
 
-            //players.get(currentPlayerInt).setMole();
 
+        for (int i = 0; i < 20; i++) {
+
+            players.get(currentPlayerInt-1).setMole(this.lvls.get(1));
+            this.lvls.get(1).printLVL();
             //change player
-            if(currentPlayerInt == 1)
-            {
+            if (currentPlayerInt == 1) {
                 currentPlayerInt = 2;
-            }else{
+            } else {
                 currentPlayerInt = 1;
             }
         }
+
+        //run first lvl
+        while(!this.lvls.get(1).levelFinish())
+        {
+            players.get(currentPlayerInt-1).makeMove(this.lvls.get(1));
+            //change player
+            if (currentPlayerInt == 1) {
+                currentPlayerInt = 2;
+            } else {
+                currentPlayerInt = 1;
+            }
+        }
+
+        System.out.println("========Level-Finish=======");
+        this.lvls.get(1).printLVL();
+
     }
 }
