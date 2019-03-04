@@ -33,7 +33,6 @@ public class GameSession extends Thread {
         for (int i = 0; i < 20; i++) {
 
             players.get(currentPlayerInt-1).setMole(this.lvls.get(0));
-            this.lvls.get(0).printLVL();
             //change player
             if (currentPlayerInt == 1) {
                 currentPlayerInt = 2;

@@ -1,10 +1,12 @@
 package AIs;
 
-import gamecomponents.Player;
 import gamecomponents.Level;
 import gamecomponents.Mole;
+import gamecomponents.Player;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class RndAI extends Player {
 
@@ -76,39 +78,68 @@ public class RndAI extends Player {
 
     public void makeMove(Level lvl)
     {
-
-        int steps =  drawMoveCard();
-        Mole moveMole = this.moles.get(((int) Math.random()*getAmountOfMoles()));
-
-        System.out.println("steps :"+steps);
-        System.out.println("player: "+this.playerNumber);
-
-
-            ArrayList<int[]> validMoves = lvl.returnValidMoves(moveMole.getPosition(),steps);
-
-            while(validMoves.isEmpty())
+        int steps = drawMoveCard();
+        System.out.println("palyer: "+playerNumber+" steps: "+steps);
+        //copy Moles
+        List<Mole> copyMoles = new ArrayList<>(this.moles);
+        //deleting all on hole
+        for(Iterator<Mole> iterator = copyMoles.iterator();iterator.hasNext();)
+        {
+            Mole m = iterator.next();
+            if(m.getPositionVlaue() == 8)
             {
-                int rnd = ((int) Math.random()*getAmountOfMoles());
-                moveMole = this.moles.get(rnd);
-                System.out.println("rnd mole 1: "+rnd);
-                while(moveMole.getPositionVlaue() == 8)
-                {
-                    rnd = (int) (Math.random()*getAmountOfMoles());
-                    moveMole = this.moles.get(rnd);
-                    System.out.println("rnd mole: "+rnd);
-                }
-                validMoves = lvl.returnValidMoves(moveMole.getPosition(),steps);
+                iterator.remove();
             }
-            int moveAmount = validMoves.size();
-            int[] move = validMoves.get(((int) Math.random()*moveAmount));
-
-
-        System.out.println(moveMole.getPosition()[0]+","+moveMole.getPosition()[1]+" to "+move[0]+","+move[1]);
-
-            lvl.resetValue(moveMole.getPosition(),moveMole.getPositionVlaue());
-            moveMole.setPosition(move,lvl.getField()[move[0]][move[1]]);
-            lvl.setMole(move[0],move[1],this.playerNumber);
-            lvl.printLVL();
-
+        }
+        //check if it is possible to move without getting out of hole
+        for(Iterator<Mole> iterator = copyMoles.iterator();iterator.hasNext();)
+        {
+            Mole m = iterator.next();
+            if(lvl.returnValidMoves(m.getPosition(),steps).isEmpty())
+            {
+              iterator.remove();
+            }
+        }
+        //if its not possible use a random Mole of all Moles if not draw one out of copy moles
+        if(copyMoles.isEmpty())
+        {
+            //to speed up remove all Moles not able to move
+            List<Mole> copyMolesTwo = new ArrayList<>(this.moles);
+            for(Iterator<Mole> iterator = copyMolesTwo.iterator();iterator.hasNext();)
+            {
+                Mole m = iterator.next();
+                if(lvl.returnValidMoves(m.getPosition(),steps).isEmpty())
+                {
+                    iterator.remove();
+                }
+            }
+            if(!copyMolesTwo.isEmpty()) {
+                //get random out of movable Moles
+                Mole moveMole = copyMolesTwo.get((int) (Math.random() * copyMolesTwo.size()));
+                //get random possible move for this mole
+                ArrayList<int[]> possibleMoves = lvl.returnValidMoves(moveMole.getPosition(), steps);
+                int[] move = possibleMoves.get((int) (Math.random() * possibleMoves.size()));
+                //Move this Mole
+                lvl.resetValue(moveMole.getPosition(), moveMole.getPositionVlaue());
+                moveMole.setPosition(move, lvl.getField()[move[0]][move[1]]);
+                lvl.setMole(move[0], move[1], this.playerNumber);
+                lvl.printLVL();
+            }
+        }
+        //if its possible to move without moving out of hole
+        else{
+            //get random out of movable Moles
+            if(!copyMoles.isEmpty()) {
+                Mole moveMole = copyMoles.get((int) (Math.random() * copyMoles.size()));
+                //get random possible move for this mole
+                ArrayList<int[]> possibleMoves = lvl.returnValidMoves(moveMole.getPosition(), steps);
+                int[] move = possibleMoves.get((int) (Math.random() * possibleMoves.size()));
+                //Move this Mole
+                lvl.resetValue(moveMole.getPosition(), moveMole.getPositionVlaue());
+                moveMole.setPosition(move, lvl.getField()[move[0]][move[1]]);
+                lvl.setMole(move[0], move[1], this.playerNumber);
+                lvl.printLVL();
+            }
+        }
     }
 }
