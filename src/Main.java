@@ -1,18 +1,12 @@
 import AIs.RndAI;
-import GUI.Color;
-import GUI.UImain;
 import GameSession.GameSession;
-import GameSession.GameState;
-import gamecomponents.Level;
-import javafx.application.Application;
-
-import java.util.ArrayList;
 
 public class Main {
 
     public static void main(String[] args) {
 
         GameSession gameSession = new GameSession(new RndAI(1), new RndAI(2));
+
         gameSession.run();
 
 //        Level one = new Level(1);
