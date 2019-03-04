@@ -52,9 +52,53 @@ public class GameSession extends Thread {
                 currentPlayerInt = 1;
             }
         }
+        System.out.println("========Level===ONE===Finish=======");
+        //run second lvl
+        //init Moles
+        players.get(0).initMolesToNewLvl(this.lvls.get(1));
+        players.get(1).initMolesToNewLvl(this.lvls.get(1));
 
-        System.out.println("========Level-Finish=======");
-        this.lvls.get(0).printLVL();
+        while(!this.lvls.get(1).levelFinish())
+        {
+            players.get(currentPlayerInt-1).makeMove(this.lvls.get(1));
+            //change player
+            if (currentPlayerInt == 1) {
+                currentPlayerInt = 2;
+            } else {
+                currentPlayerInt = 1;
+            }
+        }
+        System.out.println("========Level===TWO===Finish=======");
+
+        players.get(0).initMolesToNewLvl(this.lvls.get(2));
+        players.get(1).initMolesToNewLvl(this.lvls.get(2));
+
+        while(!this.lvls.get(2).levelFinish())
+        {
+            players.get(currentPlayerInt-1).makeMove(this.lvls.get(2));
+            //change player
+            if (currentPlayerInt == 1) {
+                currentPlayerInt = 2;
+            } else {
+                currentPlayerInt = 1;
+            }
+        }
+        System.out.println("========Level===THREE===Finish=======");
+
+        players.get(0).initMolesToNewLvl(this.lvls.get(3));
+        players.get(1).initMolesToNewLvl(this.lvls.get(3));
+
+        while(!this.lvls.get(3).levelFinish())
+        {
+            players.get(currentPlayerInt-1).makeMove(this.lvls.get(3));
+            //change player
+            if (currentPlayerInt == 1) {
+                currentPlayerInt = 2;
+            } else {
+                currentPlayerInt = 1;
+            }
+        }
+        System.out.println("========Level===FOUR===Finish=======");
 
     }
 }

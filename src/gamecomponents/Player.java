@@ -1,8 +1,5 @@
 package gamecomponents;
 
-import gamecomponents.Level;
-import gamecomponents.Mole;
-
 import java.util.ArrayList;
 
 public abstract class Player {
@@ -21,5 +18,7 @@ public abstract class Player {
     public abstract int getPlayerNumber();
 
     public abstract void makeMove(Level lvl) ;
+
+    public abstract void initMolesToNewLvl(Level lvl);
 }
 
