@@ -1,7 +1,8 @@
 package GameSession;
 
-import gamecomponents.Player;
 import gamecomponents.Level;
+import gamecomponents.Mole;
+import gamecomponents.Player;
 
 import java.util.ArrayList;
 
@@ -28,7 +29,6 @@ public class GameSession extends Thread {
 
     public void run() {
         //setting Moles
-
 
         for (int i = 0; i < 20; i++) {
 
@@ -100,5 +100,9 @@ public class GameSession extends Thread {
         }
         System.out.println("========Level===FOUR===Finish=======");
 
+        for(Mole m: players.get(0).getMoles())
+        {
+            System.out.print(m.getPosition()[0]+","+m.getPosition()[1]+" ");
+        }
     }
 }
