@@ -95,7 +95,7 @@ public class RndAI extends Player {
             lvl.setMole(m.getPosition()[0],m.getPosition()[1],this.playerNumber);
         }
     }
-    public void makeSpecialFieldMove()
+    public void makeSpecialFieldMove(Level lvl)
     {
 
     }
@@ -136,6 +136,11 @@ public class RndAI extends Player {
             moveMole.setPosition(move, lvl.getField()[move[0]][move[1]]);
             lvl.setMole(move[0], move[1], this.playerNumber);
             lvl.printLVL();
+
+            if(moveMole.getPositionVlaue() == 9)
+            {
+                System.out.println("Special field");
+            }
         }
     }
 }
