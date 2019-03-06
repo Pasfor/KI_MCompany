@@ -63,8 +63,8 @@ public class RealPlayer extends Player {
     }
 
     @Override
-    public void makeMove(Level lvl) {
-
+    public boolean makeMove(Level lvl, boolean specialFieldHit) {
+        return false;
     }
 
     @Override

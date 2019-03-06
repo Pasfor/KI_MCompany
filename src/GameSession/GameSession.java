@@ -1,7 +1,6 @@
 package GameSession;
 
 import gamecomponents.Level;
-import gamecomponents.Mole;
 import gamecomponents.Player;
 
 import java.util.ArrayList;
@@ -44,7 +43,11 @@ public class GameSession extends Thread {
         //run first lvl
         while(!this.lvls.get(0).levelFinish())
         {
-            players.get(currentPlayerInt-1).makeMove(this.lvls.get(0));
+            if(players.get(currentPlayerInt-1).makeMove(this.lvls.get(0),false))
+            {
+                //special field hit
+                players.get(currentPlayerInt-1).makeMove(this.lvls.get(0),true);
+            }
             //change player
             if (currentPlayerInt == 1) {
                 currentPlayerInt = 2;
@@ -60,7 +63,11 @@ public class GameSession extends Thread {
 
         while(!this.lvls.get(1).levelFinish())
         {
-            players.get(currentPlayerInt-1).makeMove(this.lvls.get(1));
+            if(players.get(currentPlayerInt-1).makeMove(this.lvls.get(1),false))
+            {
+                //special field hit
+                players.get(currentPlayerInt-1).makeMove(this.lvls.get(1),true);
+            }
             //change player
             if (currentPlayerInt == 1) {
                 currentPlayerInt = 2;
@@ -75,7 +82,11 @@ public class GameSession extends Thread {
 
         while(!this.lvls.get(2).levelFinish())
         {
-            players.get(currentPlayerInt-1).makeMove(this.lvls.get(2));
+            if(players.get(currentPlayerInt-1).makeMove(this.lvls.get(2),false))
+            {
+                //special field hit
+                players.get(currentPlayerInt-1).makeMove(this.lvls.get(2),true);
+            }
             //change player
             if (currentPlayerInt == 1) {
                 currentPlayerInt = 2;
@@ -90,7 +101,11 @@ public class GameSession extends Thread {
 
         while(!this.lvls.get(3).levelFinish())
         {
-            players.get(currentPlayerInt-1).makeMove(this.lvls.get(3));
+            if(players.get(currentPlayerInt-1).makeMove(this.lvls.get(3),false))
+            {
+                //special field hit
+                players.get(currentPlayerInt-1).makeMove(this.lvls.get(3),true);
+            }
             //change player
             if (currentPlayerInt == 1) {
                 currentPlayerInt = 2;
@@ -100,9 +115,5 @@ public class GameSession extends Thread {
         }
         System.out.println("========Level===FOUR===Finish=======");
 
-        for(Mole m: players.get(0).getMoles())
-        {
-            System.out.print(m.getPosition()[0]+","+m.getPosition()[1]+" ");
-        }
     }
 }

@@ -14,13 +14,13 @@ public class RndAI extends Player {
     private ArrayList<Integer> moveCards;
     private ArrayList<Mole> moles;
 
-    public RndAI (int pN)
-    {
+    public RndAI(int pN) {
         this.playerNumber = pN;
         this.moveCards = new ArrayList<>();
         this.moles = new ArrayList<>();
         initMoveCards();
     }
+
     @Override
     public void initMoveCards() {
         this.moveCards = new ArrayList<>();
@@ -41,27 +41,25 @@ public class RndAI extends Player {
     public void setMole(Level lvl) {
 
         int[][] field = lvl.getField();
-        int row = (int) (Math.random()*(field.length-1));
-        int col = (int) (Math.random()*(field[row].length-1));
-        while(field[row][col] != 0)
-        {
-            row = (int) (Math.random()*(field.length-1));
-            col = (int) (Math.random()*(field[row].length-1));
+        int row = (int) (Math.random() * (field.length - 1));
+        int col = (int) (Math.random() * (field[row].length - 1));
+        while (field[row][col] != 0) {
+            row = (int) (Math.random() * (field.length - 1));
+            col = (int) (Math.random() * (field[row].length - 1));
         }
 
-        moles.add(new Mole(this.playerNumber,new int[]{row,col},lvl.getField()[row][col]));
-      //setting onto field
-        lvl.setMole(row,col,playerNumber);
+        moles.add(new Mole(this.playerNumber, new int[]{row, col}, lvl.getField()[row][col]));
+        //setting onto field
+        lvl.setMole(row, col, playerNumber);
     }
 
     @Override
     public int drawMoveCard() {
-        if(moveCards.isEmpty())
-        {
+        if (moveCards.isEmpty()) {
             initMoveCards();
         }
         int rndIndex = (int) (Math.random() * moveCards.size());
-        int moveValue =  moveCards.get(rndIndex);
+        int moveValue = moveCards.get(rndIndex);
         moveCards.remove(moveCards.get(rndIndex));
         return moveValue;
     }
@@ -79,57 +77,77 @@ public class RndAI extends Player {
     @Override
     public void initMolesToNewLvl(Level lvl) {
         //remove Moles not in hole
-        for(Iterator<Mole> iterator = this.moles.iterator();iterator.hasNext();)
-        {
+        for (Iterator<Mole> iterator = this.moles.iterator(); iterator.hasNext(); ) {
             Mole m = iterator.next();
-            if(m.getPositionVlaue() != 8)
-            {
+            if (m.getPositionVlaue() != 8) {
                 iterator.remove();
             }
         }
         //set Moles on new lvl
-        for(Mole m: this.moles)
-        {
+        for (Mole m : this.moles) {
             //get new pos-value
-            m.setPosition(m.getPosition(),lvl.getField()[m.getPosition()[0]][m.getPosition()[1]]);
-            lvl.setMole(m.getPosition()[0],m.getPosition()[1],this.playerNumber);
+            m.setPosition(m.getPosition(), lvl.getField()[m.getPosition()[0]][m.getPosition()[1]]);
+            lvl.setMole(m.getPosition()[0], m.getPosition()[1], this.playerNumber);
         }
     }
-    public void makeSpecialFieldMove(Level lvl)
-    {
 
-    }
-    public void makeMove(Level lvl)
-    {
-        //check if all in hole
+    public boolean makeMove(Level lvl, boolean specialFieldHit) {
         int steps = drawMoveCard();
-        System.out.println("palyer: "+playerNumber+" steps: "+steps);
+        System.out.println("palyer: " + playerNumber + " steps: " + steps);
+
+        //check if possible without moving out of hole
+        List<Mole> moveableMoles = moveableMolesNotInHole(lvl, steps, specialFieldHit);
+        if (moveableMoles.isEmpty()) {
+            moveableMoles = allMoveableMoles(lvl, steps, specialFieldHit);
+            return moveRandom(lvl, steps, moveableMoles, specialFieldHit);
+        } else {
+            return moveRandom(lvl, steps, moveableMoles, specialFieldHit);
+        }
+    }
+
+    /**
+     * returns all Moles that are moveable and NOT in a Hole
+     *
+     * @param lvl
+     * @param steps
+     * @return
+     */
+    private List<Mole> moveableMolesNotInHole(Level lvl, int steps, boolean specialFieldHit) {
         //copy Moles
         List<Mole> copyMoles = new ArrayList<>(this.moles);
         //deleting all on hole
         copyMoles.removeIf(m -> m.getPositionVlaue() == 8);
         //check if it is possible to move without getting out of hole
-        copyMoles.removeIf(m -> lvl.returnValidMoves(m.getPosition(), steps).isEmpty());
-        //if its not possible use a random Mole of all Moles if not draw one out of copy moles
-        if(copyMoles.isEmpty())
-        {
-            //to speed up remove all Moles not able to move
-            List<Mole> copyMolesTwo = new ArrayList<>(this.moles);
-            copyMolesTwo.removeIf(m -> lvl.returnValidMoves(m.getPosition(), steps).isEmpty());
-            moveRandom(lvl, steps, copyMolesTwo);
-        }
-        //if its possible to move without moving out of hole
-        else{
-            //get random out of movable Moles
-            moveRandom(lvl, steps, copyMoles);
-        }
+        copyMoles.removeIf(m -> lvl.returnValidMoves(m.getPosition(), steps, false).isEmpty());
+        return copyMoles;
     }
 
-    private void moveRandom(Level lvl, int steps, List<Mole> copyMoles) {
-        if(!copyMoles.isEmpty()) {
+    /**
+     * returns ALL moveable moles
+     *
+     * @param lvl
+     * @param steps
+     * @return
+     */
+    private List<Mole> allMoveableMoles(Level lvl, int steps, boolean specialFieldHit) {
+        List<Mole> copyMoles = new ArrayList<>(this.moles);
+        //check if possible to move
+        copyMoles.removeIf(m -> lvl.returnValidMoves(m.getPosition(), steps, false).isEmpty());
+        return copyMoles;
+    }
+
+    /**
+     * choose random Mole out of moveable moles and make a random move
+     *
+     * @param lvl
+     * @param steps
+     * @param copyMoles
+     */
+    private boolean moveRandom(Level lvl, int steps, List<Mole> copyMoles, boolean specialFieldHit) {
+        if (!copyMoles.isEmpty()) {
             Mole moveMole = copyMoles.get((int) (Math.random() * copyMoles.size()));
             //get random possible move for this mole
-            ArrayList<int[]> possibleMoves = lvl.returnValidMoves(moveMole.getPosition(), steps);
+            ArrayList<int[]> possibleMoves = lvl.returnValidMoves(moveMole.getPosition(), steps, specialFieldHit);
             int[] move = possibleMoves.get((int) (Math.random() * possibleMoves.size()));
             //Move this Mole
             lvl.resetValue(moveMole.getPosition(), moveMole.getPositionVlaue());
@@ -137,10 +155,10 @@ public class RndAI extends Player {
             lvl.setMole(move[0], move[1], this.playerNumber);
             lvl.printLVL();
 
-            if(moveMole.getPositionVlaue() == 9)
-            {
-                System.out.println("Special field");
+            if (moveMole.getPositionVlaue() == 9) {
+                return true;
             }
         }
+        return false;
     }
 }

@@ -16,6 +16,7 @@ public class Level {
     private ArrayList<int[][]> holeCords = new ArrayList<>();
     private ArrayList<int[][]> specialFieldCords = new ArrayList<>();
 
+
     public Level(int lvl) {
         this.lvl = lvl;
         this.field = new int[][]{
@@ -297,7 +298,7 @@ public class Level {
      * proof if collision with other Mole up and down
      * validate and test methods : checkCollision(),validateMovesWithoutCollision()
      */
-    public ArrayList<int[]> returnValidMoves(int[] isPosition, int steps) {
+    public ArrayList<int[]> returnValidMoves(int[] isPosition, int steps, boolean specialFieldMove) {
 
         int aboveHalfIndex = 0;
         if (isPosition[0] < 4) {
@@ -389,8 +390,13 @@ public class Level {
 
             }
         }
+        ArrayList<int[]> toReturn =validateMovesWithoutCollision(toCollisionProof, isPosition);
 
-        return validateMovesWithoutCollision(toCollisionProof, isPosition);
+        if(specialFieldMove)
+        {
+           toReturn.removeIf(m -> m[2]==9);
+        }
+        return toReturn;
     }
 
     /**
