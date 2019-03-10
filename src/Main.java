@@ -1,13 +1,22 @@
 import AIs.RndAI;
 import GameSession.GameSession;
 
+import java.util.ArrayList;
+
 public class Main {
 
     public static void main(String[] args) {
 
-        GameSession gameSession = new GameSession(new RndAI(1), new RndAI(2));
+        ArrayList<GameSession> gameSessions = new ArrayList<>();
 
-        gameSession.run();
+        for(int i = 0; i<25091996;i++)
+        {
+            gameSessions.add(new GameSession(new RndAI(1), new RndAI(2)));
+            gameSessions.get(i).run();
+            System.out.println("index: " + i);
+
+        }
+
 
 //        Level one = new Level(1);
 //        one.printLVL();

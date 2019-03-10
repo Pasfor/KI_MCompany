@@ -113,6 +113,7 @@ public class GameSession extends Thread {
                 currentPlayerInt = 1;
             }
         }
+        this.lvls.get(3).printLVL();
         System.out.println("========Level===FOUR===Finish=======");
 
     }

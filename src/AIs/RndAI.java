@@ -93,7 +93,7 @@ public class RndAI extends Player {
 
     public boolean makeMove(Level lvl, boolean specialFieldHit) {
         int steps = drawMoveCard();
-        System.out.println("palyer: " + playerNumber + " steps: " + steps);
+       // System.out.println("palyer: " + playerNumber + " steps: " + steps);
 
         //check if possible without moving out of hole
         List<Mole> moveableMoles = moveableMolesNotInHole(lvl, steps, specialFieldHit);
@@ -118,7 +118,7 @@ public class RndAI extends Player {
         //deleting all on hole
         copyMoles.removeIf(m -> m.getPositionVlaue() == 8);
         //check if it is possible to move without getting out of hole
-        copyMoles.removeIf(m -> lvl.returnValidMoves(m.getPosition(), steps, false).isEmpty());
+        copyMoles.removeIf(m -> lvl.returnValidMoves(m.getPosition(), steps, specialFieldHit).isEmpty());
         return copyMoles;
     }
 
@@ -132,7 +132,7 @@ public class RndAI extends Player {
     private List<Mole> allMoveableMoles(Level lvl, int steps, boolean specialFieldHit) {
         List<Mole> copyMoles = new ArrayList<>(this.moles);
         //check if possible to move
-        copyMoles.removeIf(m -> lvl.returnValidMoves(m.getPosition(), steps, false).isEmpty());
+        copyMoles.removeIf(m -> lvl.returnValidMoves(m.getPosition(), steps, specialFieldHit).isEmpty());
         return copyMoles;
     }
 
@@ -148,12 +148,12 @@ public class RndAI extends Player {
             Mole moveMole = copyMoles.get((int) (Math.random() * copyMoles.size()));
             //get random possible move for this mole
             ArrayList<int[]> possibleMoves = lvl.returnValidMoves(moveMole.getPosition(), steps, specialFieldHit);
-            int[] move = possibleMoves.get((int) (Math.random() * possibleMoves.size()));
+                int[] move = possibleMoves.get((int) (Math.random() * possibleMoves.size()));
+
             //Move this Mole
             lvl.resetValue(moveMole.getPosition(), moveMole.getPositionVlaue());
             moveMole.setPosition(move, lvl.getField()[move[0]][move[1]]);
             lvl.setMole(move[0], move[1], this.playerNumber);
-            lvl.printLVL();
 
             if (moveMole.getPositionVlaue() == 9) {
                 return true;
