@@ -86,7 +86,7 @@ public class Controller {
             b.setOnAction(e -> {
                 switch (b.getId()) {
                     case "weak":
-                        this.gameSession = new GameSessionUI(new RealPlayer(1, this), new RndAI(2), this);
+                        this.gameSession = new GameSessionUI( new RndAI(2), this);
                         gameSession.setPhase();
                         disableButtons();
                         addActionListener();
@@ -112,7 +112,7 @@ public class Controller {
                 if (clickCounter == 1) {
                     fromTo[1] = circles.indexOf(circle);
                     gameSession.setFromTo(fromTo);
-                    gameSession.movePhase();
+                    gameSession.movePhaseDecider();
                     //reset values
                     clickCounter = 0;
                     labels.get(2).setText("");
@@ -170,6 +170,7 @@ public class Controller {
                         this.circles.get(circleIndex).setFill(Color.BLACK);
                         break;
                     case 9:
+                        this.circles.get(circleIndex).setFill(Color.WHITE);
                         break;
                 }
                 circleIndex++;
@@ -180,11 +181,9 @@ public class Controller {
             if (m.getPositionVlaue() == 8) {
                 int rowCounter = m.getPosition()[0];
                 int colCounter = m.getPosition()[1];
-
                 int index = 0;
                 for (int[] row : field) {
                     for (int value : row) {
-
                         //if col index is already 0 -> to remove -8 bug
                         if(m.getPosition()[1] == 0)
                         {
@@ -209,8 +208,6 @@ public class Controller {
                     }
                     rowCounter--;
                 }
-                System.out.print(" "+rowCounter);
-                System.out.print(" "+colCounter);
                 circles.get(index).setFill(Color.DARKBLUE);
             }
         }
