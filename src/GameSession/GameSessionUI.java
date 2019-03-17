@@ -80,10 +80,15 @@ public class GameSessionUI {
              changePlayer();
              controller.changePlayerLabel("AI´s turn");
              controller.setPlayer(this.currentPlayerInt);
-             controller.drawField(this.lvls.get(0).getField());
              controller.setPlayerMoles(players.get(0).getMoles());
              drawRealPlayerCard();
+
+             System.out.println("you");
+             this.lvls.get(0).printLVL();
+
+             controller.drawField(this.lvls.get(0).getField());
              movePhase();
+
          }
       }else
       {
@@ -97,6 +102,10 @@ public class GameSessionUI {
           controller.changePlayerLabel("Your turn");
           controller.changeCardLabel(""+this.realPlayerMoveValue);
           controller.setPlayer(this.currentPlayerInt);
+
+          System.out.println("AI");
+          this.lvls.get(0).printLVL();
+
           controller.drawField(this.lvls.get(0).getField());
           movePhase();
       }

@@ -72,17 +72,18 @@
             <Circle fill="#eaecee" layoutX="171.0" layoutY="314.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" />
             <Circle fill="#eaecee" layoutX="199.0" layoutY="313.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" />
             <Circle fill="#eaecee" layoutX="228.0" layoutY="313.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" />
-            <Label layoutX="14.0" layoutY="425.0" prefHeight="71.0" prefWidth="110.0" text="Player: ">
+            <Label layoutX="14.0" layoutY="425.0" prefHeight="71.0" prefWidth="110.0">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label layoutX="14.0" layoutY="491.0" prefHeight="71.0" prefWidth="110.0" text="Movecard:">
+            <Label layoutX="14.0" layoutY="491.0" prefHeight="71.0" prefWidth="110.0">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
             <Button fx:id="weak" layoutX="277.0" layoutY="445.0" mnemonicParsing="false" text="weak AI" />
+            <Label layoutX="136.0" layoutY="23.0" prefHeight="36.0" prefWidth="71.0" />
          </children>
       </Pane>
    </children>

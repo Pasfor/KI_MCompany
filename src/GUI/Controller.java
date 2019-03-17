@@ -108,13 +108,14 @@ public class Controller {
         for (Circle c : circles) {
             c.setOnMouseClicked(e -> {
                 Circle circle = (Circle) e.getSource();
+                labels.get(2).setText("Field: "+ circles.indexOf(circle));
                 if (clickCounter == 1) {
-
                     fromTo[1] = circles.indexOf(circle);
                     gameSession.setFromTo(fromTo);
                     gameSession.movePhase();
                     //reset values
                     clickCounter = 0;
+                    labels.get(2).setText("");
                     fromTo[0] = 100;
                     fromTo[1] = 100;
                     return;
@@ -157,7 +158,7 @@ public class Controller {
                         this.circles.get(circleIndex).setFill(Color.GREY);
                         break;
                     case 1:
-                        this.circles.get(circleIndex).setFill(Color.BLUE);
+                        this.circles.get(circleIndex).setFill(Color.CYAN);
                         break;
                     case 2:
                         this.circles.get(circleIndex).setFill(Color.RED);
@@ -179,22 +180,37 @@ public class Controller {
             if (m.getPositionVlaue() == 8) {
                 int rowCounter = m.getPosition()[0];
                 int colCounter = m.getPosition()[1];
+
                 int index = 0;
                 for (int[] row : field) {
                     for (int value : row) {
-                        index++;
-                        if (rowCounter == 0) {
-                            colCounter--;
-                            if (colCounter == 0) {
+
+                        //if col index is already 0 -> to remove -8 bug
+                        if(m.getPosition()[1] == 0)
+                        {
+                            if(rowCounter == 0)
+                            {
                                 break;
                             }
+                            index++;
+                        }else {
+                            index++;
+                            if (rowCounter == 0) {
+                                colCounter--;
+                                if (colCounter == 0) {
+                                    break;
+                                }
+                            }
                         }
+
                     }
                     if (rowCounter == 0) {
                         break;
                     }
                     rowCounter--;
                 }
+                System.out.print(" "+rowCounter);
+                System.out.print(" "+colCounter);
                 circles.get(index).setFill(Color.DARKBLUE);
             }
         }

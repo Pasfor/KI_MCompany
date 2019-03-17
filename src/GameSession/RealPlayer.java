@@ -1,11 +1,10 @@
 package GameSession;
 
 import GUI.Controller;
-import gamecomponents.Player;
 import gamecomponents.Level;
 import gamecomponents.Mole;
+import gamecomponents.Player;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -93,7 +92,7 @@ public class RealPlayer extends Player {
         //proof if own Mole
         if(lvl.getField()[from[0]][from[1]] != this.playerNumber)
         {
-            System.out.println("nicht dein mole");
+    //        System.out.println("nicht dein mole");
             return false;
         }
         //get this mole
@@ -107,21 +106,18 @@ public class RealPlayer extends Player {
         }
         if(moveMole == null)
         {
-            System.out.println("moveMole null!");
+     //       System.out.println("moveMole null!");
         }
         //proof for valid move
         //get possible moves
         ArrayList<int[]> possibleMoves = lvl.returnValidMoves(from,moveValue,specialField);
         if(possibleMoves == null)
         {
-            System.out.println("nicht möglich");
             return false;
         }
-        //proof if move contains possible move
-        System.out.println(to[0]+" "+to[1]+"\n");
         for(int[] possibleMove : possibleMoves)
         {
-            System.out.println(possibleMove[0]+" "+possibleMove[1]);
+
 
             if(possibleMove[0]==to[0] && possibleMove[1]==to[1])
             {
@@ -132,8 +128,6 @@ public class RealPlayer extends Player {
                 return true;
             }
         }
-        System.out.println("not contains in possible");
-        lvl.printLVL();
         return false;
     }
 
