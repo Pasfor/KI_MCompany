@@ -1,5 +1,6 @@
 import AIs.RndAI;
 import GameSession.GameSession;
+import gamecomponents.Level;
 
 import java.util.ArrayList;
 
@@ -7,31 +8,34 @@ public class Main {
 
     public static void main(String[] args) {
 
-        ArrayList<GameSession> gameSessions = new ArrayList<>();
+//        ArrayList<GameSession> gameSessions = new ArrayList<>();
+//
+//        for(int i = 0; i<25091996;i++)
+//        {
+//            gameSessions.add(new GameSession(new RndAI(1), new RndAI(2)));
+//            gameSessions.get(i).run();
+//            System.out.println("index: " + i);
+//
+//        }
 
-        for(int i = 0; i<25091996;i++)
+
+        Level one = new Level(1);
+        one.printLVL();
+
+        one.setMole(6,2,1);
+        one.printLVL();
+        ArrayList<int[]> validMoves = one.returnValidMoves(new int[]{6,2},1,false);
+
+        System.out.println(validMoves.size());
+        for(int[] move : validMoves)
         {
-            gameSessions.add(new GameSession(new RndAI(1), new RndAI(2)));
-            gameSessions.get(i).run();
-            System.out.println("index: " + i);
-
+            System.out.println(move[0]+", "+move[1]);
         }
 
+//
+//        one.printLVL();
+//
 
-//        Level one = new Level(1);
-//        one.printLVL();
-//
-//        one.setMole(5,4,1);
-//
-//        one.setMole(6,1,2);
-//
-//        one.setMole(0,3,2);
-//        one.setMole(4,5,2);
-//        one.setMole(2,2,2);
-//
-//        one.printLVL();
-//
-//        one.returnValidMoves(new int[]{5,4},2);
 
         // Level LVLtwo = new Level(2);
 //        LVLtwo.printLVL();

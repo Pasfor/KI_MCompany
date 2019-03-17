@@ -9,7 +9,7 @@ public abstract class Player {
 
     public abstract int getAmountOfMoles();
 
-    public abstract void setMole(Level lvl);
+    public abstract boolean setMole(Level lvl, int circle);
 
     public abstract int drawMoveCard();
 

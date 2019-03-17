@@ -1,7 +1,9 @@
 package GUI;
 
+import GameSession.GameSessionUI;
 import com.sun.javafx.scene.traversal.ParentTraversalEngine;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,10 +16,13 @@ import javafx.stage.Stage;
 
 
 public class UImain extends Application {
-    public static ObservableList<Node> fields;
+    public  ObservableList<Node> fields;
+    public  Stage primaryStage;
+    private Controller controller;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        primaryStage = primaryStage;
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("sample.fxml"));
         AnchorPane pane = (AnchorPane) loader.load();
@@ -35,15 +40,15 @@ public class UImain extends Application {
         primaryStage.setScene(scene);
         primaryStage.setFullScreen(false);
         primaryStage.show();
+
+        this.controller = new Controller(pane);
+        controller.initStage();
     }
 
-    public static void changeFieldColor(int row, int col, Color color) {
-        Circle c = (Circle) fields.get(0);
-        c.setFill(javafx.scene.paint.Color.RED);
 
-    }
 
     public static void main(String[] args) {
         launch(args);
+
     }
 }

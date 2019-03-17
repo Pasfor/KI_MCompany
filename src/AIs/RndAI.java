@@ -38,7 +38,7 @@ public class RndAI extends Player {
     }
 
     @Override
-    public void setMole(Level lvl) {
+    public boolean setMole(Level lvl, int dummy) {
 
         int[][] field = lvl.getField();
         int row = (int) (Math.random() * (field.length - 1));
@@ -51,7 +51,10 @@ public class RndAI extends Player {
         moles.add(new Mole(this.playerNumber, new int[]{row, col}, lvl.getField()[row][col]));
         //setting onto field
         lvl.setMole(row, col, playerNumber);
+        return true;
     }
+
+
 
     @Override
     public int drawMoveCard() {

@@ -31,7 +31,7 @@ public class GameSession extends Thread {
 
         for (int i = 0; i < 20; i++) {
 
-            players.get(currentPlayerInt-1).setMole(this.lvls.get(0));
+            players.get(currentPlayerInt-1).setMole(this.lvls.get(0),0);
             //change player
             if (currentPlayerInt == 1) {
                 currentPlayerInt = 2;
@@ -115,6 +115,5 @@ public class GameSession extends Thread {
         }
         this.lvls.get(3).printLVL();
         System.out.println("========Level===FOUR===Finish=======");
-
     }
 }
