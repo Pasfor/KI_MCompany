@@ -110,17 +110,13 @@ public class RealPlayer extends Player {
         {
      //       System.out.println("moveMole null!");
         }
-        //proof for valid move
-        //get possible moves
-        ArrayList<int[]> possibleMoves = lvl.returnValidMoves(from,moveValue,specialField);
+        ArrayList<int[]> possibleMoves = lvl.returnValidMoves(from,moveValue,specialField,moveMole.getPositionVlaue());
         if(possibleMoves == null)
         {
             return false;
         }
         for(int[] possibleMove : possibleMoves)
         {
-
-
             if(possibleMove[0]==to[0] && possibleMove[1]==to[1])
             {
                 lvl.resetValue(moveMole.getPosition(), moveMole.getPositionVlaue());
@@ -131,7 +127,6 @@ public class RealPlayer extends Player {
                     gameSession.changePlayer();
                 }
                 lvl.setMole(to[0], to[1], this.playerNumber);
-                lvl.printLVL();
                 return true;
             }
         }

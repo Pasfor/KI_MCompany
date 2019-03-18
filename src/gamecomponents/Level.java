@@ -336,7 +336,7 @@ public class Level {
      * proof if collision with other Mole up and down
      * validate and test methods : checkCollision(),validateMovesWithoutCollision()
      */
-    public ArrayList<int[]> returnValidMoves(int[] isPosition, int steps, boolean specialFieldMove) {
+    public ArrayList<int[]> returnValidMoves(int[] isPosition, int steps, boolean specialFieldMove,int molePosValue) {
 
         int aboveHalfIndex = 0;
         if (isPosition[0] < 4) {
@@ -447,6 +447,10 @@ public class Level {
 
         if (specialFieldMove) {
             toReturn.removeIf(m -> m[2] == 9);
+        }
+        if(molePosValue == 6)
+        {
+            toReturn.removeIf(m -> m[2] == 8);
         }
         return toReturn;
     }
@@ -644,7 +648,7 @@ public class Level {
                 for (int i = 0; i <= crossMidIndex; i++) {
                     int positionValue = this.field[move[0] - i][move[1] + i];
                     if (positionValue == 1 || positionValue == 2) {
-                       System.out.println("colision (" + (move[0] - i) + ", " + +(move[1] + i) + ") " + positionValue);
+//                       System.out.println("colision (" + (move[0] - i) + ", " + +(move[1] + i) + ") " + positionValue);
                         return false;
                     }
                     //for last lvl
@@ -793,7 +797,6 @@ public class Level {
                         if (!proofValidLastMove(pos, positionValue)) {
                             return false;
                         }
-
                     }
                 }
                 for (int i = 1; i <= underMidIndex; i++) {

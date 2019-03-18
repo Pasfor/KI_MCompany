@@ -21,7 +21,7 @@ public class GameSessionUI {
     public GameSessionUI(Player ai, Controller controller) {
         this.controller = controller;
         this.players = new ArrayList<>();
-        this.players.add(new RealPlayer(1,controller,this));
+        this.players.add(new RealPlayer(1, controller, this));
         this.players.add(ai);
 
         //create lvls
@@ -71,28 +71,32 @@ public class GameSessionUI {
         }
 
     }
-    /**decides after move-klick in which lvl the moving phase is**/
-    public void movePhaseDecider()
-    {
-        if(!this.lvls.get(0).levelFinish()){
+
+    /**
+     * decides after move-klick in which lvl the moving phase is
+     **/
+    public void movePhaseDecider() {
+        if (!this.lvls.get(0).levelFinish()) {
             movePhaseOne();
             return;
         }
-        if(!this.lvls.get(1).levelFinish()){
+        if (!this.lvls.get(1).levelFinish()) {
             movePhaseTwo();
             return;
         }
-        if(!this.lvls.get(2).levelFinish()){
+        if (!this.lvls.get(2).levelFinish()) {
             movePhaseThree();
             return;
         }
-        if(!this.lvls.get(3).levelFinish()){
+        if (!this.lvls.get(3).levelFinish()) {
             movePhaseFour();
             return;
         }
     }
 
-    /**======lvl-one========**/
+    /**
+     * ======lvl-one========
+     **/
     public void movePhaseOne() {
         if (this.lvls.get(0).levelFinish()) {
             players.get(0).initMolesToNewLvl(this.lvls.get(1));
@@ -110,15 +114,12 @@ public class GameSessionUI {
                 controller.setPlayerMoles(players.get(0).getMoles());
                 drawRealPlayerCard();
 
-                System.out.println("you");
-                this.lvls.get(0).printLVL();
-
                 controller.drawField(this.lvls.get(0).getField());
                 movePhaseOne();
 
             }
         } else {
-            System.out.println("try to find move");
+
             if (players.get(currentPlayerInt - 1).makeMove(this.lvls.get(0), false)) {
                 //special field hit
                 players.get(currentPlayerInt - 1).makeMove(this.lvls.get(0), true);
@@ -128,15 +129,16 @@ public class GameSessionUI {
             controller.changeCardLabel("" + this.realPlayerMoveValue);
             controller.setPlayer(this.currentPlayerInt);
 
-            System.out.println("AI");
-            this.lvls.get(0).printLVL();
+
 
             controller.drawField(this.lvls.get(0).getField());
             movePhaseOne();
         }
     }
 
-  /**======lvl-two========**/
+    /**
+     * ======lvl-two========
+     **/
     private void movePhaseTwo() {
         if (this.lvls.get(1).levelFinish()) {
             players.get(0).initMolesToNewLvl(this.lvls.get(2));
@@ -148,7 +150,7 @@ public class GameSessionUI {
         //palyingphase
         if (currentPlayerInt == 1) {
             controller.changePlayerLabel("Your turn");
-            controller.changeCardLabel(""+this.realPlayerMoveValue);
+            controller.changeCardLabel("" + this.realPlayerMoveValue);
             if (players.get(currentPlayerInt - 1).makeMove(this.lvls.get(1), false)) {
                 changePlayer();
 
@@ -156,8 +158,6 @@ public class GameSessionUI {
                 controller.setPlayerMoles(players.get(0).getMoles());
                 drawRealPlayerCard();
 
-                System.out.println("you");
-                this.lvls.get(1).printLVL();
 
                 controller.drawField(this.lvls.get(1).getField());
                 movePhaseTwo();
@@ -165,7 +165,7 @@ public class GameSessionUI {
             }
         } else {
             controller.changePlayerLabel("AI´s turn");
-            System.out.println("try to find move");
+
             if (players.get(currentPlayerInt - 1).makeMove(this.lvls.get(1), false)) {
                 //special field hit
                 players.get(currentPlayerInt - 1).makeMove(this.lvls.get(1), true);
@@ -175,14 +175,16 @@ public class GameSessionUI {
             controller.changeCardLabel("" + this.realPlayerMoveValue);
             controller.setPlayer(this.currentPlayerInt);
 
-            System.out.println("AI");
-            this.lvls.get(1).printLVL();
+
 
             controller.drawField(this.lvls.get(1).getField());
             movePhaseTwo();
         }
     }
-    /**======lvl-three========**/
+
+    /**
+     * ======lvl-three========
+     **/
     private void movePhaseThree() {
         if (this.lvls.get(2).levelFinish()) {
             players.get(0).initMolesToNewLvl(this.lvls.get(3));
@@ -194,7 +196,7 @@ public class GameSessionUI {
         //palyingphase
         if (currentPlayerInt == 1) {
             controller.changePlayerLabel("Your turn");
-            controller.changeCardLabel(""+this.realPlayerMoveValue);
+            controller.changeCardLabel("" + this.realPlayerMoveValue);
             if (players.get(currentPlayerInt - 1).makeMove(this.lvls.get(2), false)) {
                 changePlayer();
 
@@ -202,8 +204,6 @@ public class GameSessionUI {
                 controller.setPlayerMoles(players.get(0).getMoles());
                 drawRealPlayerCard();
 
-                System.out.println("you");
-                this.lvls.get(2).printLVL();
 
                 controller.drawField(this.lvls.get(2).getField());
                 movePhaseThree();
@@ -211,7 +211,6 @@ public class GameSessionUI {
             }
         } else {
             controller.changePlayerLabel("AI´s turn");
-            System.out.println("try to find move");
             if (players.get(currentPlayerInt - 1).makeMove(this.lvls.get(2), false)) {
                 //special field hit
                 players.get(currentPlayerInt - 1).makeMove(this.lvls.get(2), true);
@@ -219,16 +218,16 @@ public class GameSessionUI {
             changePlayer();
             controller.setPlayer(this.currentPlayerInt);
 
-            System.out.println("AI");
-            this.lvls.get(2).printLVL();
-
             controller.drawField(this.lvls.get(2).getField());
             movePhaseThree();
         }
     }
-    /**======lvl-four========**/
+
+    /**
+     * ======lvl-four========
+     **/
     private void movePhaseFour() {
-        if (this.lvls.get(1).levelFinish()) {
+        if (this.lvls.get(3).levelFinish()) {
             players.get(0).initMolesToNewLvl(this.lvls.get(3));
             players.get(1).initMolesToNewLvl(this.lvls.get(3));
             /**
@@ -240,24 +239,19 @@ public class GameSessionUI {
         //palyingphase
         if (currentPlayerInt == 1) {
             controller.changePlayerLabel("Your turn");
-            controller.changeCardLabel(""+this.realPlayerMoveValue);
+            controller.changeCardLabel("" + this.realPlayerMoveValue);
             if (players.get(currentPlayerInt - 1).makeMove(this.lvls.get(3), false)) {
                 changePlayer();
 
                 controller.setPlayer(this.currentPlayerInt);
                 controller.setPlayerMoles(players.get(0).getMoles());
                 drawRealPlayerCard();
-
-                System.out.println("you");
-                this.lvls.get(3).printLVL();
-
                 controller.drawField(this.lvls.get(3).getField());
                 movePhaseFour();
 
             }
         } else {
             controller.changePlayerLabel("AI´s turn");
-            System.out.println("try to find move");
             if (players.get(currentPlayerInt - 1).makeMove(this.lvls.get(3), false)) {
                 //special field hit
                 players.get(currentPlayerInt - 1).makeMove(this.lvls.get(3), true);
@@ -265,15 +259,15 @@ public class GameSessionUI {
             changePlayer();
             controller.setPlayer(this.currentPlayerInt);
 
-            System.out.println("AI");
-            this.lvls.get(3).printLVL();
 
             controller.drawField(this.lvls.get(3).getField());
             movePhaseFour();
         }
     }
 
-    /** end moving phase **/
+    /**
+     * end moving phase
+     **/
 
     public void changePlayer() {
         if (currentPlayerInt == 1) {
