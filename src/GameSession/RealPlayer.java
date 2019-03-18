@@ -12,7 +12,7 @@ public class RealPlayer extends Player {
     private int playerNumber;
     private ArrayList<Integer> moveCards;
     private ArrayList<Mole> moles;
-    private Controller controler;
+    private Controller controller;
     private int[] fromTo = new int[]{100,100};
     private int moveValue;
     private GameSessionUI gameSession;
@@ -22,7 +22,7 @@ public class RealPlayer extends Player {
         this.moveCards = new ArrayList<>();
         this.moles = new ArrayList<>();
         initMoveCards();
-        this.controler = controller;
+        this.controller = controller;
         this.gameSession = gameSession;
     }
 
@@ -127,7 +127,7 @@ public class RealPlayer extends Player {
                 moveMole.setPosition(to, lvl.getField()[to[0]][to[1]]);
                 if(lvl.getField()[to[0]][to[1]] == 9)
                 {
-                    controler.changePlayerLabel("Special Field!");
+                    controller.changePlayerLabel("Special Field!");
                     gameSession.changePlayer();
                 }
                 lvl.setMole(to[0], to[1], this.playerNumber);
