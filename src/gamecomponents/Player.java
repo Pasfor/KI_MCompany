@@ -19,6 +19,6 @@ public abstract class Player {
 
     public abstract boolean makeMove(Level lvl,boolean specialFieldHit) ;
 
-    public abstract void initMolesToNewLvl(Level lvl);
+    public abstract boolean initMolesToNewLvl(Level lvl);
 }
 

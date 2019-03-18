@@ -78,7 +78,7 @@ public class RndAI extends Player {
     }
 
     @Override
-    public void initMolesToNewLvl(Level lvl) {
+    public boolean initMolesToNewLvl(Level lvl) {
         //remove Moles not in hole
         for (Iterator<Mole> iterator = this.moles.iterator(); iterator.hasNext(); ) {
             Mole m = iterator.next();
@@ -86,12 +86,17 @@ public class RndAI extends Player {
                 iterator.remove();
             }
         }
+        if(this.moles.isEmpty())
+        {
+            return false;
+        }
         //set Moles on new lvl
         for (Mole m : this.moles) {
             //get new pos-value
             m.setPosition(m.getPosition(), lvl.getField()[m.getPosition()[0]][m.getPosition()[1]]);
             lvl.setMole(m.getPosition()[0], m.getPosition()[1], this.playerNumber);
         }
+        return true;
     }
 
     public boolean makeMove(Level lvl, boolean specialFieldHit) {
