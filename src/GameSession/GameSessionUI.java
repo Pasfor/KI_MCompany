@@ -193,9 +193,11 @@ public class GameSessionUI {
 
         //palyingphase
         if (currentPlayerInt == 1) {
+            controller.changePlayerLabel("Your turn");
+            controller.changeCardLabel(""+this.realPlayerMoveValue);
             if (players.get(currentPlayerInt - 1).makeMove(this.lvls.get(2), false)) {
                 changePlayer();
-                controller.changePlayerLabel("AI´s turn");
+
                 controller.setPlayer(this.currentPlayerInt);
                 controller.setPlayerMoles(players.get(0).getMoles());
                 drawRealPlayerCard();
@@ -208,14 +210,13 @@ public class GameSessionUI {
 
             }
         } else {
+            controller.changePlayerLabel("AI´s turn");
             System.out.println("try to find move");
             if (players.get(currentPlayerInt - 1).makeMove(this.lvls.get(2), false)) {
                 //special field hit
                 players.get(currentPlayerInt - 1).makeMove(this.lvls.get(2), true);
             }
             changePlayer();
-            controller.changePlayerLabel("Your turn");
-            controller.changeCardLabel("" + this.realPlayerMoveValue);
             controller.setPlayer(this.currentPlayerInt);
 
             System.out.println("AI");
@@ -238,9 +239,11 @@ public class GameSessionUI {
 
         //palyingphase
         if (currentPlayerInt == 1) {
+            controller.changePlayerLabel("Your turn");
+            controller.changeCardLabel(""+this.realPlayerMoveValue);
             if (players.get(currentPlayerInt - 1).makeMove(this.lvls.get(3), false)) {
                 changePlayer();
-                controller.changePlayerLabel("AI´s turn");
+
                 controller.setPlayer(this.currentPlayerInt);
                 controller.setPlayerMoles(players.get(0).getMoles());
                 drawRealPlayerCard();
@@ -253,14 +256,13 @@ public class GameSessionUI {
 
             }
         } else {
+            controller.changePlayerLabel("AI´s turn");
             System.out.println("try to find move");
             if (players.get(currentPlayerInt - 1).makeMove(this.lvls.get(3), false)) {
                 //special field hit
                 players.get(currentPlayerInt - 1).makeMove(this.lvls.get(3), true);
             }
             changePlayer();
-            controller.changePlayerLabel("Your turn");
-            controller.changeCardLabel("" + this.realPlayerMoveValue);
             controller.setPlayer(this.currentPlayerInt);
 
             System.out.println("AI");
