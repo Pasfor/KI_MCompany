@@ -91,14 +91,21 @@ public class Controller {
                         disableButtons();
                         addActionListener();
                         break;
-                }
 
+                    case "next":
+                        this.gameSession.changePlayer();
+                        this.gameSession.movePhaseDecider();
+                }
             });
         }
     }
 
     private void disableButtons() {
         for (Button b : buttons) {
+            if(b.getId().equals("next"))
+            {
+                continue;
+            }
             b.setDisable(true);
         }
     }
