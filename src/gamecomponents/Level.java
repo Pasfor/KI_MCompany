@@ -18,7 +18,6 @@ public class Level {
     private ArrayList<int[][]> notValidWays = new ArrayList<>();
     private ArrayList<int[]> chosenNotValidWays = new ArrayList<>();
 
-
     public Level(int lvl) {
         this.lvl = lvl;
         this.field = new int[][]{
@@ -828,7 +827,6 @@ public class Level {
     private boolean proofValidLastMove(int[] pos, int positionValue) {
    //     System.out.println("to check:" + pos[0] + "," + pos[1]);
      //   System.out.println(positionValue);
-        printLVL();
         if (positionValue == 6) {
             return false;
         }

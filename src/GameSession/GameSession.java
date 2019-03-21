@@ -25,7 +25,6 @@ public class GameSession extends Thread {
         currentPlayerInt = ((int) (Math.random() * ((2 - 1) + 1)) + 1);
     }
 
-
     public void run() {
         //setting Moles
 
@@ -39,10 +38,15 @@ public class GameSession extends Thread {
                 currentPlayerInt = 1;
             }
         }
-        System.out.println("=====start=Game======");
+       // System.out.println("=====start=Game======");
         //run first lvl
         while(!this.lvls.get(0).levelFinish())
         {
+            if(!proofMoleLeft())
+            {
+                returnWinner();
+                break;
+            }
             if(players.get(currentPlayerInt-1).makeMove(this.lvls.get(0),false))
             {
                 //special field hit
@@ -55,7 +59,7 @@ public class GameSession extends Thread {
                 currentPlayerInt = 1;
             }
         }
-        System.out.println("========Level===ONE===Finish=======");
+      //  System.out.println("========Level===ONE===Finish=======");
         //run second lvl
         //init Moles
         players.get(0).initMolesToNewLvl(this.lvls.get(1));
@@ -63,6 +67,11 @@ public class GameSession extends Thread {
 
         while(!this.lvls.get(1).levelFinish())
         {
+            if(!proofMoleLeft())
+            {
+                returnWinner();
+                break;
+            }
             if(players.get(currentPlayerInt-1).makeMove(this.lvls.get(1),false))
             {
                 //special field hit
@@ -75,13 +84,18 @@ public class GameSession extends Thread {
                 currentPlayerInt = 1;
             }
         }
-        System.out.println("========Level===TWO===Finish=======");
+       // System.out.println("========Level===TWO===Finish=======");
 
         players.get(0).initMolesToNewLvl(this.lvls.get(2));
         players.get(1).initMolesToNewLvl(this.lvls.get(2));
 
         while(!this.lvls.get(2).levelFinish())
         {
+            if(!proofMoleLeft())
+            {
+                returnWinner();
+                break;
+            }
             if(players.get(currentPlayerInt-1).makeMove(this.lvls.get(2),false))
             {
                 //special field hit
@@ -94,13 +108,19 @@ public class GameSession extends Thread {
                 currentPlayerInt = 1;
             }
         }
-        System.out.println("========Level===THREE===Finish=======");
+        //System.out.println("========Level===THREE===Finish=======");
 
         players.get(0).initMolesToNewLvl(this.lvls.get(3));
         players.get(1).initMolesToNewLvl(this.lvls.get(3));
 
         while(!this.lvls.get(3).levelFinish())
         {
+
+            if(!proofMoleLeft())
+            {
+                returnWinner();
+                break;
+            }
             if(players.get(currentPlayerInt-1).makeMove(this.lvls.get(3),false))
             {
                 //special field hit
@@ -113,7 +133,36 @@ public class GameSession extends Thread {
                 currentPlayerInt = 1;
             }
         }
-        this.lvls.get(3).printLVL();
-        System.out.println("========Level===FOUR===Finish=======");
+        if(this.lvls.get(3).getField()[4][4]==1)
+        {
+            System.out.println("player one wins");
+        }
+        if(this.lvls.get(3).getField()[4][4]==2)
+        {
+            System.out.println("player two wins");
+        }
+
+        //System.out.println("========Level===FOUR===Finish=======");
+    }
+
+    private void returnWinner() {
+        if(players.get(0).getMoles().isEmpty())
+        {
+            System.out.println("player two wins");
+        }
+        if(players.get(1).getMoles().isEmpty())
+        {
+            System.out.println("player one wins");
+        }
+    }
+
+    public boolean proofMoleLeft()
+    {
+        if(players.get(0).getMoles().isEmpty() ||players.get(0).getMoles().isEmpty())
+        {
+            System.out.println("no Moles left");
+            return false;
+        }
+        return true;
     }
 }

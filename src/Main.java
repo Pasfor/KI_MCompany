@@ -9,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        RealPlayer p = new RealPlayer(1,null,null);
+        //RealPlayer p = new RealPlayer(1,null,null);
 
 
 //        for(int i = 0;i<10;i++) {
@@ -18,15 +18,15 @@ public class Main {
 //            }
 //            System.out.println("======================================");
 //        }
-//        ArrayList<GameSession> gameSessions = new ArrayList<>();
+        ArrayList<GameSession> gameSessions = new ArrayList<>();
 //
-//        for(int i = 0; i<25091996;i++)
-//        {
-//            gameSessions.add(new GameSession(new RndAI(1), new RndAI(2)));
-//            gameSessions.get(i).run();
-//            System.out.println("index: " + i);
-//
-//        }
+        for(int i = 0; i<30;i++)
+        {
+            gameSessions.add(new GameSession(new RndAI(1), new RndAI(2)));
+            gameSessions.get(i).run();
+            System.out.println("index: " + i);
+
+        }
 
 //        Level one = new Level(1);
 //        one.printLVL();

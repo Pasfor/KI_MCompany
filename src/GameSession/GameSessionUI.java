@@ -101,6 +101,16 @@ public class GameSessionUI {
         if (this.lvls.get(0).levelFinish()) {
             players.get(0).initMolesToNewLvl(this.lvls.get(1));
             players.get(1).initMolesToNewLvl(this.lvls.get(1));
+            if(players.get(0).getMoles().isEmpty())
+            {
+                controller.changePlayerLabel("Two wins!");
+                return;
+            }
+            if(players.get(1).getMoles().isEmpty())
+            {
+                controller.changePlayerLabel("One Wins!");
+                return;
+            }
             movePhaseTwo();
             return;
         }
@@ -143,6 +153,16 @@ public class GameSessionUI {
         if (this.lvls.get(1).levelFinish()) {
             players.get(0).initMolesToNewLvl(this.lvls.get(2));
             players.get(1).initMolesToNewLvl(this.lvls.get(2));
+            if(players.get(0).getMoles().isEmpty())
+            {
+                controller.changePlayerLabel("Two wins!");
+                return;
+            }
+            if(players.get(1).getMoles().isEmpty())
+            {
+                controller.changePlayerLabel("One Wins!");
+                return;
+            }
             movePhaseThree();
             return;
         }
@@ -157,7 +177,6 @@ public class GameSessionUI {
                 controller.setPlayer(this.currentPlayerInt);
                 controller.setPlayerMoles(players.get(0).getMoles());
                 drawRealPlayerCard();
-
 
                 controller.drawField(this.lvls.get(1).getField());
                 movePhaseTwo();
@@ -189,6 +208,17 @@ public class GameSessionUI {
         if (this.lvls.get(2).levelFinish()) {
             players.get(0).initMolesToNewLvl(this.lvls.get(3));
             players.get(1).initMolesToNewLvl(this.lvls.get(3));
+            if(players.get(0).getMoles().isEmpty())
+            {
+                controller.changePlayerLabel("Two wins!");
+                return;
+            }
+            if(players.get(1).getMoles().isEmpty())
+            {
+                controller.changePlayerLabel("One Wins!");
+                return;
+            }
+
             movePhaseFour();
             return;
         }
@@ -228,14 +258,16 @@ public class GameSessionUI {
      **/
     private void movePhaseFour() {
         if (this.lvls.get(3).levelFinish()) {
-            players.get(0).initMolesToNewLvl(this.lvls.get(3));
-            players.get(1).initMolesToNewLvl(this.lvls.get(3));
-            /**
-             * winning scrren todo
-             */
+           if(this.lvls.get(3).getField()[4][4] == 1)
+           {
+               controller.changePlayerLabel("One wins!");
+           }
+            if(this.lvls.get(3).getField()[4][4] == 2)
+            {
+                controller.changePlayerLabel("Two wins!");
+            }
             return;
         }
-
         //palyingphase
         if (currentPlayerInt == 1) {
             controller.changePlayerLabel("Your turn");
