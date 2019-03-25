@@ -39,21 +39,28 @@ public class RndAI extends Player {
 
     @Override
     public boolean setMole(Level lvl, int dummy) {
-
-        int[][] field = lvl.getField();
-        int row = (int) (Math.random() * (field.length - 1));
-        int col = (int) (Math.random() * (field[row].length - 1));
-        while (field[row][col] != 0) {
-            row = (int) (Math.random() * (field.length - 1));
-            col = (int) (Math.random() * (field[row].length - 1));
-        }
-
-        moles.add(new Mole(this.playerNumber, new int[]{row, col}, lvl.getField()[row][col]));
+        //=========SET_AI=======
+        int[] set = SettingAI.setNextMole(lvl);
+        //System.out.println("set: "+set[0]+" , "+set[1]);
+        moles.add(new Mole(this.playerNumber, set, lvl.getField()[set[0]][set[1]]));
         //setting onto field
-        lvl.setMole(row, col, playerNumber);
+
+        lvl.setMole(set[0], set[1], playerNumber);
+        //=====================
+
+//        int[][] field = lvl.getField();
+//        int row = (int) (Math.random() * (field.length - 1));
+//        int col = (int) (Math.random() * (field[row].length - 1));
+//        while (field[row][col] != 0) {
+//            row = (int) (Math.random() * (field.length - 1));
+//            col = (int) (Math.random() * (field[row].length - 1));
+//        }
+//
+//        moles.add(new Mole(this.playerNumber, new int[]{row, col}, lvl.getField()[row][col]));
+//        //setting onto field
+//        lvl.setMole(row, col, playerNumber);
         return true;
     }
-
 
 
     @Override
@@ -86,8 +93,7 @@ public class RndAI extends Player {
                 iterator.remove();
             }
         }
-        if(this.moles.isEmpty())
-        {
+        if (this.moles.isEmpty()) {
             return false;
         }
         //set Moles on new lvl
@@ -101,7 +107,7 @@ public class RndAI extends Player {
 
     public boolean makeMove(Level lvl, boolean specialFieldHit) {
         int steps = drawMoveCard();
-       // System.out.println("palyer: " + playerNumber + " steps: " + steps);
+        // System.out.println("palyer: " + playerNumber + " steps: " + steps);
 
         //check if possible without moving out of hole
         List<Mole> moveableMoles = moveableMolesNotInHole(lvl, steps, specialFieldHit);
@@ -126,7 +132,7 @@ public class RndAI extends Player {
         //deleting all on hole
         copyMoles.removeIf(m -> m.getPositionVlaue() == 8);
         //check if it is possible to move without getting out of hole
-        copyMoles.removeIf(m -> lvl.returnValidMoves(m.getPosition(), steps, specialFieldHit,m.getPositionVlaue()).isEmpty());
+        copyMoles.removeIf(m -> lvl.returnValidMoves(m.getPosition(), steps, specialFieldHit, m.getPositionVlaue()).isEmpty());
         return copyMoles;
     }
 
@@ -140,7 +146,7 @@ public class RndAI extends Player {
     private List<Mole> allMoveableMoles(Level lvl, int steps, boolean specialFieldHit) {
         List<Mole> copyMoles = new ArrayList<>(this.moles);
         //check if possible to move
-        copyMoles.removeIf(m -> lvl.returnValidMoves(m.getPosition(), steps, specialFieldHit,m.getPositionVlaue()).isEmpty());
+        copyMoles.removeIf(m -> lvl.returnValidMoves(m.getPosition(), steps, specialFieldHit, m.getPositionVlaue()).isEmpty());
         return copyMoles;
     }
 
@@ -155,8 +161,8 @@ public class RndAI extends Player {
         if (!copyMoles.isEmpty()) {
             Mole moveMole = copyMoles.get((int) (Math.random() * copyMoles.size()));
             //get random possible move for this mole
-            ArrayList<int[]> possibleMoves = lvl.returnValidMoves(moveMole.getPosition(), steps, specialFieldHit,moveMole.getPositionVlaue());
-                int[] move = possibleMoves.get((int) (Math.random() * possibleMoves.size()));
+            ArrayList<int[]> possibleMoves = lvl.returnValidMoves(moveMole.getPosition(), steps, specialFieldHit, moveMole.getPositionVlaue());
+            int[] move = possibleMoves.get((int) (Math.random() * possibleMoves.size()));
 
             //Move this Mole
             lvl.resetValue(moveMole.getPosition(), moveMole.getPositionVlaue());
