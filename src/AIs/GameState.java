@@ -31,6 +31,11 @@ public class GameState {
     {
         return new int[]{this.won,this.loss};
     }
+    public void addWinLoss(int[] toAdd)
+    {
+        this.won = this.won+toAdd[0];
+        this.loss = this.loss+toAdd[1];
+    }
 
     public void expand()
     {
@@ -87,7 +92,7 @@ public class GameState {
        {
            this.won++;
        }
-       if(value<0)
+       if(value<=0)
        {
            loss++;
        }

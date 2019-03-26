@@ -130,7 +130,7 @@ public class McAI extends Player {
         for(GameState gs : root.getChilds())
         {
             gs.simulate();
-
+            root.addWinLoss(gs.getWinLoss());
         }
     }
 }
