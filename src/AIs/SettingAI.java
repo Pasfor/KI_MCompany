@@ -1,7 +1,6 @@
 package AIs;
 
 import gamecomponents.Level;
-import gamecomponents.Player;
 
 import java.util.ArrayList;
 

@@ -22,6 +22,7 @@ public class GameSessionUI {
         this.controller = controller;
         this.players = new ArrayList<>();
         this.players.add(new RealPlayer(1, controller, this));
+        ai.setEnemy(this.players.get(0));
         this.players.add(ai);
 
         //create lvls

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public abstract class Player {
 
+public Player enemy;
 
     public abstract void initMoveCards();
 
@@ -20,5 +21,10 @@ public abstract class Player {
     public abstract boolean makeMove(Level lvl,boolean specialFieldHit) ;
 
     public abstract boolean initMolesToNewLvl(Level lvl);
+
+    public abstract ArrayList<Integer> getMoveCards();
+    public void setEnemy(Player e){
+        this.enemy = e;
+    }
 }
 

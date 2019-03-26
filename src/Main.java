@@ -1,7 +1,10 @@
 import AIs.RndAI;
+import AIs.SimulatingPlayer;
 import GUI.Controller;
 import GameSession.*;
 import gamecomponents.Level;
+import gamecomponents.Player;
+import sun.util.resources.cldr.vai.LocaleNames_vai_Latn;
 
 import java.util.ArrayList;
 
@@ -9,24 +12,23 @@ public class Main {
 
     public static void main(String[] args) {
 
+
         //RealPlayer p = new RealPlayer(1,null,null);
-
-
 //        for(int i = 0;i<10;i++) {
 //            for (int j = 0; j < 6; j++) {
 //                System.out.println(p.drawMoveCard());
 //            }
 //            System.out.println("======================================");
 //        }
-        ArrayList<GameSession> gameSessions = new ArrayList<>();
-//
-        for(int i = 0; i<30;i++)
-        {
-            gameSessions.add(new GameSession(new RndAI(1), new RndAI(2)));
-            gameSessions.get(i).run();
-            System.out.println("index: " + i);
+//        ArrayList<GameSession> gameSessions = new ArrayList<>();
 
-        }
+//        for(int i = 0; i<30;i++)
+//        {
+//            gameSessions.add(new GameSession(new RndAI(1), new RndAI(2)));
+//            gameSessions.get(i).run();
+//            System.out.println("index: " + i);
+//
+//        }
 
 //        Level one = new Level(1);
 //        one.printLVL();

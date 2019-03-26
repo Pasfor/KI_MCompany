@@ -205,4 +205,8 @@ public class RealPlayer extends Player {
         }
         return true;
     }
+    public ArrayList<Integer> getMoveCards()
+    {
+        return this.moveCards;
+    }
 }

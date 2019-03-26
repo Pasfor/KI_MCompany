@@ -5,109 +5,31 @@ import gamecomponents.Mole;
 import gamecomponents.Player;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-public class RndAI extends Player {
+public class SimulatingPlayer extends Player {
 
     private int playerNumber;
     private ArrayList<Integer> moveCards;
     private ArrayList<Mole> moles;
 
-    public RndAI(int pN) {
-        this.playerNumber = pN;
-        this.moveCards = new ArrayList<>();
+    public SimulatingPlayer(Player player){
+       this.playerNumber = player.getPlayerNumber();
         this.moles = new ArrayList<>();
-        initMoveCards();
-    }
-
-    @Override
-    public void initMoveCards() {
-        this.moveCards = new ArrayList<>();
-        this.moveCards.add(1);
-        this.moveCards.add(2);
-        this.moveCards.add(2);
-        this.moveCards.add(3);
-        this.moveCards.add(3);
-        this.moveCards.add(4);
-    }
-
-    @Override
-    public int getAmountOfMoles() {
-        return moles.size();
-    }
-
-    @Override
-    public boolean setMole(Level lvl, int dummy) {
-        //=========SET_AI=======
-        int[] set = SettingAI.setNextMole(lvl);
-        //System.out.println("set: "+set[0]+" , "+set[1]);
-        moles.add(new Mole(this.playerNumber, set, lvl.getField()[set[0]][set[1]]));
-        //setting onto field
-
-        lvl.setMole(set[0], set[1], playerNumber);
-        //=====================
-
-//        int[][] field = lvl.getField();
-//        int row = (int) (Math.random() * (field.length - 1));
-//        int col = (int) (Math.random() * (field[row].length - 1));
-//        while (field[row][col] != 0) {
-//            row = (int) (Math.random() * (field.length - 1));
-//            col = (int) (Math.random() * (field[row].length - 1));
-//        }
-//
-//        moles.add(new Mole(this.playerNumber, new int[]{row, col}, lvl.getField()[row][col]));
-//        //setting onto field
-//        lvl.setMole(row, col, playerNumber);
-        return true;
-    }
-
-
-    @Override
-    public int drawMoveCard() {
-        if (moveCards.isEmpty()) {
-            initMoveCards();
+        for (Mole m : player.getMoles()) {
+            this.moles.add(new Mole(m));
         }
-        int rndIndex = (int) (Math.random() * moveCards.size());
-        int moveValue = moveCards.get(rndIndex);
-        moveCards.remove(moveCards.get(rndIndex));
-        return moveValue;
+        this.moveCards= new ArrayList<>();
+        for(int value : player.getMoveCards())
+        {
+            moveCards.add(value);
+        }
     }
 
     @Override
-    public ArrayList<Mole> getMoles() {
-        return this.moles;
-    }
-
-    @Override
-    public int getPlayerNumber() {
-        return this.playerNumber;
-    }
-
-    @Override
-    public boolean initMolesToNewLvl(Level lvl) {
-        //remove Moles not in hole
-        for (Iterator<Mole> iterator = this.moles.iterator(); iterator.hasNext(); ) {
-            Mole m = iterator.next();
-            if (m.getPositionVlaue() != 8) {
-                iterator.remove();
-            }
-        }
-        if (this.moles.isEmpty()) {
-            return false;
-        }
-        //set Moles on new lvl
-        for (Mole m : this.moles) {
-            //get new pos-value
-            m.setPosition(m.getPosition(), lvl.getField()[m.getPosition()[0]][m.getPosition()[1]]);
-            lvl.setMole(m.getPosition()[0], m.getPosition()[1], this.playerNumber);
-        }
-        return true;
-    }
-
     public boolean makeMove(Level lvl, boolean specialFieldHit) {
         int steps = drawMoveCard();
-        // System.out.println("palyer: " + playerNumber + " steps: " + steps);
+        //System.out.println("palyer: " + playerNumber + " steps: " + steps);
 
         //check if possible without moving out of hole
         List<Mole> moveableMoles = moveableMolesNotInHole(lvl, steps, specialFieldHit);
@@ -176,8 +98,57 @@ public class RndAI extends Player {
         return false;
     }
 
+
     public ArrayList<Integer> getMoveCards()
     {
         return this.moveCards;
     }
+    @Override
+    public void initMoveCards() {
+        this.moveCards = new ArrayList<>();
+        this.moveCards.add(1);
+        this.moveCards.add(2);
+        this.moveCards.add(2);
+        this.moveCards.add(3);
+        this.moveCards.add(3);
+        this.moveCards.add(4);
+    }
+
+    @Override
+    public int getAmountOfMoles() {
+        return this.moles.size();
+    }
+
+    @Override
+    public boolean setMole(Level lvl, int circle) {
+        return false;
+    }
+
+    @Override
+    public int drawMoveCard() {
+        if (this.moveCards.isEmpty()) {
+            initMoveCards();
+        }
+        int rndIndex = (int) (Math.random() * this.moveCards.size());
+        int moveValue = this.moveCards.get(rndIndex);
+        this.moveCards.remove(this.moveCards.get(rndIndex));
+        return moveValue;
+    }
+
+    @Override
+    public ArrayList<Mole> getMoles() {
+        return this.moles;
+    }
+
+    @Override
+    public int getPlayerNumber() {
+        return this.playerNumber;
+    }
+
+
+    @Override
+    public boolean initMolesToNewLvl(Level lvl) {
+        return false;
+    }
 }
+

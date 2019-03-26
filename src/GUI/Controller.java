@@ -1,6 +1,7 @@
 package GUI;
 
 
+import AIs.McAI;
 import AIs.RndAI;
 import GameSession.GameSessionUI;
 import gamecomponents.Mole;
@@ -85,8 +86,15 @@ public class Controller {
         for (Button b : buttons) {
             b.setOnAction(e -> {
                 switch (b.getId()) {
-                    case "weak":
+                    case "Weak":
                         this.gameSession = new GameSessionUI( new RndAI(2), this);
+                        gameSession.setPhase();
+                        disableButtons();
+                        addActionListener();
+                        break;
+
+                    case"Strong" :
+                        this.gameSession = new GameSessionUI( new McAI(2,null), this);
                         gameSession.setPhase();
                         disableButtons();
                         addActionListener();

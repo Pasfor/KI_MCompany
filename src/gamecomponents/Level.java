@@ -1,6 +1,7 @@
 package gamecomponents;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Level {
     /**
@@ -35,6 +36,31 @@ public class Level {
         this.rotateLVL();
     }
 
+    /**
+     * Copy-constructor
+     * @param lvl
+     */
+    public Level(Level toCopy)
+    {
+//        private int lvl;
+//        private int field[][];
+//        private ArrayList<int[][]> holeCords = new ArrayList<>();
+//        private ArrayList<int[][]> specialFieldCords = new ArrayList<>();
+//        private ArrayList<int[][]> notValidWays = new ArrayList<>();
+//        private ArrayList<int[]> chosenNotValidWays = new ArrayList<>();
+        this.lvl = toCopy.lvl;
+        this.field = new int[][]{
+                Arrays.copyOf(toCopy.getField()[0],toCopy.getField()[0].length),
+                Arrays.copyOf(toCopy.getField()[1],toCopy.getField()[1].length),
+                Arrays.copyOf(toCopy.getField()[2],toCopy.getField()[2].length),
+                Arrays.copyOf(toCopy.getField()[3],toCopy.getField()[3].length),
+                Arrays.copyOf(toCopy.getField()[4],toCopy.getField()[4].length),
+                Arrays.copyOf(toCopy.getField()[5],toCopy.getField()[5].length),
+                Arrays.copyOf(toCopy.getField()[6],toCopy.getField()[6].length),
+                Arrays.copyOf(toCopy.getField()[7],toCopy.getField()[7].length),
+                Arrays.copyOf(toCopy.getField()[8],toCopy.getField()[8].length)
+        };
+    }
     private void initLVL() {
         switch (this.lvl) {
             case 1:
@@ -757,7 +783,6 @@ public class Level {
                         if (!proofValidLastMove(pos, positionValue)) {
                             return false;
                         }
-
                     }
                 }
             }

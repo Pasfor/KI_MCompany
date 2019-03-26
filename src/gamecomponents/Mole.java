@@ -16,6 +16,12 @@ public class Mole {
         this.set = true;
     }
 
+    public Mole (Mole toCopy)
+    {
+       this.playerNumber = toCopy.playerNumber;
+       this.position = toCopy.position.clone();
+       this.positionValue = toCopy.getPositionVlaue();
+    }
     public void setPosition(int[] newPos, int newPositionValue)
     {
         this.position = newPos;
