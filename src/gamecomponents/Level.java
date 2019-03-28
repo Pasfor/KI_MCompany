@@ -38,7 +38,6 @@ public class Level {
 
     /**
      * Copy-constructor
-     * @param lvl
      */
     public Level(Level toCopy)
     {
@@ -294,6 +293,10 @@ public class Level {
 
                 break;
         }
+    }
+    public void overWrite(Level lvl)
+    {
+        this.field = lvl.getField();
     }
 
     private void rotateLVL() {

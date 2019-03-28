@@ -37,7 +37,7 @@ public class SimulatingPlayer extends Player {
             moveableMoles = allMoveableMoles(lvl, steps, specialFieldHit);
             return moveRandom(lvl, steps, moveableMoles, specialFieldHit);
         } else {
-            return moveRandom(lvl, steps, moveableMoles, specialFieldHit);
+            return moveInHole(lvl, steps, moveableMoles, specialFieldHit);
         }
     }
 
@@ -96,6 +96,28 @@ public class SimulatingPlayer extends Player {
             }
         }
         return false;
+    }
+    private boolean moveInHole(Level lvl, int steps, List<Mole> copyMoles, boolean specialFieldHit){
+
+        for(Mole m: copyMoles)
+        {
+            ArrayList<int[]> possibleMoves = lvl.returnValidMoves(m.getPosition(), steps, specialFieldHit, m.getPositionVlaue());
+            for(int[] move : possibleMoves)
+            {
+              if(move[2]==8)
+              {
+                  //Move this Mole
+                  lvl.resetValue(m.getPosition(), m.getPositionVlaue());
+                  m.setPosition(move, lvl.getField()[move[0]][move[1]]);
+                  lvl.setMole(move[0], move[1], this.playerNumber);
+
+                  if (m.getPositionVlaue() == 9) {
+                      return true;
+                  }else{return false;}
+              }
+            }
+        }
+        return moveRandom(lvl, steps, copyMoles, specialFieldHit);
     }
 
 

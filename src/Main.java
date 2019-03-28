@@ -1,3 +1,4 @@
+import AIs.McAI;
 import AIs.RndAI;
 import AIs.SimulatingPlayer;
 import GUI.Controller;
@@ -20,15 +21,15 @@ public class Main {
 //            }
 //            System.out.println("======================================");
 //        }
-//        ArrayList<GameSession> gameSessions = new ArrayList<>();
-
-//        for(int i = 0; i<30;i++)
-//        {
-//            gameSessions.add(new GameSession(new RndAI(1), new RndAI(2)));
-//            gameSessions.get(i).run();
-//            System.out.println("index: " + i);
+        ArrayList<GameSession> gameSessions = new ArrayList<>();
 //
-//        }
+        for(int i = 0; i<1;i++)
+        {
+            RndAI rnd = new RndAI(1);
+            gameSessions.add(new GameSession(rnd, new McAI(2,rnd)));
+            gameSessions.get(i).run();
+
+        }
 
 //        Level one = new Level(1);
 //        one.printLVL();

@@ -54,17 +54,6 @@ public class McAI extends Player {
         lvl.setMole(set[0], set[1], playerNumber);
         //=====================
 
-//        int[][] field = lvl.getField();
-//        int row = (int) (Math.random() * (field.length - 1));
-//        int col = (int) (Math.random() * (field[row].length - 1));
-//        while (field[row][col] != 0) {
-//            row = (int) (Math.random() * (field.length - 1));
-//            col = (int) (Math.random() * (field[row].length - 1));
-//        }
-//
-//        moles.add(new Mole(this.playerNumber, new int[]{row, col}, lvl.getField()[row][col]));
-//        //setting onto field
-//        lvl.setMole(row, col, playerNumber);
         return true;
     }
 
@@ -93,12 +82,7 @@ public class McAI extends Player {
     @Override
     public boolean initMolesToNewLvl(Level lvl) {
         //remove Moles not in hole
-        for (Iterator<Mole> iterator = this.moles.iterator(); iterator.hasNext(); ) {
-            Mole m = iterator.next();
-            if (m.getPositionVlaue() != 8) {
-                iterator.remove();
-            }
-        }
+        this.moles.removeIf(m -> m.getPositionVlaue() != 8);
         if (this.moles.isEmpty()) {
             return false;
         }
@@ -118,19 +102,82 @@ public class McAI extends Player {
     //==================AI==========
     @Override
     public boolean makeMove(Level lvl, boolean specialFieldHit) {
-
-        GameState root = new GameState(new SimulatingPlayer(this),new SimulatingPlayer(enemy),new Level(lvl),1000);
+        int steps = drawMoveCard();
+        System.out.println(steps);
+        GameState root = new GameState(new SimulatingPlayer(this),new SimulatingPlayer(enemy),new Level(lvl),0,null,steps);
         buildTree(root);
 
-        return true;
+        GameState nextMove = chooseNextMoveState(root);
+
+        this.moles = nextMove.getPlayerOne().getMoles();
+        lvl.overWrite(nextMove.getLvl());
+
+        lvl.printLVL();
+        //Special
+        return false;
     }
+     public GameState chooseNextMoveState(GameState root)
+     {
+         double maxWins = -9999999;
+         GameState toReturn = root;
+             //get with max UCB value
+             for(GameState g: root.getChilds())
+             {
+                 if((g.getWinLoss()[0]-g.getWinLoss()[1])> maxWins)
+                 {
+                     maxWins = g.getWinLoss()[0]-g.getWinLoss()[1];
+                     toReturn = g;
+                 }
+             }
+
+         return toReturn;
+     }
 
     private void buildTree(GameState root) {
         root.expand();
+
         for(GameState gs : root.getChilds())
         {
             gs.simulate();
-            root.addWinLoss(gs.getWinLoss());
         }
+        runMCTS(root);
+    }
+
+    private void runMCTS(GameState root) {
+
+        GameState next = chooseNext(root);
+
+        for(int i=0;i<100;i++)
+        {
+                next.simulate();
+                if(next.getDepth()<1) {
+                    next.expand();
+                    for(GameState s: next.getChilds())
+                    {
+                        s.simulate();
+                    }
+                }
+                next = chooseNext(root);
+        }
+    }
+
+    private GameState chooseNext(GameState gs)
+    {
+        double maxUCB = 0;
+        GameState toReturn=gs;
+        while(!toReturn.getChilds().isEmpty())
+        {
+            //get with max UCB value
+            for(GameState g: toReturn.getChilds())
+            {
+                if(Heuristikcs.calcUCB(2,g)>maxUCB)
+                {
+                    maxUCB = Heuristikcs.calcUCB(2,g);
+                    toReturn = g;
+                }
+            }
+            maxUCB = 0;
+        }
+        return toReturn;
     }
 }

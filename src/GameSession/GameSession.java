@@ -1,5 +1,6 @@
 package GameSession;
 
+import AIs.Heuristikcs;
 import gamecomponents.Level;
 import gamecomponents.Player;
 
@@ -141,7 +142,7 @@ public class GameSession extends Thread {
         {
             System.out.println("player two wins");
         }
-
+        System.out.println(Heuristikcs.calcHeuristic(players.get(0),players.get(1)));
         //System.out.println("========Level===FOUR===Finish=======");
     }
 
