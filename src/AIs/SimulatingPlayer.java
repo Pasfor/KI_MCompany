@@ -20,17 +20,13 @@ public class SimulatingPlayer extends Player {
             this.moles.add(new Mole(m));
         }
         this.moveCards= new ArrayList<>();
-        for(int value : player.getMoveCards())
-        {
-            moveCards.add(value);
-        }
+        moveCards.addAll(player.getMoveCards());
     }
 
-    @Override
     public boolean makeMove(Level lvl, boolean specialFieldHit) {
         int steps = drawMoveCard();
-        //System.out.println("palyer: " + playerNumber + " steps: " + steps);
 
+        // System.out.println("palyer: " + playerNumber + " steps: " + steps);
         //check if possible without moving out of hole
         List<Mole> moveableMoles = moveableMolesNotInHole(lvl, steps, specialFieldHit);
         if (moveableMoles.isEmpty()) {
@@ -90,7 +86,6 @@ public class SimulatingPlayer extends Player {
             lvl.resetValue(moveMole.getPosition(), moveMole.getPositionVlaue());
             moveMole.setPosition(move, lvl.getField()[move[0]][move[1]]);
             lvl.setMole(move[0], move[1], this.playerNumber);
-
             if (moveMole.getPositionVlaue() == 9) {
                 return true;
             }
@@ -98,23 +93,21 @@ public class SimulatingPlayer extends Player {
         return false;
     }
     private boolean moveInHole(Level lvl, int steps, List<Mole> copyMoles, boolean specialFieldHit){
-
         for(Mole m: copyMoles)
         {
             ArrayList<int[]> possibleMoves = lvl.returnValidMoves(m.getPosition(), steps, specialFieldHit, m.getPositionVlaue());
             for(int[] move : possibleMoves)
             {
-              if(move[2]==8)
-              {
-                  //Move this Mole
-                  lvl.resetValue(m.getPosition(), m.getPositionVlaue());
-                  m.setPosition(move, lvl.getField()[move[0]][move[1]]);
-                  lvl.setMole(move[0], move[1], this.playerNumber);
-
-                  if (m.getPositionVlaue() == 9) {
-                      return true;
-                  }else{return false;}
-              }
+                if(move[2]==8)
+                {
+                    //Move this Mole
+                    lvl.resetValue(m.getPosition(), m.getPositionVlaue());
+                    m.setPosition(move, lvl.getField()[move[0]][move[1]]);
+                    lvl.setMole(move[0], move[1], this.playerNumber);
+                    if (m.getPositionVlaue() == 9) {
+                        return true;
+                    }else{return false;}
+                }
             }
         }
         return moveRandom(lvl, steps, copyMoles, specialFieldHit);

@@ -5,13 +5,14 @@ import gamecomponents.Mole;
 import gamecomponents.Player;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class McAI extends Player {
     private int playerNumber;
     private ArrayList<Integer> moveCards;
     private ArrayList<Mole> moles;
     private Player enemy;
+    private boolean moved = true;
+    private int steps;
 
 
     public McAI(int pN, Player otherPlayer) {
@@ -53,7 +54,6 @@ public class McAI extends Player {
 
         lvl.setMole(set[0], set[1], playerNumber);
         //=====================
-
         return true;
     }
 
@@ -102,26 +102,64 @@ public class McAI extends Player {
     //==================AI==========
     @Override
     public boolean makeMove(Level lvl, boolean specialFieldHit) {
-        int steps = drawMoveCard();
-        System.out.println(steps);
+        steps = drawMoveCard();
+
         GameState root = new GameState(new SimulatingPlayer(this),new SimulatingPlayer(enemy),new Level(lvl),0,null,steps);
+
         buildTree(root);
 
+        //if stuck
+        if(root.getChildes().isEmpty())
+        {
+            this.moved = false;
+            lvl.printLVL();
+            return false;
+        }
         GameState nextMove = chooseNextMoveState(root);
+        //lvl.printLVL();
+        //check 20
+        int checksum = 0;
+        for(int[] row: lvl.getField())
+        {
+            for(int i:row)
+            {
+                if(i == 1 || i==2)
+                {
+                    checksum++;
+                }
+            }
+        }
 
-        this.moles = nextMove.getPlayerOne().getMoles();
+        //=====
+
+        System.out.println("steps: "+steps);
+        System.out.println("next move depth: "+nextMove.getDepth());
+       // nextMove.getLvl().printLVL();
+        if(nextMove.getPlayer().getPlayerNumber() == 1) {
+            System.out.println("Moles of Player: " + nextMove.getPlayer().getPlayerNumber());
+            System.exit(1);
+        }
+        this.moles = nextMove.getPlayer().getMoles();
         lvl.overWrite(nextMove.getLvl());
+        for(Mole m :this.moles)
+        {
+            System.out.print(m.getPosition()[0]+","+m.getPosition()[1]+"|");
+        }
+        if(checksum > 20)
+        {
+            lvl.printLVL();
+            System.exit(checksum);
+        }
+        //Special field !!!
 
-        lvl.printLVL();
-        //Special
         return false;
     }
-     public GameState chooseNextMoveState(GameState root)
+     private GameState chooseNextMoveState(GameState root)
      {
-         double maxWins = -9999999;
+         double maxWins = -999999999;
          GameState toReturn = root;
              //get with max UCB value
-             for(GameState g: root.getChilds())
+             for(GameState g: root.getChildes())
              {
                  if((g.getWinLoss()[0]-g.getWinLoss()[1])> maxWins)
                  {
@@ -129,46 +167,57 @@ public class McAI extends Player {
                      toReturn = g;
                  }
              }
-
          return toReturn;
      }
 
     private void buildTree(GameState root) {
+        System.out.print(" !start build Tree");
         root.expand();
-
-        for(GameState gs : root.getChilds())
+        //if stuck
+        if(root.getChildes().isEmpty())
+        {
+            return;
+        }
+        System.out.print("!start simulate rootchilds ");
+        for(GameState gs : root.getChildes())
         {
             gs.simulate();
         }
+        System.out.print("!stop simulate rootchilds ");
         runMCTS(root);
+        System.out.print("....end build Tree");
     }
 
     private void runMCTS(GameState root) {
-
+        System.out.print(" !mcts start");
+        System.out.println("!choose next");
+        System.out.println(".....next chosen");
         GameState next = chooseNext(root);
-
-        for(int i=0;i<100;i++)
+        for(int i=0;i<1000;i++)
         {
+            System.out.print("!start simulate , depth: "+next.getDepth());
                 next.simulate();
-                if(next.getDepth()<1) {
+            System.out.print(".......end simulate");
+                 if(next.getDepth()<200 ) {
                     next.expand();
-                    for(GameState s: next.getChilds())
+                    for(GameState s: next.getChildes())
                     {
                         s.simulate();
                     }
                 }
                 next = chooseNext(root);
         }
+        System.out.print("....mcts end");
     }
 
     private GameState chooseNext(GameState gs)
     {
-        double maxUCB = 0;
+        double maxUCB = -999999;
         GameState toReturn=gs;
-        while(!toReturn.getChilds().isEmpty())
+        while(!(toReturn.getChildes().isEmpty()))
         {
             //get with max UCB value
-            for(GameState g: toReturn.getChilds())
+            for(GameState g: toReturn.getChildes())
             {
                 if(Heuristikcs.calcUCB(2,g)>maxUCB)
                 {

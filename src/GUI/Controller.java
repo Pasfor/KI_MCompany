@@ -165,7 +165,6 @@ public class Controller {
 
     public void drawField(int[][] field) {
         int circleIndex = 0;
-
         for (int[] row : field) {
             for (int value : row) {
                 switch (value) {

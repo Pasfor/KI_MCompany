@@ -296,7 +296,7 @@ public class Level {
     }
     public void overWrite(Level lvl)
     {
-        this.field = lvl.getField();
+        this.field = lvl.getField().clone();
     }
 
     private void rotateLVL() {

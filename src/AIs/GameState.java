@@ -4,7 +4,6 @@ import gamecomponents.Level;
 import gamecomponents.Mole;
 import gamecomponents.Player;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class GameState {
@@ -12,7 +11,7 @@ public class GameState {
     public int depth;
     private SimulatingPlayer Pone;
     private SimulatingPlayer Ptwo;
-    ArrayList<GameState> childs = new ArrayList<>();
+    private ArrayList<GameState> childes = new ArrayList<>();
     private int[] winLoss;
     private GameState parent;
     private double ucb;
@@ -27,8 +26,8 @@ public class GameState {
         this.depth = depth;
         this.steps = steps;
     }
-    public Player getPlayerOne(){
-        return this.Pone;
+    public Player getPlayer(){
+        return this.Ptwo;
     }
 
     public Level getLvl()
@@ -39,8 +38,8 @@ public class GameState {
         return this.parent;
     }
 
-    public ArrayList<GameState> getChilds() {
-        return this.childs;
+    public ArrayList<GameState> getChildes() {
+        return this.childes;
     }
 
     public int[] getWinLoss() {
@@ -77,16 +76,16 @@ public class GameState {
                     ArrayList<int[]> moves = this.lvl.returnValidMoves(m.getPosition(), steps, false, m.getPositionVlaue());
                     for (int[] move : moves) {
                         Level copyLevel = new Level(this.lvl);
-                        SimulatingPlayer copyPtwo = new SimulatingPlayer(Ptwo);
                         SimulatingPlayer copyPone = new SimulatingPlayer(Pone);
+                        SimulatingPlayer copyPtwo = new SimulatingPlayer(Ptwo);
                         copyLevel.resetValue(copyPone.getMoles().get(moleIndex).getPosition(), copyPone.getMoles().get(moleIndex).getPositionVlaue());
                         copyPone.getMoles().get(moleIndex).setPosition(move, copyLevel.getField()[move[0]][move[1]]);
                         copyLevel.setMole(move[0], move[1], copyPone.getPlayerNumber());
 
                         if (copyPone.getMoles().get(moleIndex).getPositionVlaue() == 9) {
-                            this.childs.add(new GameState(copyPone, copyPtwo, copyLevel, depth + 1, this, 0));
+                            this.childes.add(new GameState(copyPone, copyPtwo, copyLevel, depth + 1, this, 0));
                         } else {
-                            this.childs.add(new GameState(copyPtwo, copyPone, copyLevel, depth + 1, this, 0));
+                            this.childes.add(new GameState(copyPtwo, copyPone, copyLevel, depth + 1, this, 0));
                         }
                     }
                 }
@@ -106,16 +105,17 @@ public class GameState {
                     copyLevel.setMole(move[0], move[1], copyPone.getPlayerNumber());
 
                     if (copyPone.getMoles().get(i).getPositionVlaue() == 9) {
-                        this.childs.add(new GameState(copyPone, copyPtwo, copyLevel, depth + 1, this, 0));
+                        this.childes.add(new GameState(copyPone, copyPtwo, copyLevel, depth + 1, this, 0));
                     } else {
-                        this.childs.add(new GameState(copyPtwo, copyPone, copyLevel, depth + 1, this, 0));
+                        this.childes.add(new GameState(copyPtwo, copyPone, copyLevel, depth + 1, this, 0));
                     }
                 }
             }
         }
     }
 
-    public void simulate() {
+    void simulate() {
+
         int currentPlayerInt = 1;
         Level copyLevel = new Level(this.lvl);
         ArrayList<SimulatingPlayer> players = new ArrayList<>();
@@ -123,6 +123,27 @@ public class GameState {
         players.add(new SimulatingPlayer(Ptwo));
 
         while (!copyLevel.levelFinish()) {
+            int inholeCounter = 0;
+            for(Mole m : players.get(currentPlayerInt - 1).getMoles()){
+                if(m.getPositionVlaue() == 8)
+                {
+                    inholeCounter++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            if(inholeCounter == players.get(currentPlayerInt - 1).getMoles().size())
+            {
+                //change player
+                if (currentPlayerInt == 1) {
+                    currentPlayerInt = 2;
+                } else {
+                    currentPlayerInt = 1;
+                }
+                continue;
+            }
             if (players.get(currentPlayerInt - 1).makeMove(copyLevel, false)) ;
             {   //special field hit
                 players.get(currentPlayerInt - 1).makeMove(copyLevel, true);

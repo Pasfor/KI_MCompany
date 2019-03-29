@@ -22,7 +22,7 @@ public class Main {
 //            System.out.println("======================================");
 //        }
         ArrayList<GameSession> gameSessions = new ArrayList<>();
-//
+
         for(int i = 0; i<1;i++)
         {
             RndAI rnd = new RndAI(1);
@@ -30,6 +30,13 @@ public class Main {
             gameSessions.get(i).run();
 
         }
+//        ArrayList<GameSession> gameSessions = new ArrayList<>();
+//        for(int i = 0; i<10000;i++)
+//        {
+//            RndAI rnd = new RndAI(1);
+//            gameSessions.add(new GameSession(rnd, new RndAI(2)));
+//            gameSessions.get(i).run();
+//        }
 
 //        Level one = new Level(1);
 //        one.printLVL();
