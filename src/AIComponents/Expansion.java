@@ -130,8 +130,7 @@ public class Expansion {
         //if have to get out of hole
         if(childes.isEmpty())
         {
-            childes = classicExpansion(toExpand, steps, lvl, depth);
-            System.out.println("have to move out of hole");
+            childes = Expansion.classicExpansion(toExpand, steps, lvl, depth);
         }
         return childes;
     }

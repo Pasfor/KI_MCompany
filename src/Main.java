@@ -18,7 +18,7 @@ public class Main {
 //        }
         ArrayList<GameSession> gameSessions = new ArrayList<>();
 
-        for(int i = 0; i<10;i++)
+        for(int i = 0; i<1;i++)
         {
             RndAI rnd = new RndAI(1);
             gameSessions.add(new GameSession(rnd, new McAI(2,rnd)));

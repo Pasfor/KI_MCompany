@@ -63,7 +63,6 @@ public class GameSession extends Thread {
 
         }
        System.out.println("========Level===ONE===Finish=======");
-        lvls.get(0).printLVL();
         //run second lvl
         //init Moles
         players.get(0).initMolesToNewLvl(this.lvls.get(1));

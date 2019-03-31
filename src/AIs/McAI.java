@@ -108,7 +108,7 @@ public class McAI extends Player {
     @Override
     public boolean makeMove(Level lvl, boolean specialFieldHit) {
         steps = drawMoveCard();
-        GameState root = new GameState(new SimulatingPlayer(this),new SimulatingPlayer(enemy),new Level(lvl),0,null,0,this.specialField);
+        GameState root = new GameState(new SimulatingPlayer(this),new SimulatingPlayer(enemy),new Level(lvl),0,null,steps,specialFieldHit);
 
         buildTree(root);
 
@@ -116,7 +116,9 @@ public class McAI extends Player {
         if(root.getChildes().isEmpty())
         {
             this.moved = false;
-            lvl.printLVL();
+            System.out.println("=======stuck steps : "+steps);
+            root.getLvl().printLVL();
+            System.exit(90000);
             return false;
         }
         GameState nextMove = chooseNextMoveState(root);
