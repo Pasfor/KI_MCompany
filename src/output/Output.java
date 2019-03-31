@@ -15,7 +15,7 @@ public class Output {
         super();
     }
     public synchronized void writeToFile(String str) {
-        try (PrintWriter p = new PrintWriter(new FileOutputStream("Level-One.txt", true))) {
+        try (PrintWriter p = new PrintWriter(new FileOutputStream("MCvsGreedy.txt", true))) {
             p.println(str);
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();

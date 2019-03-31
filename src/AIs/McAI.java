@@ -1,5 +1,9 @@
 package AIs;
 
+import AIComponents.GameState;
+import AIComponents.Heuristics;
+import AIComponents.SettingAI;
+import AIComponents.SimulatingPlayer;
 import gamecomponents.Level;
 import gamecomponents.Mole;
 import gamecomponents.Player;
@@ -13,6 +17,7 @@ public class McAI extends Player {
     private Player enemy;
     private boolean moved = true;
     private int steps;
+    private boolean specialField = false;
 
 
     public McAI(int pN, Player otherPlayer) {
@@ -103,8 +108,7 @@ public class McAI extends Player {
     @Override
     public boolean makeMove(Level lvl, boolean specialFieldHit) {
         steps = drawMoveCard();
-
-        GameState root = new GameState(new SimulatingPlayer(this),new SimulatingPlayer(enemy),new Level(lvl),0,null,steps);
+        GameState root = new GameState(new SimulatingPlayer(this),new SimulatingPlayer(enemy),new Level(lvl),0,null,0,this.specialField);
 
         buildTree(root);
 
@@ -150,9 +154,15 @@ public class McAI extends Player {
             lvl.printLVL();
             System.exit(checksum);
         }
+        System.out.println();
+        for(GameState g : root.getChildes())
+        {
+            System.out.println("Heuristic:"+ Heuristics.calcHeuristic(g.getPlayerOne(),g.getPlayerTwo())+"|"+((g.getWinLoss()[0])+(g.getWinLoss()[1]))+"|"+g.getWinLoss()[0]+","+g.getWinLoss()[1]+"|"+ Heuristics.calcUCB(Math.sqrt(2),g));
+        }
         //Special field !!!
-
-        return false;
+        System.out.println("Choosen next: "+Heuristics.calcUCB(Math.sqrt(2),nextMove));
+        this.specialField = nextMove.getSpecialField();
+        return this.specialField;
     }
      private GameState chooseNextMoveState(GameState root)
      {
@@ -161,9 +171,9 @@ public class McAI extends Player {
              //get with max UCB value
              for(GameState g: root.getChildes())
              {
-                 if((g.getWinLoss()[0]-g.getWinLoss()[1])> maxWins)
+                 if(((double)g.getWinLoss()[0]/(g.getWinLoss()[0]+g.getWinLoss()[1]))> maxWins)
                  {
-                     maxWins = g.getWinLoss()[0]-g.getWinLoss()[1];
+                     maxWins = (double)g.getWinLoss()[0]/(g.getWinLoss()[0]+g.getWinLoss()[1]);
                      toReturn = g;
                  }
              }
@@ -196,7 +206,7 @@ public class McAI extends Player {
         for(int i=0;i<1000;i++)
         {
             System.out.print("!start simulate , depth: "+next.getDepth());
-                next.simulate();
+            next.simulate();
             System.out.print(".......end simulate");
                  if(next.getDepth()<200 ) {
                     next.expand();
@@ -219,9 +229,9 @@ public class McAI extends Player {
             //get with max UCB value
             for(GameState g: toReturn.getChildes())
             {
-                if(Heuristikcs.calcUCB(2,g)>maxUCB)
+                if(Heuristics.calcUCB(Math.sqrt(2),g)>maxUCB)
                 {
-                    maxUCB = Heuristikcs.calcUCB(2,g);
+                    maxUCB = Heuristics.calcUCB(Math.sqrt(2),g);
                     toReturn = g;
                 }
             }

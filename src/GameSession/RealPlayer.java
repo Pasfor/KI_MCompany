@@ -187,12 +187,7 @@ public class RealPlayer extends Player {
     @Override
     public boolean initMolesToNewLvl(Level lvl) {
         //remove Moles not in hole
-        for (Iterator<Mole> iterator = this.moles.iterator(); iterator.hasNext(); ) {
-            Mole m = iterator.next();
-            if (m.getPositionVlaue() != 8) {
-                iterator.remove();
-            }
-        }
+        this.moles.removeIf(m -> m.getPositionVlaue() != 8);
         if(this.moles.isEmpty())
         {
             return false;

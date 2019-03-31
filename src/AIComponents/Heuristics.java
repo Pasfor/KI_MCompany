@@ -1,9 +1,9 @@
-package AIs;
+package AIComponents;
 
 import gamecomponents.Mole;
 import gamecomponents.Player;
 
-public class Heuristikcs {
+public class Heuristics {
 
 
     // diff between in hole player one and player two
@@ -35,19 +35,19 @@ public class Heuristikcs {
         return ai-player;
     }
 
-    public static double calcUCB(int c, GameState gs)
+    public static double calcUCB(double c, GameState gs)
     {
-        int games = gs.getWinLoss()[0] + gs.getWinLoss()[1];
+        int games = (gs.getWinLoss()[0]) + (gs.getWinLoss()[1]);
         double winRate;
 
         //gegenspieler der KI am Zug
         if(gs.getDepth()%2 == 0)
         {
-            winRate =(double) gs.getWinLoss()[1]/games;
+            winRate =(double) (gs.getWinLoss()[1])/games;
         }
         //Ai am zug
         else{
-            winRate =(double) gs.getWinLoss()[0]/games;
+            winRate =(double) (gs.getWinLoss()[0])/games;
         }
 
         if(gs.getParent() != null) {

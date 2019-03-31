@@ -1,5 +1,6 @@
 package AIs;
 
+import AIComponents.SettingAI;
 import gamecomponents.Level;
 import gamecomponents.Mole;
 import gamecomponents.Player;

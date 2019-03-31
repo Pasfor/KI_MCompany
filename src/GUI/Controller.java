@@ -102,6 +102,7 @@ public class Controller {
 
                     case "next":
                         this.gameSession.changePlayer();
+                        this.gameSession.drawRealPlayerCard();
                         this.gameSession.movePhaseDecider();
                 }
             });

@@ -1,11 +1,6 @@
 import AIs.McAI;
 import AIs.RndAI;
-import AIs.SimulatingPlayer;
-import GUI.Controller;
 import GameSession.*;
-import gamecomponents.Level;
-import gamecomponents.Player;
-import sun.util.resources.cldr.vai.LocaleNames_vai_Latn;
 
 import java.util.ArrayList;
 
@@ -23,19 +18,20 @@ public class Main {
 //        }
         ArrayList<GameSession> gameSessions = new ArrayList<>();
 
-        for(int i = 0; i<1;i++)
+        for(int i = 0; i<10;i++)
         {
             RndAI rnd = new RndAI(1);
             gameSessions.add(new GameSession(rnd, new McAI(2,rnd)));
             gameSessions.get(i).run();
-
         }
 //        ArrayList<GameSession> gameSessions = new ArrayList<>();
-//        for(int i = 0; i<10000;i++)
+//
+//        for(int i = 0; i<1000;i++)
 //        {
 //            RndAI rnd = new RndAI(1);
 //            gameSessions.add(new GameSession(rnd, new RndAI(2)));
 //            gameSessions.get(i).run();
+//
 //        }
 
 //        Level one = new Level(1);

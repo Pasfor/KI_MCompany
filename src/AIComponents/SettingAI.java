@@ -1,4 +1,4 @@
-package AIs;
+package AIComponents;
 
 import gamecomponents.Level;
 

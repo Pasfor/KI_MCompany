@@ -1,6 +1,6 @@
 package GameSession;
 
-import AIs.Heuristikcs;
+import AIComponents.Heuristics;
 import gamecomponents.Level;
 import gamecomponents.Player;
 import output.Output;
@@ -69,12 +69,12 @@ public class GameSession extends Thread {
         players.get(0).initMolesToNewLvl(this.lvls.get(1));
         players.get(1).initMolesToNewLvl(this.lvls.get(1));
 
-        lvls.get(1).printLVL();
-        Output.getInstance().writeToFile(" player 2 - player 1 : "+(players.get(0).getMoles().size()-players.get(1).getMoles().size()) );
+//        lvls.get(1).printLVL();
+//        Output.getInstance().writeToFile(" player 2 - player 1 : "+(players.get(0).getMoles().size()-players.get(1).getMoles().size()) );
 
 
         //======!!!!!!!!! dont forget the"!" if playthrough!!!===========
-        while(this.lvls.get(1).levelFinish())
+        while(!this.lvls.get(1).levelFinish())
         {
             if(!proofMoleLeft())
             {
@@ -98,7 +98,7 @@ public class GameSession extends Thread {
         players.get(0).initMolesToNewLvl(this.lvls.get(2));
         players.get(1).initMolesToNewLvl(this.lvls.get(2));
 
-        while(this.lvls.get(2).levelFinish())
+        while(!this.lvls.get(2).levelFinish())
         {
             if(!proofMoleLeft())
             {
@@ -122,7 +122,7 @@ public class GameSession extends Thread {
         players.get(0).initMolesToNewLvl(this.lvls.get(3));
         players.get(1).initMolesToNewLvl(this.lvls.get(3));
 
-        while(this.lvls.get(3).levelFinish())
+        while(!this.lvls.get(3).levelFinish())
         {
 
             if(!proofMoleLeft())
@@ -144,13 +144,13 @@ public class GameSession extends Thread {
         }
         if(this.lvls.get(3).getField()[4][4]==1)
         {
-            System.out.println("player one wins");
+            Output.getInstance().writeToFile("player one wins");
         }
         if(this.lvls.get(3).getField()[4][4]==2)
         {
-            System.out.println("player two wins");
+            Output.getInstance().writeToFile("player two wins");
         }
-        System.out.println(Heuristikcs.calcHeuristic(players.get(0),players.get(1)));
+        System.out.println(Heuristics.calcHeuristic(players.get(0),players.get(1)));
         System.out.println("========Level===FOUR===Finish=======");
         lvls.get(3).printLVL();
     }
@@ -171,7 +171,6 @@ public class GameSession extends Thread {
         if(players.get(0).getMoles().isEmpty() ||players.get(0).getMoles().isEmpty())
         {
             System.out.println("no Moles left");
-            System.exit(0);
             return false;
         }
         return true;
