@@ -149,7 +149,6 @@ public class GameSession extends Thread {
         {
             Output.getInstance().writeToFile("player two wins");
         }
-        System.out.println(Heuristics.calcHeuristic(players.get(0),players.get(1)));
         System.out.println("========Level===FOUR===Finish=======");
         lvls.get(3).printLVL();
     }

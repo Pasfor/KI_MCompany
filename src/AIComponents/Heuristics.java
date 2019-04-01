@@ -5,19 +5,17 @@ import gamecomponents.Player;
 
 public class Heuristics {
 
-
-    // diff between in hole player one and player two
-    public static int calcHeuristic(Player one, Player two)
+    public static int calcHeuristicAsTwo(Player one, Player two,int playerNumber)
     {
         int ai = 0;
-        int player = 0;
+        int enemy = 0;
         for(Mole m: one.getMoles())
         {
             if(m.getPositionVlaue()==8)
             {
-                if(one.getPlayerNumber() == 1)
+                if(one.getPlayerNumber() != playerNumber)
                 {
-                    player++;
+                    enemy++;
                 }
                 else{ai++;}
             }
@@ -26,13 +24,13 @@ public class Heuristics {
         {
             if(m.getPositionVlaue()==8)
             {
-                if(two.getPlayerNumber() == 1)
+                if(two.getPlayerNumber() != playerNumber)
                 {
-                    player++;
+                    enemy++;
                 }else{ai++;}
             }
         }
-        return ai-player;
+        return ai-enemy;
     }
 
     public static double calcUCB(double c, GameState gs)

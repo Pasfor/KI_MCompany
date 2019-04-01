@@ -18,10 +18,13 @@ public class Main {
 //        }
         ArrayList<GameSession> gameSessions = new ArrayList<>();
 
-        for(int i = 0; i<1;i++)
+        for(int i = 0; i<20;i++)
         {
-            RndAI rnd = new RndAI(1);
-            gameSessions.add(new GameSession(rnd, new McAI(2,rnd)));
+            McAI mcAione = new McAI(1,null);
+            McAI mcAitwo = new McAI(2,mcAione);
+            mcAione.setEnemy(mcAitwo);
+
+            gameSessions.add(new GameSession(mcAione, mcAitwo));
             gameSessions.get(i).run();
         }
 //        ArrayList<GameSession> gameSessions = new ArrayList<>();

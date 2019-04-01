@@ -31,9 +31,9 @@ public class Expansion {
                         copyLevel.setMole(move[0], move[1], copyPone.getPlayerNumber());
 
                         if (copyPone.getMoles().get(moleIndex).getPositionVlaue() == 9) {
-                            childes.add(new GameState(copyPone, copyPtwo, copyLevel, depth + 1, toExpand, 0, true));
+                            childes.add(new GameState(copyPone, copyPtwo, copyLevel, depth + 1, toExpand, 0, true,toExpand.getPlayerNumber()));
                         } else {
-                            childes.add(new GameState(copyPtwo, copyPone, copyLevel, depth + 1, toExpand, 0,false));
+                            childes.add(new GameState(copyPtwo, copyPone, copyLevel, depth + 1, toExpand, 0,false,toExpand.getPlayerNumber()));
                         }
                     }
                 }
@@ -53,9 +53,9 @@ public class Expansion {
                     copyLevel.setMole(move[0], move[1], copyPone.getPlayerNumber());
 
                     if (copyPone.getMoles().get(i).getPositionVlaue() == 9) {
-                        childes.add(new GameState(copyPone, copyPtwo, copyLevel, depth + 1, toExpand, 0,true));
+                        childes.add(new GameState(copyPone, copyPtwo, copyLevel, depth + 1, toExpand, 0,true,toExpand.getPlayerNumber()));
                     } else {
-                        childes.add(new GameState(copyPtwo, copyPone, copyLevel, depth + 1, toExpand, 0,false));
+                        childes.add(new GameState(copyPtwo, copyPone, copyLevel, depth + 1, toExpand, 0,false,toExpand.getPlayerNumber()));
                     }
                 }
             }
@@ -88,9 +88,9 @@ public class Expansion {
                 copyLevel.setMole(move[0], move[1], copyPone.getPlayerNumber());
 
                 if (copyPone.getMoles().get(i).getPositionVlaue() == 9) {
-                    childes.add(new GameState(copyPone, copyPtwo, copyLevel, depth + 1, toExpand, steps,true));
+                    childes.add(new GameState(copyPone, copyPtwo, copyLevel, depth + 1, toExpand, steps,true,toExpand.getPlayerNumber()));
                 } else {
-                    childes.add(new GameState(copyPtwo, copyPone, copyLevel, depth + 1, toExpand, steps,false));
+                    childes.add(new GameState(copyPtwo, copyPone, copyLevel, depth + 1, toExpand, steps,false,toExpand.getPlayerNumber()));
                 }
             }
         }
@@ -118,9 +118,9 @@ public class Expansion {
                         copyLevel.setMole(move[0], move[1], copyPone.getPlayerNumber());
 
                         if (copyPone.getMoles().get(moleIndex).getPositionVlaue() == 9) {
-                            childes.add(new GameState(copyPone, copyPtwo, copyLevel, depth + 1, toExpand, 0, true));
+                            childes.add(new GameState(copyPone, copyPtwo, copyLevel, depth + 1, toExpand, 0, true,toExpand.getPlayerNumber()));
                         } else {
-                            childes.add(new GameState(copyPtwo, copyPone, copyLevel, depth + 1, toExpand, 0, false));
+                            childes.add(new GameState(copyPtwo, copyPone, copyLevel, depth + 1, toExpand, 0, false,toExpand.getPlayerNumber()));
                         }
                     }
                 }

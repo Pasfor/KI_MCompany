@@ -108,7 +108,7 @@ public class McAI extends Player {
     @Override
     public boolean makeMove(Level lvl, boolean specialFieldHit) {
         steps = drawMoveCard();
-        GameState root = new GameState(new SimulatingPlayer(this),new SimulatingPlayer(enemy),new Level(lvl),0,null,steps,specialFieldHit);
+        GameState root = new GameState(new SimulatingPlayer(this),new SimulatingPlayer(enemy),new Level(lvl),0,null,steps,specialFieldHit,this.playerNumber);
 
         buildTree(root);
 
@@ -116,9 +116,8 @@ public class McAI extends Player {
         if(root.getChildes().isEmpty())
         {
             this.moved = false;
-            System.out.println("=======stuck steps : "+steps);
+            System.out.println("==="+this.playerNumber+"===stuck steps : "+steps);
             root.getLvl().printLVL();
-            System.exit(90000);
             return false;
         }
         GameState nextMove = chooseNextMoveState(root);
@@ -141,7 +140,7 @@ public class McAI extends Player {
         System.out.println("steps: "+steps);
         System.out.println("next move depth: "+nextMove.getDepth());
        // nextMove.getLvl().printLVL();
-        if(nextMove.getPlayer().getPlayerNumber() == 1) {
+        if(nextMove.getPlayer().getPlayerNumber() != this.playerNumber) {
             System.out.println("Moles of Player: " + nextMove.getPlayer().getPlayerNumber());
             System.exit(1);
         }
@@ -159,7 +158,7 @@ public class McAI extends Player {
         System.out.println();
         for(GameState g : root.getChildes())
         {
-            System.out.println("Heuristic:"+ Heuristics.calcHeuristic(g.getPlayerOne(),g.getPlayerTwo())+"|"+((g.getWinLoss()[0])+(g.getWinLoss()[1]))+"|"+g.getWinLoss()[0]+","+g.getWinLoss()[1]+"|"+ Heuristics.calcUCB(Math.sqrt(2),g));
+            System.out.println("Heuristic:"+ Heuristics.calcHeuristicAsTwo(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)+"|"+((g.getWinLoss()[0])+(g.getWinLoss()[1]))+"|"+g.getWinLoss()[0]+","+g.getWinLoss()[1]+"|"+ Heuristics.calcUCB(Math.sqrt(2),g));
         }
         //Special field !!!
         System.out.println("Choosen next: "+Heuristics.calcUCB(Math.sqrt(2),nextMove));

@@ -7,6 +7,7 @@ import gamecomponents.Player;
 import java.util.ArrayList;
 
 public class GameState {
+    private int playerNumber;
     private Level lvl;
     public int depth;
     private SimulatingPlayer Pone;
@@ -17,7 +18,7 @@ public class GameState {
     private int steps;
     private boolean specialField;
 
-    public GameState(SimulatingPlayer one, SimulatingPlayer two, Level lvl, int depth, GameState parent, int steps, boolean specialField) {
+    public GameState(SimulatingPlayer one, SimulatingPlayer two, Level lvl, int depth, GameState parent, int steps, boolean specialField,int playerNumber) {
         this.parent = parent;
         winLoss = new int[]{0, 0};
         this.Pone = one;
@@ -26,7 +27,13 @@ public class GameState {
         this.depth = depth;
         this.steps = steps;
         this.specialField = specialField;
+        this.playerNumber = playerNumber;
     }
+
+    public int getPlayerNumber() {
+        return this.playerNumber;
+    }
+
     public Player getPlayer(){
         if(this.specialField)
         {
@@ -122,7 +129,7 @@ public class GameState {
                 currentPlayerInt = 1;
             }
         }
-        int value = Heuristics.calcHeuristic(players.get(0),players.get(1));
+        int value = Heuristics.calcHeuristicAsTwo(players.get(0),players.get(1),this.playerNumber);
         if (value >=0) {
             propagate(new int[]{1,0});
         }
