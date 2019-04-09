@@ -19,7 +19,7 @@ public class GameState {
     private boolean specialField;
     private boolean expanded;
 
-    public GameState(SimulatingPlayer one, SimulatingPlayer two, Level lvl, int depth, GameState parent, int steps, boolean specialField,int playerNumber) {
+    public GameState(SimulatingPlayer one, SimulatingPlayer two, Level lvl, int depth, GameState parent, int steps, boolean specialField, int playerNumber) {
         this.parent = parent;
         winLoss = new int[]{0, 0};
         this.Pone = one;
@@ -31,42 +31,43 @@ public class GameState {
         this.playerNumber = playerNumber;
         this.expanded = false;
     }
-    public boolean isExpanded()
-    {
+
+    public boolean isExpanded() {
         return this.expanded;
     }
-    public void setExpanded()
-    {
+
+    public void setExpanded() {
         this.expanded = true;
     }
+
     public int getPlayerNumber() {
         return this.playerNumber;
     }
 
-    public Player getPlayer(){
-        if(this.specialField)
-        {
+    public Player getPlayer() {
+        if (this.specialField) {
             return this.Pone;
         }
         return this.Ptwo;
     }
-    public Player getPlayerOne()
-    {
+
+    public Player getPlayerOne() {
         return this.Pone;
     }
-    public Player getPlayerTwo()
-    {
+
+    public Player getPlayerTwo() {
         return this.Ptwo;
     }
-    public boolean getSpecialField()
-    {
+
+    public boolean getSpecialField() {
         return this.specialField;
     }
-    public Level getLvl()
-    {
+
+    public Level getLvl() {
         return this.lvl;
     }
-    public GameState getParent(){
+
+    public GameState getParent() {
         return this.parent;
     }
 
@@ -80,20 +81,27 @@ public class GameState {
 
     public void addWinLoss(int[] toAdd) {
         this.winLoss[0] = (this.winLoss[0]) + (toAdd[0]);
-        this.winLoss[1]= (this.winLoss[1]) + (toAdd[1]);
+        this.winLoss[1] = (this.winLoss[1]) + (toAdd[1]);
     }
 
-    public void propagate(int[] toProp)
-    {
+    public void propagate(int[] toProp) {
         addWinLoss(toProp);
-        if(this.parent != null)
-        {
+        if (this.parent != null) {
             parent.propagate(toProp);
         }
     }
 
     public void expand() {
-        this.childes = Expansion.smartExpansionOne(this,this.steps,this.lvl,this.depth);
+        //childes simulated in expansion function
+        this.childes = Expansion.smartExpansionAllRoot(this, this.steps, this.lvl, this.depth);
+        //for all expansio
+            System.out.print("!start simulating childes, depth: " + (this.getDepth() + 1));
+            for (GameState s : this.childes) {
+
+                s.simulate();
+            }
+            System.out.print(".......end simulate");
+
     }
 
     public void simulate() {
@@ -106,18 +114,14 @@ public class GameState {
 
         while (!copyLevel.levelFinish()) {
             int inholeCounter = 0;
-            for(Mole m : players.get(currentPlayerInt - 1).getMoles()){
-                if(m.getPositionVlaue() == 8)
-                {
+            for (Mole m : players.get(currentPlayerInt - 1).getMoles()) {
+                if (m.getPositionVlaue() == 8) {
                     inholeCounter++;
-                }
-                else
-                {
+                } else {
                     break;
                 }
             }
-            if(inholeCounter == players.get(currentPlayerInt - 1).getMoles().size())
-            {
+            if (inholeCounter == players.get(currentPlayerInt - 1).getMoles().size()) {
                 //change player
                 if (currentPlayerInt == 1) {
                     currentPlayerInt = 2;
@@ -126,8 +130,7 @@ public class GameState {
                 }
             }
 
-            if (players.get(currentPlayerInt - 1).makeMove(copyLevel, specialF))
-            {   //special field hit
+            if (players.get(currentPlayerInt - 1).makeMove(copyLevel, specialF)) {   //special field hit
                 players.get(currentPlayerInt - 1).makeMove(copyLevel, true);
             }
             specialF = false;
@@ -138,12 +141,12 @@ public class GameState {
                 currentPlayerInt = 1;
             }
         }
-        int value = Heuristics.calcHeuristicAsTwo(players.get(0),players.get(1),this.playerNumber);
-        if (value >=0) {
-            propagate(new int[]{1,0});
+        int value = Heuristics.calcHeuristicAsTwo(players.get(0), players.get(1), this.playerNumber);
+        if (value >= 0) {
+            propagate(new int[]{1, 0});
         }
         if (value < 0) {
-            propagate(new int[]{0,1});
+            propagate(new int[]{0, 1});
         }
     }
 

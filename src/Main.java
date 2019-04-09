@@ -20,11 +20,10 @@ public class Main {
 
         for(int i = 0; i<1;i++)
         {
-            McAI mcAione = new McAI(1,null);
-            McAI mcAitwo = new McAI(2,mcAione);
-            mcAione.setEnemy(mcAitwo);
+            RndAI rndAI = new RndAI(1);
+            McAI mcAitwo = new McAI(2,rndAI);
 
-            gameSessions.add(new GameSession(mcAione, mcAitwo));
+            gameSessions.add(new GameSession(rndAI, mcAitwo));
             gameSessions.get(i).run();
         }
 //        ArrayList<GameSession> gameSessions = new ArrayList<>();

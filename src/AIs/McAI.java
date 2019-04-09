@@ -201,32 +201,34 @@ public class McAI extends Player {
 
     private void runMCTS(GameState root) {
         System.out.print(" !mcts start");
-        System.out.println("!choose next");
-        System.out.println(".....next chosen");
-        GameState next = chooseNext(root);
+        GameState next = chooseNextNode(root);
         for(int i=0;i<1000;i++)
         {
-            System.out.print("!start simulate , depth: "+next.getDepth());
-            next.simulate();
-            System.out.print(".......end simulate");
-                 if(next.getDepth()<200 ) {
-                    next.expand();
-                    for(GameState s: next.getChildes())
-                    {
-                        s.simulate();
-                    }
-                }
-                next = chooseNext(root);
+            System.out.print(".....next depth: "+next.depth);
+
+                next.expand();
+               //if no childes after expand -> no moves possible from this node -> make simulation in this node not in the Childes
+               if(next.getChildes().isEmpty())
+               {
+                   next.simulate();
+               }
+                next = chooseNextNode(root);
         }
         System.out.print("....mcts end");
     }
 
-    private GameState chooseNext(GameState gs)
+    private GameState chooseNextNode(GameState gs)
     {
         double maxUCB = -999999;
         GameState toReturn=gs;
-        while(!(toReturn.getChildes().isEmpty()))
+        //!toReturn.getChildes().isEmpty()
+        while(toReturn.isExpanded())
         {
+            //if childes are empty -> no moves possible
+            if(toReturn.getChildes().isEmpty())
+            {
+                return toReturn;
+            }
             //get with max UCB value
             for(GameState g: toReturn.getChildes())
             {

@@ -65,8 +65,8 @@ public class Expansion {
         return childes;
     }
 
-    //1) not out of hole
-    public static ArrayList<GameState> smartExpansionOne(GameState toExpand, int steps, Level lvl, int depth)
+    //1) not out of hole smartRoot
+    public static ArrayList<GameState> smartExpansionSmartRoot(GameState toExpand, int steps, Level lvl, int depth)
     {
 
         ArrayList<GameState> childes = new ArrayList<>();
@@ -137,18 +137,8 @@ public class Expansion {
         toExpand.setExpanded();
         return childes;
     }
-
-    public static ArrayList<GameState> rndExpandOneSmartRoot (GameState toExpand, int steps, Level lvl, int depth){
-        ArrayList<GameState> childes = new ArrayList<>();
-        //root
-        if(steps!=0)
-        {
-            return smartExpansionOne(toExpand,steps,lvl,depth);
-        }
-        return childes;
-    }
-    //1) not out of hole
-    public static ArrayList<GameState> smartExpansionOneALLRoot(GameState toExpand, int steps, Level lvl, int depth)
+    //1) not out of hole allRoot
+    public static ArrayList<GameState> smartExpansionAllRoot(GameState toExpand, int steps, Level lvl, int depth)
     {
         ArrayList<GameState> childes = new ArrayList<>();
 
@@ -210,29 +200,99 @@ public class Expansion {
         {
             childes = Expansion.classicExpansion(toExpand, steps, lvl, depth);
         }
+        toExpand.setExpanded();
         return childes;
     }
-
-    public static ArrayList<GameState> rndExpandOneAllRoot(GameState toExpand, int steps, Level lvl, int depth){
+    //rnd smartRoot
+    public static ArrayList<GameState> rndExpandOneSmartRoot (GameState toExpand, int steps, Level lvl, int depth){
         ArrayList<GameState> childes = new ArrayList<>();
         //root
         if(steps!=0)
         {
-            return smartExpansionOne(toExpand,steps,lvl,depth);
+            return smartExpansionSmartRoot(toExpand,steps,lvl,depth);
         }
-        //start rand Mole and rnd Move
         Random random = new Random();
-        Mole rndMole = toExpand.getPlayerOne().getMoles().get(random.nextInt(toExpand.getPlayerOne().getMoles().size()));
+        //start rand Mole and rnd Move
+        ArrayList<GameState> possibleChildes = classicExpansion(toExpand,steps,lvl,depth);
+        //if no moves possible
+        if(possibleChildes.size() == 0)
+        {
+            toExpand.setExpanded();
+            return childes;
+        }
+        int rand = random.nextInt(possibleChildes.size());
+        GameState newChild = possibleChildes.get(rand);
+        while(!possibleChildes.isEmpty())
+        {
+            if(containsChild(newChild,toExpand))
+            {
+                possibleChildes.remove(rand);
+                rand = random.nextInt(possibleChildes.size());
+                newChild = possibleChildes.get(rand);
+                System.out.println("adadsasdsad");
+                continue;
+            }
 
+            newChild.simulate();
+            toExpand.getChildes().add(newChild);
+            break;
+        }
+        //if last possible child was added -> set Node (toExpand) on expanded
+        if(possibleChildes.isEmpty())
+        {
+            toExpand.setExpanded();
+        }
 
-        return childes;
+        return toExpand.getChildes();
     }
 
-    public static ArrayList<GameState> rndExpandrndSmartSmartRoot (GameState toExpand, int steps, Level lvl, int depth) {
+    //rnd allRoot
+    public static ArrayList<GameState> rndExpandOneAllRootAllExpand(GameState toExpand, int steps, Level lvl, int depth){
+        ArrayList<GameState> childes = new ArrayList<>();
+        //root
+        if(steps!=0)
+        {
+            return classicExpansion(toExpand,steps,lvl,depth);
+        }
+        Random random = new Random();
+        //start rand Mole and rnd Move
+        ArrayList<GameState> possibleChildes = classicExpansion(toExpand,steps,lvl,depth);
+        //if no moves possible
+        if(possibleChildes.size() == 0)
+        {
+            toExpand.setExpanded();
+            return childes;
+        }
+        int rand = random.nextInt(possibleChildes.size());
+        GameState newChild = possibleChildes.get(rand);
+        while(!possibleChildes.isEmpty())
+        {
+          if(containsChild(newChild,toExpand))
+          {
+              possibleChildes.remove(rand);
+              rand = random.nextInt(possibleChildes.size());
+              newChild = possibleChildes.get(rand);
+              System.out.println("adadsasdsad");
+              continue;
+          }
+
+          newChild.simulate();
+          toExpand.getChildes().add(newChild);
+          break;
+        }
+        //if last possible child was added -> set Node (toExpand) on expanded
+        if(possibleChildes.isEmpty())
+        {
+            toExpand.setExpanded();
+        }
+        return toExpand.getChildes();
+    }
+
+    public static ArrayList<GameState> rndExpandrndOneSmartRoot (GameState toExpand, int steps, Level lvl, int depth) {
         ArrayList<GameState> childes = new ArrayList<>();
         //root
         if (steps != 0) {
-            return smartExpansionOne(toExpand, steps, lvl, depth);
+            return smartExpansionSmartRoot(toExpand, steps, lvl, depth);
         }
 
         return childes;
@@ -242,17 +302,20 @@ public class Expansion {
         ArrayList<GameState> childes = new ArrayList<>();
         //root
         if (steps != 0) {
-            return smartExpansionOne(toExpand, steps, lvl, depth);
+            return smartExpansionAllRoot(toExpand, steps, lvl, depth);
         }
         return childes;
     }
 
-     private boolean containsChild (int[] move, Level level, int playerNumber){
-        if(level.getField()[move[0]][move[1]] == playerNumber)
+     private static boolean containsChild (GameState newChild , GameState toExpand){
+
+        for(GameState child : toExpand.getChildes())
         {
-            return true;
-        }else {
-            return false;
+            if(java.util.Arrays.equals(child.getLvl().getField(),newChild.getLvl().getField()))
+            {
+                return true;
+            }
         }
+        return false;
      }
 }
