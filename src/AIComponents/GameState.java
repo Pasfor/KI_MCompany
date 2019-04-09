@@ -17,6 +17,7 @@ public class GameState {
     private GameState parent;
     private int steps;
     private boolean specialField;
+    private boolean expanded;
 
     public GameState(SimulatingPlayer one, SimulatingPlayer two, Level lvl, int depth, GameState parent, int steps, boolean specialField,int playerNumber) {
         this.parent = parent;
@@ -28,8 +29,16 @@ public class GameState {
         this.steps = steps;
         this.specialField = specialField;
         this.playerNumber = playerNumber;
+        this.expanded = false;
     }
-
+    public boolean isExpanded()
+    {
+        return this.expanded;
+    }
+    public void setExpanded()
+    {
+        this.expanded = true;
+    }
     public int getPlayerNumber() {
         return this.playerNumber;
     }

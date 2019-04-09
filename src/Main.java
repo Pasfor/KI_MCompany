@@ -18,7 +18,7 @@ public class Main {
 //        }
         ArrayList<GameSession> gameSessions = new ArrayList<>();
 
-        for(int i = 0; i<20;i++)
+        for(int i = 0; i<1;i++)
         {
             McAI mcAione = new McAI(1,null);
             McAI mcAitwo = new McAI(2,mcAione);
