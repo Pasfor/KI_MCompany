@@ -12,10 +12,10 @@ public class GameState {
     public int depth;
     private SimulatingPlayer Pone;
     private SimulatingPlayer Ptwo;
-    private ArrayList<GameState> childes = new ArrayList<>();
+    public ArrayList<GameState> childes = new ArrayList<>();
     private int[] winLoss;
     private GameState parent;
-    private int steps;
+    public int steps;
     private boolean specialField;
     private boolean expanded;
 
@@ -89,19 +89,6 @@ public class GameState {
         if (this.parent != null) {
             parent.propagate(toProp);
         }
-    }
-
-    public void expand() {
-        //childes simulated in expansion function
-        this.childes = Expansion.smartExpansionAllRoot(this, this.steps, this.lvl, this.depth);
-        //for all expansio
-            System.out.print("!start simulating childes, depth: " + (this.getDepth() + 1));
-            for (GameState s : this.childes) {
-
-                s.simulate();
-            }
-            System.out.print(".......end simulate");
-
     }
 
     public void simulate() {

@@ -1,4 +1,5 @@
-import AIs.McAI;
+import AIs.McAIOutput;
+import AIs.McAiDet;
 import AIs.RndAI;
 import GameSession.*;
 
@@ -21,9 +22,9 @@ public class Main {
         for(int i = 0; i<1;i++)
         {
             RndAI rndAI = new RndAI(1);
-            McAI mcAitwo = new McAI(2,rndAI);
+            McAiDet mcAi = new McAiDet(2,rndAI);
 
-            gameSessions.add(new GameSession(rndAI, mcAitwo));
+            gameSessions.add(new GameSession(rndAI, mcAi));
             gameSessions.get(i).run();
         }
 //        ArrayList<GameSession> gameSessions = new ArrayList<>();

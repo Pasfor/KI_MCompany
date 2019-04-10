@@ -1,7 +1,7 @@
 package GUI;
 
 
-import AIs.McAI;
+import AIs.McAIOutput;
 import AIs.RndAI;
 import GameSession.GameSessionUI;
 import gamecomponents.Mole;
@@ -14,7 +14,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import GameSession.RealPlayer;
 
 import java.util.ArrayList;
 
@@ -94,7 +93,7 @@ public class Controller {
                         break;
 
                     case"Strong" :
-                        this.gameSession = new GameSessionUI( new McAI(2,null), this);
+                        this.gameSession = new GameSessionUI( new McAIOutput(2,null), this);
                         gameSession.setPhase();
                         disableButtons();
                         addActionListener();
