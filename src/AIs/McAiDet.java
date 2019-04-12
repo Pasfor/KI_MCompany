@@ -6,6 +6,7 @@ import gamecomponents.Mole;
 import gamecomponents.Player;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class McAiDet extends Player {
     private int playerNumber;
@@ -107,7 +108,7 @@ public class McAiDet extends Player {
         steps = drawMoveCard();
         ArrayList<GameState> roots = new ArrayList<>();
         //Start 10 MCTS trees
-        for(int i=0; i<10;i++) {
+        for(int i=0; i<1;i++) {
             roots.add(new GameState(new SimulatingPlayer(this), new SimulatingPlayer(enemy), new Level(lvl), 0, null, steps, specialFieldHit, this.playerNumber));
             buildTree(roots.get(i));
         }
@@ -133,6 +134,22 @@ public class McAiDet extends Player {
             return false;
         }
         GameState nextMove = chooseNextMoveState(roots.get(0));
+        System.out.println("\ninitial next choosen: "+ roots.get(0).getChildes().indexOf(nextMove)+"|"+(((double)nextMove.getWinLoss()[0]/(nextMove.getWinLoss()[0]+nextMove.getWinLoss()[1]))+((0.01*(double)Heuristics.calcHeuristicAsTwo(nextMove.getPlayerOne(),nextMove.getPlayerTwo(),this.playerNumber)))));
+        //get childes with same value as the nextMoveNode
+        ArrayList<GameState> moves = new ArrayList<>();
+
+        for(int i=0;i<roots.get(0).getChildes().size();i++)
+        {
+            if(nextMove.getChoosenValue() == roots.get(0).getChildes().get(i).getChoosenValue()){
+                moves.add(roots.get(0).getChildes().get(i));
+            }
+        }
+        //choose random out of same valueNodes
+        Random random = new Random();
+        if(!moves.isEmpty()) {
+            nextMove = moves.get(random.nextInt(moves.size()));
+        }
+
         //lvl.printLVL();
         //check 20
         int checksum = 0;
@@ -146,11 +163,7 @@ public class McAiDet extends Player {
                 }
             }
         }
-
         //=====
-
-        System.out.println("steps: "+steps);
-        System.out.println("next move depth: "+nextMove.getDepth());
         // nextMove.getLvl().printLVL();
         if(nextMove.getPlayer().getPlayerNumber() != this.playerNumber) {
             System.out.println("Moles of Player: " + nextMove.getPlayer().getPlayerNumber());
@@ -160,8 +173,9 @@ public class McAiDet extends Player {
         lvl.overWrite(nextMove.getLvl());
         for(Mole m :this.moles)
         {
-            System.out.print(m.getPosition()[0]+","+m.getPosition()[1]+"|");
+            System.out.print(m.getPosition()[0]+","+m.getPosition()[1]+","+m.getPositionVlaue()+"|");
         }
+        System.out.println("\nenemy empty or in hole: "+proofEnemyAllinHoleOrEmpty(enemy)+" Molessize: "+enemy.getMoles().size());
         if(checksum > 20)
         {
             lvl.printLVL();
@@ -170,24 +184,39 @@ public class McAiDet extends Player {
         System.out.println();
         for(GameState g : roots.get(0).getChildes())
         {
-            System.out.println("Heuristic:"+ Heuristics.calcHeuristicAsTwo(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)+"|"+((g.getWinLoss()[0])+(g.getWinLoss()[1]))+"|"+g.getWinLoss()[0]+","+g.getWinLoss()[1]+"|"+ Heuristics.calcUCB(Math.sqrt(2),g));
+            System.out.println("Heuristic:"+ Heuristics.calcHeuristicAsTwo(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)+"|"+((g.getWinLoss()[0])+(g.getWinLoss()[1]))+"|"+g.getWinLoss()[0]+","+g.getWinLoss()[1]+"||"+(((double)g.getWinLoss()[0])/(g.getWinLoss()[0]+g.getWinLoss()[1]) +(0.01*((double)Heuristics.calcHeuristicAsTwo(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)))));
+
         }
         //Special field !!!
-        System.out.println("Choosen next: "+Heuristics.calcUCB(Math.sqrt(2),nextMove));
+        System.out.println("Choosen next: "+roots.get(0).getChildes().indexOf(nextMove)+" , "+((double)nextMove.getWinLoss()[0]/(nextMove.getWinLoss()[0]+nextMove.getWinLoss()[1]))+((0.01*(double)Heuristics.calcHeuristicAsTwo(nextMove.getPlayerOne(),nextMove.getPlayerTwo(),this.playerNumber))));
         this.specialField = nextMove.getSpecialField();
         return this.specialField;
     }
     private GameState chooseNextMoveState(GameState root)
     {
-        double maxWins = -999999999;
-        GameState toReturn = root;
-        //get with max UCB value
+        double maxWins = -999999999.0;
+        GameState toReturn = root.getChildes().get(0);
         for(GameState g: root.getChildes())
         {
-            if(((double)g.getWinLoss()[0]/(g.getWinLoss()[0]+g.getWinLoss()[1]))> maxWins)
+            if((((double)g.getWinLoss()[0])/(g.getWinLoss()[0]+g.getWinLoss()[1]) +(0.01*((double)Heuristics.calcHeuristicAsTwo(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)))) > maxWins)
             {
-                maxWins = (double)g.getWinLoss()[0]/(g.getWinLoss()[0]+g.getWinLoss()[1]);
+                maxWins = ((double)g.getWinLoss()[0])/(g.getWinLoss()[0]+g.getWinLoss()[1]) +(0.01*((double)Heuristics.calcHeuristicAsTwo(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)));
                 toReturn = g;
+                g.setChoosemValue(((double)g.getWinLoss()[0])/(g.getWinLoss()[0]+g.getWinLoss()[1]) +(0.01*((double)Heuristics.calcHeuristicAsTwo(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber))));
+            }
+        }
+        return toReturn;
+    }
+
+    private GameState chooseNextMoveStateGreedy(GameState root)
+    {
+        double maxValue = -99999;
+        GameState toReturn = root;
+        for(GameState g: root.getChildes())
+        {
+            if(((double)Heuristics.calcHeuristicAsTwo(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber))>maxValue){
+                toReturn = g;
+                maxValue = ((double)Heuristics.calcHeuristicAsTwo(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber));
             }
         }
         return toReturn;
@@ -214,7 +243,7 @@ public class McAiDet extends Player {
     private void runMCTS(GameState root) {
         System.out.print(" !mcts start");
         GameState next = chooseNextNode(root);
-        for(int i=0;i<100;i++)
+        for(int i=0;i<1000;i++)
         {
             System.out.print(".....next depth: "+next.depth);
 
@@ -244,9 +273,9 @@ public class McAiDet extends Player {
             //get with max UCB value
             for(GameState g: toReturn.getChildes())
             {
-                if(Heuristics.calcUCB(Math.sqrt(2),g)>maxUCB)
+                if(Heuristics.calcUCB((1/Math.sqrt(2)),g)>maxUCB)
                 {
-                    maxUCB = Heuristics.calcUCB(Math.sqrt(2),g);
+                    maxUCB = Heuristics.calcUCB((1/Math.sqrt(2)),g);
                     toReturn = g;
                 }
             }
@@ -257,13 +286,29 @@ public class McAiDet extends Player {
     public void expand(GameState toExpand) {
         //childes simulated in expansion function
         toExpand.childes = Expansion.determinedAllRootAll(toExpand, toExpand.steps, toExpand.getLvl() , toExpand.depth);
-        //for all expansion
+        //for all expansionk
         System.out.print("!start simulating childes, depth: " + (toExpand.getDepth() + 1));
         for (GameState s : toExpand.childes) {
 
             s.simulate();
         }
         System.out.print(".......end simulate");
+    }
 
+    private boolean proofEnemyAllinHoleOrEmpty(Player enemy){
+
+        if(enemy.getMoles().isEmpty())
+        {
+            System.out.println("EMPTYYYYYY Moles");
+            return true;
+        }
+        for(Mole m : enemy.getMoles())
+        {
+            if(m.getPositionVlaue() != 8)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -50,7 +50,7 @@ public class Heuristics {
 
         if(gs.getParent() != null) {
             double lognk = Math.log(gs.getParent().getWinLoss()[0] + gs.getParent().getWinLoss()[1]);
-            return winRate + c * Math.sqrt((lognk / games));
+            return winRate + c * Math.sqrt((lognk / games)) + ((int)(Math.random()*10))*0.0000000000000001+((0.0001*(double)Heuristics.calcHeuristicAsTwo(gs.getPlayerOne(),gs.getPlayerTwo(),gs.getPlayerOne().getPlayerNumber())));
         }
         return 0;
     }

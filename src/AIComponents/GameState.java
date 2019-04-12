@@ -18,6 +18,7 @@ public class GameState {
     public int steps;
     private boolean specialField;
     private boolean expanded;
+    private double choosenValue;
 
     public GameState(SimulatingPlayer one, SimulatingPlayer two, Level lvl, int depth, GameState parent, int steps, boolean specialField, int playerNumber) {
         this.parent = parent;
@@ -30,6 +31,15 @@ public class GameState {
         this.specialField = specialField;
         this.playerNumber = playerNumber;
         this.expanded = false;
+        this.choosenValue = -1.0;
+    }
+    public double getChoosenValue()
+    {
+     return choosenValue;
+    }
+    public void setChoosemValue(double v)
+    {
+     this.choosenValue =v;
     }
 
     public boolean isExpanded() {
@@ -92,13 +102,28 @@ public class GameState {
     }
 
     public void simulate() {
+        if(lvl.levelFinish())
+        {
+            int value = Heuristics.calcHeuristicAsTwo(getPlayerOne(), getPlayerTwo(), this.playerNumber);
+            if (value >= 0) {
+                propagate(new int[]{1, 0});
+            }
+            if (value < 0) {
+                propagate(new int[]{0, 1});
+            }
+        }
         boolean specialF = this.specialField;
         int currentPlayerInt = 1;
         Level copyLevel = new Level(this.lvl);
         ArrayList<SimulatingPlayer> players = new ArrayList<>();
         players.add(new SimulatingPlayer(Pone));
         players.add(new SimulatingPlayer(Ptwo));
-
+//        ArrayList<Level> lvlToPlay = new ArrayList<>();
+//        for(int i=copyLevel.getValue();i<4;i++)
+//        {
+//            lvlToPlay.add(new Level(i+1));
+//        }
+//        System.out.println("LVLVLLVLLLvVLLVLVLVLLVLVLVLVLLVLLVLV: "+lvlToPlay.size());
         while (!copyLevel.levelFinish()) {
             int inholeCounter = 0;
             for (Mole m : players.get(currentPlayerInt - 1).getMoles()) {
@@ -128,6 +153,49 @@ public class GameState {
                 currentPlayerInt = 1;
             }
         }
+        //random generated lvl
+//        for(Level lvl :lvlToPlay)
+//        {
+//            players.get(0).initMolesToNewLvl(lvl);
+//            players.get(1).initMolesToNewLvl(lvl);
+//            while(!lvl.levelFinish()) {
+//                if(players.get(0).getMoles().isEmpty() || players.get(1).getMoles().isEmpty())
+//                {
+//                    break;
+//                }
+//                int inholeCounter = 0;
+//                for (Mole m : players.get(currentPlayerInt - 1).getMoles()) {
+//                    if (m.getPositionVlaue() == 8) {
+//                        inholeCounter++;
+//                    } else {
+//                        break;
+//                    }
+//                }
+//                if (inholeCounter == players.get(currentPlayerInt - 1).getMoles().size()) {
+//                    //change player
+//                    if (currentPlayerInt == 1) {
+//                        currentPlayerInt = 2;
+//                    } else {
+//                        currentPlayerInt = 1;
+//                    }
+//                }
+//
+//                if (players.get(currentPlayerInt - 1).makeMove(lvl, specialF)) {   //special field hit
+//                    players.get(currentPlayerInt - 1).makeMove(lvl, true);
+//                }
+//                specialF = false;
+//                //change player
+//                if (currentPlayerInt == 1) {
+//                    currentPlayerInt = 2;
+//                } else {
+//                    currentPlayerInt = 1;
+//                }
+//               System.out.println("Level: "+lvl.getValue());
+//                lvl.printLVL();
+//            }
+
+//        }
+//
         int value = Heuristics.calcHeuristicAsTwo(players.get(0), players.get(1), this.playerNumber);
         if (value >= 0) {
             propagate(new int[]{1, 0});

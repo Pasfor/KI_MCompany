@@ -7,7 +7,7 @@ import output.Output;
 
 import java.util.ArrayList;
 
-public class GameSession extends Thread {
+public class GameSession  {
 
     private ArrayList<Player> players;
     private ArrayList<Level> lvls;
@@ -46,6 +46,7 @@ public class GameSession extends Thread {
         {
             if(!proofMoleLeft())
             {
+                System.exit(123123);
                 returnWinner();
                 break;
             }
@@ -143,11 +144,11 @@ public class GameSession extends Thread {
         }
         if(this.lvls.get(3).getField()[4][4]==1)
         {
-           // Output.getInstance().writeToFile("player one wins");
+           Output.getInstance().writeToFile("player one wins");
         }
         if(this.lvls.get(3).getField()[4][4]==2)
         {
-           // Output.getInstance().writeToFile("player two wins");
+           Output.getInstance().writeToFile("player two wins");
         }
         System.out.println("========Level===FOUR===Finish=======");
         lvls.get(3).printLVL();

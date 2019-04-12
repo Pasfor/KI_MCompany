@@ -14,7 +14,7 @@ public class Level {
      */
     private int lvl;
     private int field[][];
-    private ArrayList<int[][]> holeCords = new ArrayList<>();
+    public ArrayList<int[][]> holeCords = new ArrayList<>();
     private ArrayList<int[][]> specialFieldCords = new ArrayList<>();
     private ArrayList<int[][]> notValidWays = new ArrayList<>();
     private ArrayList<int[]> chosenNotValidWays = new ArrayList<>();
@@ -35,7 +35,10 @@ public class Level {
         this.initLVL();
         this.rotateLVL();
     }
-
+    public int getValue()
+    {
+        return this.lvl;
+    }
     /**
      * Copy-constructor
      */
@@ -87,6 +90,7 @@ public class Level {
                         {4, 2},
                         {4, 4},
                         {5, 2},
+                        {5, 7},
                         {6, 0},
                         {6, 3},
                         {7, 5},
@@ -118,7 +122,8 @@ public class Level {
                         {3, 6},
                         {5, 1},
                         {6, 5},
-                        {7, 2}
+                        {7, 2},
+                        {8, 4}
                 });
                 this.specialFieldCords.add(new int[][]{
                         {0, 0},

@@ -1,3 +1,4 @@
+import AIComponents.GameState;
 import AIs.McAIOutput;
 import AIs.McAiDet;
 import AIs.RndAI;
@@ -19,13 +20,16 @@ public class Main {
 //        }
         ArrayList<GameSession> gameSessions = new ArrayList<>();
 
-        for(int i = 0; i<1;i++)
+        for(int i = 0; i<20 ;i++)
         {
-            RndAI rndAI = new RndAI(1);
+            McAIOutput rndAI = new McAIOutput(1,null);
             McAiDet mcAi = new McAiDet(2,rndAI);
-
+            rndAI.setEnemy(mcAi);
             gameSessions.add(new GameSession(rndAI, mcAi));
-            gameSessions.get(i).run();
+        }
+        for(GameSession g: gameSessions)
+        {
+            g.run();
         }
 //        ArrayList<GameSession> gameSessions = new ArrayList<>();
 //

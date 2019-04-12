@@ -105,8 +105,23 @@ public class RndAI extends Player {
         }
         return true;
     }
+    private boolean proofAllinHole()
+    {
+        for(Mole m: moles)
+        {
+            if(m.getPositionVlaue() != 8)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public boolean makeMove(Level lvl, boolean specialFieldHit) {
+        if(proofAllinHole())
+        {
+            return false;
+        }
         int steps = drawMoveCard();
         // System.out.println("palyer: " + playerNumber + " steps: " + steps);
 
