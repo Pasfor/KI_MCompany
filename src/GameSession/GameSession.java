@@ -79,7 +79,7 @@ public class GameSession  {
             if(!proofMoleLeft())
             {
                 returnWinner();
-                break;
+                return;
             }
             if(players.get(currentPlayerInt-1).makeMove(this.lvls.get(1),false))
             {
@@ -103,7 +103,7 @@ public class GameSession  {
             if(!proofMoleLeft())
             {
                 returnWinner();
-                break;
+                return;
             }
             if(players.get(currentPlayerInt-1).makeMove(this.lvls.get(2),false))
             {
@@ -128,7 +128,7 @@ public class GameSession  {
             if(!proofMoleLeft())
             {
                 returnWinner();
-                break;
+                return;
             }
             if(players.get(currentPlayerInt-1).makeMove(this.lvls.get(3),false))
             {
@@ -144,7 +144,7 @@ public class GameSession  {
         }
         if(this.lvls.get(3).getField()[4][4]==1)
         {
-           Output.getInstance().writeToFile("player one wins");
+            Output.getInstance().writeToFile("player one wins");
         }
         if(this.lvls.get(3).getField()[4][4]==2)
         {
@@ -157,17 +157,17 @@ public class GameSession  {
     private void returnWinner() {
         if(players.get(0).getMoles().isEmpty())
         {
-            System.out.println("player two wins");
+            Output.getInstance().writeToFile("player two wins");
         }
         if(players.get(1).getMoles().isEmpty())
         {
-            System.out.println("player one wins");
+            Output.getInstance().writeToFile("player one wins");
         }
     }
 
     public boolean proofMoleLeft()
     {
-        if(players.get(0).getMoles().isEmpty() ||players.get(0).getMoles().isEmpty())
+        if(players.get(0).getMoles().isEmpty() || players.get(0).getMoles().isEmpty())
         {
             System.out.println("no Moles left");
             return false;

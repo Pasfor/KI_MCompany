@@ -108,7 +108,7 @@ public class McAiDet extends Player {
         steps = drawMoveCard();
         ArrayList<GameState> roots = new ArrayList<>();
         //Start 10 MCTS trees
-        for(int i=0; i<1;i++) {
+        for(int i=0; i<10;i++) {
             roots.add(new GameState(new SimulatingPlayer(this), new SimulatingPlayer(enemy), new Level(lvl), 0, null, steps, specialFieldHit, this.playerNumber));
             buildTree(roots.get(i));
         }
@@ -134,7 +134,7 @@ public class McAiDet extends Player {
             return false;
         }
         GameState nextMove = chooseNextMoveState(roots.get(0));
-        System.out.println("\ninitial next choosen: "+ roots.get(0).getChildes().indexOf(nextMove)+"|"+(((double)nextMove.getWinLoss()[0]/(nextMove.getWinLoss()[0]+nextMove.getWinLoss()[1]))+((0.01*(double)Heuristics.calcHeuristicAsTwo(nextMove.getPlayerOne(),nextMove.getPlayerTwo(),this.playerNumber)))));
+        System.out.println("\ninitial next choosen: "+ roots.get(0).getChildes().indexOf(nextMove)+"|"+(((double)nextMove.getWinLoss()[0]/(nextMove.getWinLoss()[0]+nextMove.getWinLoss()[1]))+((0.01*(double)Heuristics.calcHeuristicAv(nextMove.getPlayerOne(),nextMove.getPlayerTwo(),this.playerNumber)[0]))));
         //get childes with same value as the nextMoveNode
         ArrayList<GameState> moves = new ArrayList<>();
 
@@ -184,11 +184,11 @@ public class McAiDet extends Player {
         System.out.println();
         for(GameState g : roots.get(0).getChildes())
         {
-            System.out.println("Heuristic:"+ Heuristics.calcHeuristicAsTwo(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)+"|"+((g.getWinLoss()[0])+(g.getWinLoss()[1]))+"|"+g.getWinLoss()[0]+","+g.getWinLoss()[1]+"||"+(((double)g.getWinLoss()[0])/(g.getWinLoss()[0]+g.getWinLoss()[1]) +(0.01*((double)Heuristics.calcHeuristicAsTwo(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)))));
+            System.out.println("Heuristic:"+ Heuristics.calcHeuristicAv(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)[0]+"|"+((g.getWinLoss()[0])+(g.getWinLoss()[1]))+"|"+g.getWinLoss()[0]+","+g.getWinLoss()[1]+"||"+(((double)g.getWinLoss()[0])/(g.getWinLoss()[0]+g.getWinLoss()[1]) +(0.01*((double)Heuristics.calcHeuristicAv(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)[0]))));
 
         }
         //Special field !!!
-        System.out.println("Choosen next: "+roots.get(0).getChildes().indexOf(nextMove)+" , "+((double)nextMove.getWinLoss()[0]/(nextMove.getWinLoss()[0]+nextMove.getWinLoss()[1]))+((0.01*(double)Heuristics.calcHeuristicAsTwo(nextMove.getPlayerOne(),nextMove.getPlayerTwo(),this.playerNumber))));
+        System.out.println("Choosen next: "+roots.get(0).getChildes().indexOf(nextMove)+" , "+((double)nextMove.getWinLoss()[0]/(nextMove.getWinLoss()[0]+nextMove.getWinLoss()[1]))+((0.01*(double)Heuristics.calcHeuristicAv(nextMove.getPlayerOne(),nextMove.getPlayerTwo(),this.playerNumber)[0])));
         this.specialField = nextMove.getSpecialField();
         return this.specialField;
     }
@@ -198,11 +198,11 @@ public class McAiDet extends Player {
         GameState toReturn = root.getChildes().get(0);
         for(GameState g: root.getChildes())
         {
-            if((((double)g.getWinLoss()[0])/(g.getWinLoss()[0]+g.getWinLoss()[1]) +(0.01*((double)Heuristics.calcHeuristicAsTwo(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)))) > maxWins)
+            if((((double)g.getWinLoss()[0])/(g.getWinLoss()[0]+g.getWinLoss()[1]) +(0.01*((double)Heuristics.calcHeuristicAv(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)[0]))) > maxWins)
             {
-                maxWins = ((double)g.getWinLoss()[0])/(g.getWinLoss()[0]+g.getWinLoss()[1]) +(0.01*((double)Heuristics.calcHeuristicAsTwo(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)));
+                maxWins = ((double)g.getWinLoss()[0])/(g.getWinLoss()[0]+g.getWinLoss()[1]) +(0.01*((double)Heuristics.calcHeuristicAv(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)[0]));
                 toReturn = g;
-                g.setChoosemValue(((double)g.getWinLoss()[0])/(g.getWinLoss()[0]+g.getWinLoss()[1]) +(0.01*((double)Heuristics.calcHeuristicAsTwo(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber))));
+                g.setChoosemValue(((double)g.getWinLoss()[0])/(g.getWinLoss()[0]+g.getWinLoss()[1]) +(0.01*((double)Heuristics.calcHeuristicAv(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)[0])));
             }
         }
         return toReturn;
@@ -214,9 +214,9 @@ public class McAiDet extends Player {
         GameState toReturn = root;
         for(GameState g: root.getChildes())
         {
-            if(((double)Heuristics.calcHeuristicAsTwo(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber))>maxValue){
+            if(((double)Heuristics.calcHeuristicAv(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)[0])>maxValue){
                 toReturn = g;
-                maxValue = ((double)Heuristics.calcHeuristicAsTwo(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber));
+                maxValue = ((double)Heuristics.calcHeuristicAv(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)[0]);
             }
         }
         return toReturn;
@@ -243,7 +243,7 @@ public class McAiDet extends Player {
     private void runMCTS(GameState root) {
         System.out.print(" !mcts start");
         GameState next = chooseNextNode(root);
-        for(int i=0;i<1000;i++)
+        for(int i=0;i<100;i++)
         {
             System.out.print(".....next depth: "+next.depth);
 
@@ -285,8 +285,8 @@ public class McAiDet extends Player {
     }
     public void expand(GameState toExpand) {
         //childes simulated in expansion function
-        toExpand.childes = Expansion.determinedAllRootAll(toExpand, toExpand.steps, toExpand.getLvl() , toExpand.depth);
-        //for all expansionk
+        toExpand.childes = Expansion.determinedAllSmartRoot(toExpand, toExpand.steps, toExpand.getLvl() , toExpand.depth);
+        //for all expansionkK
         System.out.print("!start simulating childes, depth: " + (toExpand.getDepth() + 1));
         for (GameState s : toExpand.childes) {
 

@@ -19,10 +19,12 @@ public class GameState {
     private boolean specialField;
     private boolean expanded;
     private double choosenValue;
+    private int[] moleSum;
 
     public GameState(SimulatingPlayer one, SimulatingPlayer two, Level lvl, int depth, GameState parent, int steps, boolean specialField, int playerNumber) {
         this.parent = parent;
         winLoss = new int[]{0, 0};
+        moleSum = new int[]{0,0};
         this.Pone = one;
         this.Ptwo = two;
         this.lvl = lvl;
@@ -61,6 +63,10 @@ public class GameState {
         return this.Ptwo;
     }
 
+    public int[] getMoleSum()
+    {
+        return this.moleSum;
+    }
     public Player getPlayerOne() {
         return this.Pone;
     }
@@ -94,17 +100,28 @@ public class GameState {
         this.winLoss[1] = (this.winLoss[1]) + (toAdd[1]);
     }
 
-    public void propagate(int[] toProp) {
+    private void propagate(int[] toProp) {
         addWinLoss(toProp);
         if (this.parent != null) {
             parent.propagate(toProp);
         }
     }
-
+    private void addMoles(int[] toAdd)
+    {
+        this.moleSum[0] = (this.moleSum[0])+ (toAdd[0]);
+        this.moleSum[1] = (this.moleSum[1])+ (toAdd[1]);
+    }
+    private void propagateAV(int[] toProp) {
+        addMoles(toProp);
+        if (this.parent != null) {
+            parent.propagateAV(toProp);
+        }
+    }
     public void simulate() {
         if(lvl.levelFinish())
         {
-            int value = Heuristics.calcHeuristicAsTwo(getPlayerOne(), getPlayerTwo(), this.playerNumber);
+            int[] moles= Heuristics.calcHeuristicAv(getPlayerOne(), getPlayerTwo(), this.playerNumber);
+            int  value = moles[0] - moles[1];
             if (value >= 0) {
                 propagate(new int[]{1, 0});
             }
@@ -153,56 +170,15 @@ public class GameState {
                 currentPlayerInt = 1;
             }
         }
-        //random generated lvl
-//        for(Level lvl :lvlToPlay)
-//        {
-//            players.get(0).initMolesToNewLvl(lvl);
-//            players.get(1).initMolesToNewLvl(lvl);
-//            while(!lvl.levelFinish()) {
-//                if(players.get(0).getMoles().isEmpty() || players.get(1).getMoles().isEmpty())
-//                {
-//                    break;
-//                }
-//                int inholeCounter = 0;
-//                for (Mole m : players.get(currentPlayerInt - 1).getMoles()) {
-//                    if (m.getPositionVlaue() == 8) {
-//                        inholeCounter++;
-//                    } else {
-//                        break;
-//                    }
-//                }
-//                if (inholeCounter == players.get(currentPlayerInt - 1).getMoles().size()) {
-//                    //change player
-//                    if (currentPlayerInt == 1) {
-//                        currentPlayerInt = 2;
-//                    } else {
-//                        currentPlayerInt = 1;
-//                    }
-//                }
-//
-//                if (players.get(currentPlayerInt - 1).makeMove(lvl, specialF)) {   //special field hit
-//                    players.get(currentPlayerInt - 1).makeMove(lvl, true);
-//                }
-//                specialF = false;
-//                //change player
-//                if (currentPlayerInt == 1) {
-//                    currentPlayerInt = 2;
-//                } else {
-//                    currentPlayerInt = 1;
-//                }
-//               System.out.println("Level: "+lvl.getValue());
-//                lvl.printLVL();
-//            }
-
-//        }
-//
-        int value = Heuristics.calcHeuristicAsTwo(players.get(0), players.get(1), this.playerNumber);
+        int[] moles= Heuristics.calcHeuristicAv(getPlayerOne(), getPlayerTwo(), this.playerNumber);
+        int  value = moles[0] - moles[1];
         if (value >= 0) {
             propagate(new int[]{1, 0});
         }
         if (value < 0) {
             propagate(new int[]{0, 1});
         }
+        propagateAV(moles);
     }
 
     public int getDepth() {

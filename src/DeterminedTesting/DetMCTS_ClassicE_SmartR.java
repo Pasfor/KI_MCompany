@@ -1,15 +1,14 @@
-package AIs;
+package DeterminedTesting;
 
 import AIComponents.*;
 import gamecomponents.Level;
 import gamecomponents.Mole;
 import gamecomponents.Player;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class McAIOutput extends Player {
+public class DetMCTS_ClassicE_SmartR extends Player {
     private int playerNumber;
     private ArrayList<Integer> moveCards;
     private ArrayList<Mole> moles;
@@ -19,7 +18,7 @@ public class McAIOutput extends Player {
     private boolean specialField = false;
 
 
-    public McAIOutput(int pN, Player otherPlayer) {
+    public DetMCTS_ClassicE_SmartR(int pN, Player otherPlayer) {
         this.playerNumber = pN;
         this.moveCards = new ArrayList<>();
         this.moles = new ArrayList<>();
@@ -104,47 +103,45 @@ public class McAIOutput extends Player {
     }
 
     //==================AI==========
-    private boolean proofAllinHole()
-    {
-        for(Mole m: moles)
+    @Override
+    public boolean makeMove(Level lvl, boolean specialFieldHit) {
+        steps = drawMoveCard();
+        ArrayList<GameState> roots = new ArrayList<>();
+        //Start 10 MCTS trees
+        for(int i=0; i<10;i++) {
+            roots.add(new GameState(new SimulatingPlayer(this), new SimulatingPlayer(enemy), new Level(lvl), 0, null, steps, specialFieldHit, this.playerNumber));
+            buildTree(roots.get(i));
+        }
+        //Merge childes Together.
+        for(int i= 0;i<roots.size();i++)
         {
-            if(m.getPositionVlaue() != 8)
+            if(i==0){
+                continue;
+            }
+            for(int j = 0; j<roots.get(i).getChildes().size();j++)
             {
-                return false;
+                //add to first roots Childes
+                roots.get(0).getChildes().get(j).addWinLoss(roots.get(i).getChildes().get(j).getWinLoss());
             }
         }
-        return true;
-    }
-   //make it happen
-    public boolean makeMove(Level lvl, boolean specialFieldHit) {
-        if(proofAllinHole())
-        {
-            return false;
-        }
-
-        steps = drawMoveCard();
-
-        GameState root = new GameState(new SimulatingPlayer(this),new SimulatingPlayer(enemy),new Level(lvl),0,null,steps,specialFieldHit,this.playerNumber);
-
-        buildTree(root);
 
         //if stuck
-        if(root.getChildes().isEmpty())
+        if(roots.get(0).getChildes().isEmpty())
         {
             this.moved = false;
             System.out.println("==="+this.playerNumber+"===stuck steps : "+steps);
-            root.getLvl().printLVL();
+            roots.get(0).getLvl().printLVL();
             return false;
         }
-        GameState nextMove = chooseNextMoveState(root);
-        System.out.println("\ninitial next choosen: "+ root.getChildes().indexOf(nextMove)+"|"+(((double)nextMove.getWinLoss()[0]/(nextMove.getWinLoss()[0]+nextMove.getWinLoss()[1]))+((0.01*(double)Heuristics.calcHeuristicAv(nextMove.getPlayerOne(),nextMove.getPlayerTwo(),this.playerNumber)[0]))));
+        GameState nextMove = chooseNextMoveState(roots.get(0));
+        System.out.println("\ninitial next choosen: "+ roots.get(0).getChildes().indexOf(nextMove)+"|"+(((double)nextMove.getWinLoss()[0]/(nextMove.getWinLoss()[0]+nextMove.getWinLoss()[1]))+((0.01*(double) Heuristics.calcHeuristicAv(nextMove.getPlayerOne(),nextMove.getPlayerTwo(),this.playerNumber)[0]))));
         //get childes with same value as the nextMoveNode
         ArrayList<GameState> moves = new ArrayList<>();
 
-        for(int i=0;i<root.getChildes().size();i++)
+        for(int i=0;i<roots.get(0).getChildes().size();i++)
         {
-            if(nextMove.getChoosenValue() == root.getChildes().get(i).getChoosenValue()){
-                moves.add(root.getChildes().get(i));
+            if(nextMove.getChoosenValue() == roots.get(0).getChildes().get(i).getChoosenValue()){
+                moves.add(roots.get(0).getChildes().get(i));
             }
         }
         //choose random out of same valueNodes
@@ -167,7 +164,7 @@ public class McAIOutput extends Player {
             }
         }
         //=====
-       // nextMove.getLvl().printLVL();
+        // nextMove.getLvl().printLVL();
         if(nextMove.getPlayer().getPlayerNumber() != this.playerNumber) {
             System.out.println("Moles of Player: " + nextMove.getPlayer().getPlayerNumber());
             System.exit(1);
@@ -185,63 +182,45 @@ public class McAIOutput extends Player {
             System.exit(checksum);
         }
         System.out.println();
-        for(GameState g : root.getChildes())
+        for(GameState g : roots.get(0).getChildes())
         {
             System.out.println("Heuristic:"+ Heuristics.calcHeuristicAv(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)[0]+"|"+((g.getWinLoss()[0])+(g.getWinLoss()[1]))+"|"+g.getWinLoss()[0]+","+g.getWinLoss()[1]+"||"+(((double)g.getWinLoss()[0])/(g.getWinLoss()[0]+g.getWinLoss()[1]) +(0.01*((double)Heuristics.calcHeuristicAv(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)[0]))));
 
         }
         //Special field !!!
-        System.out.println("Choosen next: "+root.getChildes().indexOf(nextMove)+" , "+((double)nextMove.getWinLoss()[0]/(nextMove.getWinLoss()[0]+nextMove.getWinLoss()[1]))+((0.01*(double)Heuristics.calcHeuristicAv(nextMove.getPlayerOne(),nextMove.getPlayerTwo(),this.playerNumber)[0])));
+        System.out.println("Choosen next: "+roots.get(0).getChildes().indexOf(nextMove)+" , "+((double)nextMove.getWinLoss()[0]/(nextMove.getWinLoss()[0]+nextMove.getWinLoss()[1]))+((0.01*(double)Heuristics.calcHeuristicAv(nextMove.getPlayerOne(),nextMove.getPlayerTwo(),this.playerNumber)[0])));
         this.specialField = nextMove.getSpecialField();
         return this.specialField;
     }
-     private GameState chooseNextMoveState(GameState root)
-     {
-         double maxWins = -999999999.0;
-         GameState toReturn = root.getChildes().get(0);
-             //first (W(k)/N(k))
-//             for(GameState g: root.getChildes())
-//             {
-//                 double wins = ((double)g.getWinLoss()[0]);
-//                 double games = (double)(g.getWinLoss()[0]+g.getWinLoss()[1]);
-//                 double molesNowInHole = (double)(0.01*((double)Heuristics.calcHeuristicAv(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)[0]));
-//                 if((wins/games)+ molesNowInHole > maxWins)
-//                 {
-//                     maxWins = (wins/games)+ molesNowInHole;
-//                     toReturn = g;
-//                     g.setChoosemValue((wins/games)+ molesNowInHole);
-//                 }
-//             }
-             //second (Mk /Mp)
-            for(GameState g: root.getChildes())
+    private GameState chooseNextMoveState(GameState root)
+    {
+        double maxWins = -999999999.0;
+        GameState toReturn = root.getChildes().get(0);
+        for(GameState g: root.getChildes())
+        {
+            if((((double)g.getWinLoss()[0])/(g.getWinLoss()[0]+g.getWinLoss()[1]) +(0.01*((double)Heuristics.calcHeuristicAv(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)[0]))) > maxWins)
             {
-                double molesInHole = (double)g.getMoleSum()[0];
-                double games = (double)(g.getWinLoss()[0]+g.getWinLoss()[1]);
-                double molesNowInHole = (double)(0.01*((double)Heuristics.calcHeuristicAv(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)[0]));
-
-                if((molesInHole/games)+molesNowInHole > maxWins ){
-                  maxWins = (molesInHole/games)+molesNowInHole;
-                  toReturn = g;
-                  g.setChoosemValue((molesInHole/games)+molesNowInHole);
-                }
+                maxWins = ((double)g.getWinLoss()[0])/(g.getWinLoss()[0]+g.getWinLoss()[1]) +(0.01*((double)Heuristics.calcHeuristicAv(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)[0]));
+                toReturn = g;
+                g.setChoosemValue(((double)g.getWinLoss()[0])/(g.getWinLoss()[0]+g.getWinLoss()[1]) +(0.01*((double)Heuristics.calcHeuristicAv(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)[0])));
             }
+        }
+        return toReturn;
+    }
 
-         return toReturn;
-     }
-
-     private GameState chooseNextMoveStateGreedy(GameState root)
-     {
-         double maxValue = -99999;
-         GameState toReturn = root;
-         for(GameState g: root.getChildes())
-         {
-             if(((double)Heuristics.calcHeuristicAv(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)[0])>maxValue){
-                 toReturn = g;
-                 maxValue = ((double)Heuristics.calcHeuristicAv(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)[0]);
-             }
-         }
-         return toReturn;
-     }
+    private GameState chooseNextMoveStateGreedy(GameState root)
+    {
+        double maxValue = -99999;
+        GameState toReturn = root;
+        for(GameState g: root.getChildes())
+        {
+            if(((double)Heuristics.calcHeuristicAv(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)[0])>maxValue){
+                toReturn = g;
+                maxValue = ((double)Heuristics.calcHeuristicAv(g.getPlayerOne(),g.getPlayerTwo(),this.playerNumber)[0]);
+            }
+        }
+        return toReturn;
+    }
 
     private void buildTree(GameState root) {
         System.out.print(" !start build Tree");
@@ -264,17 +243,17 @@ public class McAIOutput extends Player {
     private void runMCTS(GameState root) {
         System.out.print(" !mcts start");
         GameState next = chooseNextNode(root);
-        for(int i=0;i<1000;i++)
+        for(int i=0;i<100;i++)
         {
             System.out.print(".....next depth: "+next.depth);
 
-                expand(next);
-               //if no childes after expand -> no moves possible from this node -> make simulation in this node not in the Childes
-               if(next.getChildes().isEmpty())
-               {
-                   next.simulate();
-               }
-                next = chooseNextNode(root);
+            expand(next);
+            //if no childes after expand -> no moves possible from this node -> make simulation in this node not in the Childes
+            if(next.getChildes().isEmpty())
+            {
+                next.simulate();
+            }
+            next = chooseNextNode(root);
         }
         System.out.print("....mcts end");
     }
@@ -304,10 +283,10 @@ public class McAIOutput extends Player {
         }
         return toReturn;
     }
-    private void expand(GameState toExpand) {
+    public void expand(GameState toExpand) {
         //childes simulated in expansion function
-        toExpand.childes = Expansion.classicExpansion(toExpand, toExpand.steps, toExpand.getLvl() , toExpand.depth);
-        //for all expansion
+        toExpand.childes = Expansion.determinedAllSmartRoot(toExpand, toExpand.steps, toExpand.getLvl() , toExpand.depth);
+        //for all expansionkK
         System.out.print("!start simulating childes, depth: " + (toExpand.getDepth() + 1));
         for (GameState s : toExpand.childes) {
 
