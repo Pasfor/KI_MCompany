@@ -427,6 +427,10 @@ public class Expansion {
         int mode = random.nextInt(10)+1;
         ArrayList<GameState> possibleChildes = classicExpansion(toExpand, steps, lvl, depth);
         ArrayList<GameState> possibleChildesSmart = smartExpansionSmartRoot(toExpand, steps, lvl, depth);
+        if(possibleChildesSmart.isEmpty())
+        {
+            return rndExpandSmartRoot(toExpand, steps, lvl, depth);
+        }
         if(mode >3) {
             //if no moves possible
             if (possibleChildesSmart.size() == 0) {
