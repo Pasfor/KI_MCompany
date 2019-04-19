@@ -7,6 +7,7 @@ import DeterminedTesting.DetMCTS_SmartE_AllR;
 import DeterminedTesting.DetMCTS_SmartE_SmartR;
 import GameSession.*;
 import StandardTesting.*;
+import UCT_MoveChoice_Tests.*;
 import output.Output;
 
 import java.util.ArrayList;
@@ -28,14 +29,14 @@ public class Main {
 //        }
 //
 //
-        Output.getInstance().writeToFile("Player One:DetMCTS_ClassicE_SmartR || Player Two: DetMCTS_SmartE_SmartR");
-
-        IntStream.range(0,200).parallel().forEach((i) -> {
-            DetMCTS_ClassicE_SmartR one = new DetMCTS_ClassicE_SmartR(1,null);
-            DetMCTS_SmartE_SmartR two = new DetMCTS_SmartE_SmartR(2,one);
-            one.setEnemy(two);
-            new GameSession(one, two).run();
-        });
+//        Output.getInstance().writeToFile("Player One:DetMCTS_ClassicE_SmartR || Player Two: DetMCTS_SmartE_SmartR");
+//
+//        IntStream.range(0,200).parallel().forEach((i) -> {
+//            DetMCTS_ClassicE_SmartR one = new DetMCTS_ClassicE_SmartR(1,null);
+//            DetMCTS_SmartE_SmartR two = new DetMCTS_SmartE_SmartR(2,one);
+//            one.setEnemy(two);
+//            new GameSession(one, two).run();
+//        });
 
 //        for(int i = 0; i<200 ;i++)
 //        {
@@ -156,8 +157,157 @@ public class Main {
 //        }
 
 /**
- *  UCT-Testing
+ *  UCT and Movechoice testing Determine
  */
+//        Output.getInstance().writeToFile("Player One: Det_MCTS_MoveS_UCT1 || Player Two: Det_MCTS_MoveM_UCT1");
+//        IntStream.range(0,20).parallel().forEach((i) -> {
+//            Det_MCTS_MoveS_UCT1 one = new Det_MCTS_MoveS_UCT1(1,null);
+//            Det_MCTS_MoveM_UCT1 two = new Det_MCTS_MoveM_UCT1(2,one);
+//            one.setEnemy(two);
+//            new GameSession(one, two).run();
+//        });
+//
+//        Output.getInstance().writeToFile("Player One: Det_MCTS_MoveS_UCT1 || Player Two: Det_MCTS_MoveS_UCT2");
+//        IntStream.range(0,20).parallel().forEach((i) -> {
+//            Det_MCTS_MoveS_UCT1 one = new Det_MCTS_MoveS_UCT1(1,null);
+//            Det_MCTS_MoveS_UCT2 two = new Det_MCTS_MoveS_UCT2(2,one);
+//            one.setEnemy(two);
+//            new GameSession(one, two).run();
+//        });
+//
+//        Output.getInstance().writeToFile("Player One: Det_MCTS_MoveS_UCT1 || Player Two: Det_MCTS_MoveM_UCT2");
+//        IntStream.range(0,20).parallel().forEach((i) -> {
+//            Det_MCTS_MoveS_UCT1 one = new Det_MCTS_MoveS_UCT1(1,null);
+//            Det_MCTS_MoveM_UCT2 two = new Det_MCTS_MoveM_UCT2(2,one);
+//            one.setEnemy(two);
+//            new GameSession(one, two).run();
+//        });
+//        //===== var 2
+//        Output.getInstance().writeToFile("Player One: Det_MCTS_MoveM_UCT1 || Player Two: Det_MCTS_MoveS_UCT2");
+//        IntStream.range(0,20).parallel().forEach((i) -> {
+//            Det_MCTS_MoveM_UCT1 one = new Det_MCTS_MoveM_UCT1(1,null);
+//            Det_MCTS_MoveS_UCT2 two = new Det_MCTS_MoveS_UCT2(2,one);
+//            one.setEnemy(two);
+//            new GameSession(one, two).run();
+//        });
+//
+//        Output.getInstance().writeToFile("Player One: Det_MCTS_MoveM_UCT1 || Player Two: Det_MCTS_MoveM_UCT2");
+//        IntStream.range(0,20).parallel().forEach((i) -> {
+//            Det_MCTS_MoveM_UCT1 one = new Det_MCTS_MoveM_UCT1(1,null);
+//            Det_MCTS_MoveM_UCT2 two = new Det_MCTS_MoveM_UCT2(2,one);
+//            one.setEnemy(two);
+//            new GameSession(one, two).run();
+//        });
+//        //===== var 3
+//        Output.getInstance().writeToFile("Player One: Det_MCTS_MoveS_UCT2 || Player Two: Det_MCTS_MoveM_UCT2");
+//        IntStream.range(0,20).parallel().forEach((i) -> {
+//            Det_MCTS_MoveS_UCT2 one = new Det_MCTS_MoveS_UCT2(1,null);
+//            Det_MCTS_MoveM_UCT2 two = new Det_MCTS_MoveM_UCT2(2,one);
+//            one.setEnemy(two);
+//            new GameSession(one, two).run();
+//        });
+/**
+ * Not determinde Uct and move
+ */
+//        Output.getInstance().writeToFile("Player One: MCTS_MoveS_UCT1 || Player Two: MCTS_MoveM_UCT1");
+//        IntStream.range(0,20).parallel().forEach((i) -> {
+//            MCTS_MoveS_UCT1 one = new MCTS_MoveS_UCT1(1,null);
+//            MCTS_MoveM_UCT1 two = new MCTS_MoveM_UCT1(2,one);
+//            one.setEnemy(two);
+//            new GameSession(one, two).run();
+//        });
+//
+//        Output.getInstance().writeToFile("Player One: MCTS_MoveS_UCT1 || Player Two: MCTS_MoveS_UCT2");
+//        IntStream.range(0,20).parallel().forEach((i) -> {
+//            MCTS_MoveS_UCT1 one = new MCTS_MoveS_UCT1(1,null);
+//            MCTS_MoveS_UCT2 two = new MCTS_MoveS_UCT2(2,one);
+//            one.setEnemy(two);
+//            new GameSession(one, two).run();
+//        });
+//
+//        Output.getInstance().writeToFile("Player One: MCTS_MoveS_UCT1 || Player Two: MCTS_MoveM_UCT2");
+//        IntStream.range(0,20).parallel().forEach((i) -> {
+//            MCTS_MoveS_UCT1 one = new MCTS_MoveS_UCT1(1,null);
+//            MCTS_MoveM_UCT2 two = new MCTS_MoveM_UCT2(2,one);
+//            one.setEnemy(two);
+//            new GameSession(one, two).run();
+//        });
+//        //==== var 2
+//        Output.getInstance().writeToFile("Player One: MCTS_MoveM_UCT1 || Player Two: MCTS_MoveS_UCT2");
+//        IntStream.range(0,20).parallel().forEach((i) -> {
+//            MCTS_MoveM_UCT1 one = new MCTS_MoveM_UCT1(1,null);
+//            MCTS_MoveS_UCT2 two = new MCTS_MoveS_UCT2(2,one);
+//            one.setEnemy(two);
+//            new GameSession(one, two).run();
+//        });
+//
+//        Output.getInstance().writeToFile("Player One: MCTS_MoveM_UCT1 || Player Two: MCTS_MoveM_UCT2");
+//        IntStream.range(0,20).parallel().forEach((i) -> {
+//            MCTS_MoveM_UCT1 one = new MCTS_MoveM_UCT1(1,null);
+//            MCTS_MoveM_UCT2 two = new MCTS_MoveM_UCT2(2,one);
+//            one.setEnemy(two);
+//            new GameSession(one, two).run();
+//        });
+//        //=====var 3
+//        Output.getInstance().writeToFile("Player One:  MCTS_MoveS_UCT2 || Player Two: MCTS_MoveM_UCT2");
+//        IntStream.range(0,20).parallel().forEach((i) -> {
+//            MCTS_MoveS_UCT2 one = new  MCTS_MoveS_UCT2(1,null);
+//            MCTS_MoveM_UCT2 two = new MCTS_MoveM_UCT2(2,one);
+//            one.setEnemy(two);
+//            new GameSession(one, two).run();
+//        });
+
+        //=====more=tests=====
+//        Output.getInstance().writeToFile("Player One: Det_MCTS_MoveM_UCT1 || Player Two: Det_MCTS_MoveM_UCT2");
+//        IntStream.range(0,100).parallel().forEach((i) -> {
+//            Det_MCTS_MoveM_UCT1 one = new Det_MCTS_MoveM_UCT1(1, null);
+//            Det_MCTS_MoveM_UCT2 two = new Det_MCTS_MoveM_UCT2(2, one);
+//            one.setEnemy(two);
+//            new GameSession(one, two).run();
+//        });
+//
+//        Output.getInstance().writeToFile("Player One:  MCTS_MoveS_UCT2 || Player Two: MCTS_MoveM_UCT2");
+//        IntStream.range(0,100).parallel().forEach((i) -> {
+//            MCTS_MoveS_UCT2 one = new  MCTS_MoveS_UCT2(1,null);
+//            MCTS_MoveM_UCT2 two = new MCTS_MoveM_UCT2(2,one);
+//            one.setEnemy(two);
+//            new GameSession(one, two).run();
+//        });
+/**
+ * all vs all tests
+  */
+       //====vs HC based
+        Output.getInstance().writeToFile("Player One:  RndAI || Player Two: DetMCTS_SmartE_AllR");
+        IntStream.range(0,100).parallel().forEach((i) -> {
+            RndAI one = new RndAI(1);
+            DetMCTS_SmartE_AllR two = new DetMCTS_SmartE_AllR(2,one);
+            one.setEnemy(two);
+            new GameSession(one, two).run();
+        });
+
+        Output.getInstance().writeToFile("Player One:  RndAI || Player Two: Det_MCTS_MoveM_UCT1");
+        IntStream.range(0,100).parallel().forEach((i) -> {
+            RndAI one = new RndAI(1);
+            Det_MCTS_MoveM_UCT1 two = new Det_MCTS_MoveM_UCT1(2,one);
+            one.setEnemy(two);
+            new GameSession(one, two).run();
+        });
+
+        Output.getInstance().writeToFile("Player One:  RndAI || Player Two: MCTS_MoveM_UCT2");
+        IntStream.range(0,100).parallel().forEach((i) -> {
+            RndAI one = new RndAI(1);
+            MCTS_MoveM_UCT2 two = new MCTS_MoveM_UCT2(2,one);
+            one.setEnemy(two);
+            new GameSession(one, two).run();
+        });
+        // best detMCTS vs best notDetMCTs
+        Output.getInstance().writeToFile("Player One:  Det_MCTS_MoveM_UCT1|| Player Two: MCTS_MoveM_UCT2");
+        IntStream.range(0,100).parallel().forEach((i) -> {
+            Det_MCTS_MoveM_UCT1 one = new Det_MCTS_MoveM_UCT1(2,null);
+            MCTS_MoveM_UCT2 two = new MCTS_MoveM_UCT2(2,one);
+            one.setEnemy(two);
+            new GameSession(one, two).run();
+        });
 
     }
 }

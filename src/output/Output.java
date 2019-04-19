@@ -15,7 +15,7 @@ public class Output {
         super();
     }
     public synchronized void writeToFile(String str) {
-        try (PrintWriter p = new PrintWriter(new FileOutputStream("DetMoreTest.txt", true))) {
+        try (PrintWriter p = new PrintWriter(new FileOutputStream("UCT_MoveChoice_moreTest.txt", true))) {
             p.println(str);
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();

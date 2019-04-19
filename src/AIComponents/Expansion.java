@@ -445,12 +445,10 @@ public class Expansion {
                     newChild = possibleChildesSmart.get(rand);
                     continue;
                 }
-
                 newChild.simulate();
                 toExpand.getChildes().add(newChild);
                 break;
             }
-
         }
         if(mode<=3){
             int rand = random.nextInt(possibleChildes.size());
