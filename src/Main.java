@@ -277,36 +277,32 @@ public class Main {
  * all vs all tests
   */
        //====vs HC based
-        Output.getInstance().writeToFile("Player One:  RndAI || Player Two: DetMCTS_SmartE_AllR");
-        IntStream.range(0,100).parallel().forEach((i) -> {
-            RndAI one = new RndAI(1);
-            DetMCTS_SmartE_AllR two = new DetMCTS_SmartE_AllR(2,one);
-            one.setEnemy(two);
-            new GameSession(one, two).run();
-        });
-
-        Output.getInstance().writeToFile("Player One:  RndAI || Player Two: Det_MCTS_MoveM_UCT1");
-        IntStream.range(0,100).parallel().forEach((i) -> {
-            RndAI one = new RndAI(1);
-            Det_MCTS_MoveM_UCT1 two = new Det_MCTS_MoveM_UCT1(2,one);
-            one.setEnemy(two);
-            new GameSession(one, two).run();
-        });
-
-        Output.getInstance().writeToFile("Player One:  RndAI || Player Two: MCTS_MoveM_UCT2");
-        IntStream.range(0,100).parallel().forEach((i) -> {
-            RndAI one = new RndAI(1);
-            MCTS_MoveM_UCT2 two = new MCTS_MoveM_UCT2(2,one);
-            one.setEnemy(two);
-            new GameSession(one, two).run();
-        });
-        // best detMCTS vs best notDetMCTs
+//
+//
+//        Output.getInstance().writeToFile("Player One:  RndAI || Player Two: Det_MCTS_MoveM_UCT1");
+//        IntStream.range(0,100).parallel().forEach((i) -> {
+//            RndAI one = new RndAI(1);
+//            Det_MCTS_MoveM_UCT1 two = new Det_MCTS_MoveM_UCT1(2,one);
+//            one.setEnemy(two);
+//            new GameSession(one, two).run();
+//        });
+//
+//        Output.getInstance().writeToFile("Player One:  RndAI || Player Two: MCTS_MoveM_UCT2");
+//        IntStream.range(0,100).parallel().forEach((i) -> {
+//            RndAI one = new RndAI(1);
+//            MCTS_MoveM_UCT2 two = new MCTS_MoveM_UCT2(2,one);
+//            one.setEnemy(two);
+//            new GameSession(one, two).run();
+//        });
+//         best detMCTS vs best notDetMCTs
         Output.getInstance().writeToFile("Player One:  Det_MCTS_MoveM_UCT1|| Player Two: MCTS_MoveM_UCT2");
-        IntStream.range(0,100).parallel().forEach((i) -> {
-            Det_MCTS_MoveM_UCT1 one = new Det_MCTS_MoveM_UCT1(2,null);
+        IntStream.range(0,20).parallel().forEach((i) -> {
+            Det_MCTS_MoveM_UCT1 one = new Det_MCTS_MoveM_UCT1(1,null);
             MCTS_MoveM_UCT2 two = new MCTS_MoveM_UCT2(2,one);
             one.setEnemy(two);
             new GameSession(one, two).run();
+            System.out.println(one.timeMS[0]/one.timeMS[1]);
+            System.out.println(two.timeMS[0]/one.timeMS[1]);
         });
 
     }
