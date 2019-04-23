@@ -4,6 +4,8 @@ package GUI;
 import AIs.McAIOutput;
 import AIs.RndAI;
 import GameSession.GameSessionUI;
+import UCT_MoveChoice_Tests.Det_MCTS_MoveM_UCT1;
+import UCT_MoveChoice_Tests.MCTS_MoveM_UCT2;
 import gamecomponents.Mole;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -86,14 +88,20 @@ public class Controller {
             b.setOnAction(e -> {
                 switch (b.getId()) {
                     case "Weak":
-                        this.gameSession = new GameSessionUI( new RndAI(2), this);
+                        this.gameSession = new GameSessionUI(new RndAI(2), this);
                         gameSession.setPhase();
                         disableButtons();
                         addActionListener();
                         break;
 
-                    case"Strong" :
-                        this.gameSession = new GameSessionUI( new McAIOutput(2,null), this);
+                    case "ismcts":
+                        this.gameSession = new GameSessionUI(new MCTS_MoveM_UCT2(2, null), this);
+                        gameSession.setPhase();
+                        disableButtons();
+                        addActionListener();
+                        break;
+                    case "detismcts":
+                        this.gameSession = new GameSessionUI(new Det_MCTS_MoveM_UCT1(2, null), this);
                         gameSession.setPhase();
                         disableButtons();
                         addActionListener();
@@ -110,8 +118,7 @@ public class Controller {
 
     private void disableButtons() {
         for (Button b : buttons) {
-            if(b.getId().equals("next"))
-            {
+            if (b.getId().equals("next")) {
                 continue;
             }
             b.setDisable(true);
@@ -123,7 +130,7 @@ public class Controller {
         for (Circle c : circles) {
             c.setOnMouseClicked(e -> {
                 Circle circle = (Circle) e.getSource();
-                labels.get(2).setText("Field: "+ circles.indexOf(circle));
+                labels.get(2).setText("Field: " + circles.indexOf(circle));
                 if (clickCounter == 1) {
                     fromTo[1] = circles.indexOf(circle);
                     gameSession.setFromTo(fromTo);
@@ -199,14 +206,12 @@ public class Controller {
                 for (int[] row : field) {
                     for (int value : row) {
                         //if col index is already 0 -> to remove -8 bug
-                        if(m.getPosition()[1] == 0)
-                        {
-                            if(rowCounter == 0)
-                            {
+                        if (m.getPosition()[1] == 0) {
+                            if (rowCounter == 0) {
                                 break;
                             }
                             index++;
-                        }else {
+                        } else {
                             index++;
                             if (rowCounter == 0) {
                                 colCounter--;

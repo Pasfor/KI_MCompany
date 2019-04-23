@@ -103,6 +103,7 @@ public class GameSessionUI {
      * ======lvl-one========
      **/
     public void movePhaseOne() {
+        controller.drawField(this.lvls.get(0).getField());
         if (this.lvls.get(0).levelFinish()) {
             players.get(0).initMolesToNewLvl(this.lvls.get(1));
             players.get(1).initMolesToNewLvl(this.lvls.get(1));
@@ -155,6 +156,7 @@ public class GameSessionUI {
      * ======lvl-two========
      **/
     private void movePhaseTwo() {
+        controller.drawField(this.lvls.get(1).getField());
         if (this.lvls.get(1).levelFinish()) {
             players.get(0).initMolesToNewLvl(this.lvls.get(2));
             players.get(1).initMolesToNewLvl(this.lvls.get(2));
@@ -210,6 +212,7 @@ public class GameSessionUI {
      * ======lvl-three========
      **/
     private void movePhaseThree() {
+        controller.drawField(this.lvls.get(2).getField());
         if (this.lvls.get(2).levelFinish()) {
             players.get(0).initMolesToNewLvl(this.lvls.get(3));
             players.get(1).initMolesToNewLvl(this.lvls.get(3));
@@ -262,6 +265,7 @@ public class GameSessionUI {
      * ======lvl-four========
      **/
     private void movePhaseFour() {
+        controller.drawField(this.lvls.get(3).getField());
         if (this.lvls.get(3).levelFinish()) {
            if(this.lvls.get(3).getField()[4][4] == 1)
            {

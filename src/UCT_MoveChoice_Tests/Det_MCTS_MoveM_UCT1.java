@@ -16,6 +16,7 @@ public class Det_MCTS_MoveM_UCT1 extends Player{
     private boolean moved = true;
     private int steps;
     private boolean specialField = false;
+    public double[] timeMS = new double[] {0.0,0.0};
 
 
     public Det_MCTS_MoveM_UCT1 (int pN, Player otherPlayer) {
@@ -105,6 +106,11 @@ public class Det_MCTS_MoveM_UCT1 extends Player{
     //==================AI==========
     @Override
     public boolean makeMove(Level lvl, boolean specialFieldHit) {
+        if(proofAllinHole())
+        {
+            return false;
+        }
+        double cTime =  System.currentTimeMillis();
         steps = drawMoveCard();
         ArrayList<GameState> roots = new ArrayList<>();
         //Start 10 MCTS trees
@@ -190,8 +196,23 @@ public class Det_MCTS_MoveM_UCT1 extends Player{
         //Special field !!!
         System.out.println("Choosen next: "+roots.get(0).getChildes().indexOf(nextMove)+" , "+((double)nextMove.getWinLoss()[0]/(nextMove.getWinLoss()[0]+nextMove.getWinLoss()[1]))+((0.01*(double)Heuristics.calcHeuristicAv(nextMove.getPlayerOne(),nextMove.getPlayerTwo(),this.playerNumber)[0])));
         this.specialField = nextMove.getSpecialField();
+        timeMS[0] = timeMS[0]+ (System.currentTimeMillis()-cTime);
+        timeMS[1] = timeMS[1]+1 ;
         return this.specialField;
     }
+
+    private boolean proofAllinHole()
+    {
+        for(Mole m: moles)
+        {
+            if(m.getPositionVlaue() != 8)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private GameState chooseNextMoveState(GameState root)
     {
         double maxWins = -999999999.0;

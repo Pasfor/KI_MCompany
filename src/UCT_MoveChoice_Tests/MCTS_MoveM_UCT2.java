@@ -16,6 +16,7 @@ public class MCTS_MoveM_UCT2 extends Player{
     private boolean moved = true;
     private int steps;
     private boolean specialField = false;
+    public double[] timeMS = new double[] {0.0,0.0};
 
 
     public MCTS_MoveM_UCT2(int pN, Player otherPlayer) {
@@ -116,10 +117,12 @@ public class MCTS_MoveM_UCT2 extends Player{
     }
     //make it happen
     public boolean makeMove(Level lvl, boolean specialFieldHit) {
+
         if(proofAllinHole())
         {
             return false;
         }
+        double cTime =  System.currentTimeMillis();
 
         steps = drawMoveCard();
 
@@ -192,6 +195,8 @@ public class MCTS_MoveM_UCT2 extends Player{
         //Special field !!!
         System.out.println("Choosen next: "+root.getChildes().indexOf(nextMove)+" , "+((double)nextMove.getWinLoss()[0]/(nextMove.getWinLoss()[0]+nextMove.getWinLoss()[1]))+((0.01*(double)Heuristics.calcHeuristicAv(nextMove.getPlayerOne(),nextMove.getPlayerTwo(),this.playerNumber)[0])));
         this.specialField = nextMove.getSpecialField();
+        timeMS[0] = timeMS[0]+ (System.currentTimeMillis()-cTime);
+        timeMS[1] = timeMS[1]+1 ;
         return this.specialField;
     }
     private GameState chooseNextMoveState(GameState root)
