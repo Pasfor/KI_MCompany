@@ -105,6 +105,8 @@ public class Det_MCTS_MoveM_UCT2 extends Player {
     //==================AI==========
     @Override
     public boolean makeMove(Level lvl, boolean specialFieldHit) {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         steps = drawMoveCard();
         ArrayList<GameState> roots = new ArrayList<>();
         //Start 10 MCTS trees
@@ -190,6 +192,7 @@ public class Det_MCTS_MoveM_UCT2 extends Player {
         //Special field !!!
         System.out.println("Choosen next: "+roots.get(0).getChildes().indexOf(nextMove)+" , "+((double)nextMove.getWinLoss()[0]/(nextMove.getWinLoss()[0]+nextMove.getWinLoss()[1]))+((0.01*(double)Heuristics.calcHeuristicAv(nextMove.getPlayerOne(),nextMove.getPlayerTwo(),this.playerNumber)[0])));
         this.specialField = nextMove.getSpecialField();
+        System.out.println("======= steps: " + steps+"===========");
         return this.specialField;
     }
     private GameState chooseNextMoveState(GameState root)
@@ -227,29 +230,27 @@ public class Det_MCTS_MoveM_UCT2 extends Player {
     }
 
     private void buildTree(GameState root) {
-        System.out.print(" !start build Tree");
+
         expand(root);
         //if stuck
         if(root.getChildes().isEmpty())
         {
             return;
         }
-        System.out.print("!start simulate rootchilds ");
+
         for(GameState gs : root.getChildes())
         {
             gs.simulate();
         }
-        System.out.print("!stop simulate rootchilds ");
+
         runMCTS(root);
-        System.out.print("....end build Tree");
+
     }
 
     private void runMCTS(GameState root) {
-        System.out.print(" !mcts start");
         GameState next = chooseNextNode(root);
         for(int i=0;i<100;i++)
         {
-            System.out.print(".....next depth: "+next.depth);
 
             expand(next);
             //if no childes after expand -> no moves possible from this node -> make simulation in this node not in the Childes
@@ -259,7 +260,7 @@ public class Det_MCTS_MoveM_UCT2 extends Player {
             }
             next = chooseNextNode(root);
         }
-        System.out.print("....mcts end");
+
     }
 
     private GameState chooseNextNode(GameState gs)
@@ -291,12 +292,12 @@ public class Det_MCTS_MoveM_UCT2 extends Player {
         //childes simulated in expansion function
         toExpand.childes = Expansion.determinedSmartSmartRoot(toExpand, toExpand.steps, toExpand.getLvl() , toExpand.depth);
         //for all expansionkK
-        System.out.print("!start simulating childes, depth: " + (toExpand.getDepth() + 1));
+
         for (GameState s : toExpand.childes) {
 
             s.simulate();
         }
-        System.out.print(".......end simulate");
+
     }
 
     private boolean proofEnemyAllinHoleOrEmpty(Player enemy){

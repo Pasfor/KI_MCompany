@@ -79,22 +79,18 @@ public class GameSessionUI {
     public void movePhaseDecider() {
         if (!this.lvls.get(0).levelFinish()) {
             movePhaseOne();
-            this.lvls.get(0).printLVL();
             return;
         }
         if (!this.lvls.get(1).levelFinish()) {
             movePhaseTwo();
-            this.lvls.get(1).printLVL();
             return;
         }
         if (!this.lvls.get(2).levelFinish()) {
             movePhaseThree();
-            this.lvls.get(1).printLVL();
             return;
         }
         if (!this.lvls.get(3).levelFinish()) {
             movePhaseFour();
-            this.lvls.get(3).printLVL();
             return;
         }
     }

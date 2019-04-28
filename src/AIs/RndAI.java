@@ -123,7 +123,7 @@ public class RndAI extends Player {
             return false;
         }
         int steps = drawMoveCard();
-        // System.out.println("palyer: " + playerNumber + " steps: " + steps);
+        System.out.println("======= steps: " + steps+"===========");
 
         //check if possible without moving out of hole
         List<Mole> moveableMoles = moveableMolesNotInHole(lvl, steps, specialFieldHit);
