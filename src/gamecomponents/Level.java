@@ -857,15 +857,12 @@ public class Level {
      * @return
      */
     private boolean proofValidLastMove(int[] pos, int positionValue) {
-       System.out.println("to check:" + pos[0] + "," + pos[1]);
-       System.out.println(positionValue);
         if (positionValue == 6) {
             return false;
         }
         //if mole is on field with value 6
         for (int[] notValidWay : this.chosenNotValidWays) {
             if (notValidWay[0] == pos[0] && notValidWay[1] == pos[1]) {
-                System.out.println("uf jajaj"+notValidWays.size());
                 return false;
             }
         }
