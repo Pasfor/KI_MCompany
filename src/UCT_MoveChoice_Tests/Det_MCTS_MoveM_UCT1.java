@@ -106,7 +106,7 @@ public class Det_MCTS_MoveM_UCT1 extends Player {
     @Override
     public boolean makeMove(Level lvl, boolean specialFieldHit) {
         //Clear console
-
+       
         //clear console
         if (proofAllinHole()) {
             return false;

@@ -348,16 +348,16 @@ public class Level {
         }
         //for last lvl load no valid moves that are blocked by design
         if (this.lvl == 4) {
-            int rowIndex = 0;
-            for (int[] row : this.field) {
-                int columIndex = 0;
-                for (int value : row) {
-                    if (value == 6) {
-                        this.chosenNotValidWays.add(new int[]{columIndex, rowIndex});
+            for(int i=0;i<this.field.length;i++)
+            {
+                for(int j=0;j<this.field[i].length;j++)
+                {
+                    if(this.field[i][j] == 6)
+                    {
+                        this.chosenNotValidWays.add(new int[]{i, j});
+                        System.out.println("added"+i+","+j);
                     }
-                    columIndex++;
                 }
-                rowIndex++;
             }
         }
     }
@@ -858,14 +858,15 @@ public class Level {
      * @return
      */
     private boolean proofValidLastMove(int[] pos, int positionValue) {
-   //     System.out.println("to check:" + pos[0] + "," + pos[1]);
-     //   System.out.println(positionValue);
+       System.out.println("to check:" + pos[0] + "," + pos[1]);
+       System.out.println(positionValue);
         if (positionValue == 6) {
             return false;
         }
         //if mole is on field with value 6
         for (int[] notValidWay : this.chosenNotValidWays) {
             if (notValidWay[0] == pos[0] && notValidWay[1] == pos[1]) {
+                System.out.println("uf jajaj"+notValidWays.size());
                 return false;
             }
         }
