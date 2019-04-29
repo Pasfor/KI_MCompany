@@ -355,7 +355,6 @@ public class Level {
                     if(this.field[i][j] == 6)
                     {
                         this.chosenNotValidWays.add(new int[]{i, j});
-                        System.out.println("added"+i+","+j);
                     }
                 }
             }
